@@ -6,7 +6,7 @@
 #    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/13 19:58:18 by penzo             #+#    #+#              #
-#    Updated: 2019/03/15 21:11:12 by penzo            ###   ########.fr        #
+#    Updated: 2019/03/18 23:59:27 by penzo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ SRC_PATH	:=	srcs
 OBJ_PATH	:=	objs
 INC_PATH	:=	includes
 
-SRC_NAME	:=	main.c tmp.c
-INCL_NAME	:=	#TODO
+SRC_NAME	:=	main.c init_env.c errors.c environ_utils.c
+INCL_NAME	:=	21sh.h
 OBJ_NAME	:=	$(SRC_NAME:.c=.o)
 
 SRC			:=	$(addprefix $(SRC_PATH)/,$(SRC_NAME))
@@ -56,7 +56,7 @@ adh: rmh
 	vim -ns script/42header_add.keys $(SRC)
 
 $(NAME): $(OBJ) libft/libft.a
-	$(CC) $(LIB) $^ -o $@
+	$(CC) $(CFLAGS) $(LIB) $^ -o $@
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c Makefile
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
@@ -75,7 +75,7 @@ fclean: clean
 re: fclean all
 
 d: all
-	./$(NAME)
+	env -i ./$(NAME)
 
 norm: adh
 	norminette $(SRC)

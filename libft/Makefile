@@ -6,11 +6,12 @@
 #    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/30 15:37:46 by penzo             #+#    #+#              #
-#    Updated: 2019/03/12 14:25:14 by penzo            ###   ########.fr        #
+#    Updated: 2019/03/18 18:38:25 by penzo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=libft.a
+
 CC=gcc
 CFLAGS=-Werror -Wextra -Wall
 CFILES=ft_tolower.c \
@@ -81,6 +82,8 @@ CFILES=ft_tolower.c \
 	   gnl/get_next_line.c \
 	   get_ntab_len.c \
 	   ft_strcmp_until_c.c \
+	   ft_free_nultab.c \
+	   ft_dup_nultab.c
 
 OFILES=${CFILES:.c=.o}
 DEPS=libft.h

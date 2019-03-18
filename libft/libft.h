@@ -6,7 +6,7 @@
 /*   By: penzo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 14:00:22 by penzo             #+#    #+#             */
-/*   Updated: 2019/03/12 14:25:59 by penzo            ###   ########.fr       */
+/*   Updated: 2019/03/18 15:56:20 by penzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,6 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int					get_next_line(const int fd, char **line);
 int					get_ntab_len(char **tab);
 int					ft_strcmp_until_c(char *s1, char *s2, char c);
+void				ft_free_nultab(char **tab);
+char				**ft_dup_nultab(char **tab);
 #endif
