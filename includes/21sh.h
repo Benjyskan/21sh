@@ -29,12 +29,22 @@ char		**init_env(char **env);
 void		error_mem(void);
 
 /*
+** shlvl.c
+*/
+
+void		set_shlvl(char ***env);
+
+/*
 ** environ_utils.c
 */
 
-int     get_envline_index(char *search, char **env);
-char    *get_envline_value(char *search, char **env);
-char    *get_envline(char *search, char **env);
-void	set_env_var(char *var_name, char *var_value, char ***env);
-//void    replace_env_var(char *var_name, char *var_value, char **env_line);
+int			get_envline_index(char *search, char **env);
+char		*get_envline_value(char *search, char **env);
+char		*get_envline(char *search, char **env);
+
+/*
+** environ_set.c
+*/
+
+void		set_env_var(char *var_name, char *var_value, char ***env);
 #endif

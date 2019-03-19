@@ -6,11 +6,12 @@
 #    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/13 19:58:18 by penzo             #+#    #+#              #
-#    Updated: 2019/03/18 23:59:27 by penzo            ###   ########.fr        #
+#    Updated: 2019/03/19 12:53:52 by penzo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	21sh
+OPT			:=	
 
 CC			:=	gcc
 CFLAGS		:=	-Wextra -Wall -Werror
@@ -21,7 +22,8 @@ SRC_PATH	:=	srcs
 OBJ_PATH	:=	objs
 INC_PATH	:=	includes
 
-SRC_NAME	:=	main.c init_env.c errors.c environ_utils.c
+SRC_NAME	:=	main.c init_env.c errors.c environ_utils.c shlvl.c \
+	environ_set.c
 INCL_NAME	:=	21sh.h
 OBJ_NAME	:=	$(SRC_NAME:.c=.o)
 
@@ -42,12 +44,12 @@ libft/libft.a:
 
 fsa: $(OBJ) libft/libft.a
 	$(CC) $(CFLAGS) $(FSA_FLAGS) $(LIB) $^ -o $(NAME)
-	./$(NAME)
+	$(OPT) ./$(NAME)
 
 val: $(OBJ) libft/libft.a
 	$(CC) $(CFLAGS) $(VAL_FLAGS) $(LIB) $^ -o $(NAME)
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all \
-		--show-reachable=no ./$(NAME)
+		--show-reachable=no $(OPT) ./$(NAME)
 
 rmh:
 	./script/42header_c_rm.sh $(SRC)
@@ -75,7 +77,7 @@ fclean: clean
 re: fclean all
 
 d: all
-	env -i ./$(NAME)
+	$(OPT) ./$(NAME)
 
 norm: adh
 	norminette $(SRC)

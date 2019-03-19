@@ -13,7 +13,7 @@ int		main(int argc, char **argv, char **env)
 	//loop
 
 	//
-	set_env_var("NEWNEW", "HEHEY", &env_cpy);
+	//set_env_var("NEWNEW", "HEHEY", &env_cpy);
 	ft_put_nultab(env_cpy);
 	ft_free_nultab(env_cpy);
 	//
