@@ -42,7 +42,6 @@ char		**init_env(char **env)
 
 	if (*env)
 	{
-		ft_putendl("ENV EXIST");
 		new_env = ft_dup_nultab(env);
 		set_shlvl(&new_env);
 		return(new_env);
