@@ -32,7 +32,7 @@ static char	**create_minienv(void)
 
 /*
 ** init_env
-** return a copy of env if it exist
+** return a copy of env if it exist and set_shlvl
 ** return a fresh minienv otherwise
 */
 

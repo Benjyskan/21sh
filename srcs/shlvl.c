@@ -1,5 +1,10 @@
 #include "21sh.h"
 
+/*
+** set_shlvl
+** set the SHLVL of the given env via adress
+*/
+
 void	set_shlvl(char ***env)
 {
 	char	*value;
