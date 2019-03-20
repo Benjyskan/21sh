@@ -11,6 +11,13 @@
 # define BUF_SIZE 128
 # define SHELL_NAME "my_sh"
 # define ERROR_MEM error_mem();
+# define ERROR_READ exit(1);//TODO
+
+typedef struct		s_cmdlst
+{
+	char			*cmdline;
+	struct s_cmdlst	*next;
+}					t_cmdlst;
 
 /*
 ** main.c
@@ -47,4 +54,37 @@ char		*get_envline(char *search, char **env);
 */
 
 void		set_env_var(char *var_name, char *var_value, char ***env);
+
+/*
+** prompt.c
+*/
+
+void		print_prompt(void);
+
+/*
+** my_strsplit.c
+*/
+
+char		**my_strsplit(char *str);
+
+/*
+** handle_input.c
+*/
+
+void		handle_input(char *input, char **env);
+//t_cmdlst	*split_on_colomn(char *input, char **env);
+
+/*
+** cmd_lst_utils.c
+*/
+
+t_cmdlst	*create_cmdlst(char *cmdline);
+void		add_to_cmdlst(char *cmdline, t_cmdlst *cmdlst_head);
+void		print_cmdlst(t_cmdlst *head);
+
+/*
+** free.c
+*/
+
+void		free_cmdlst(t_cmdlst *cmdlst_head);
 #endif

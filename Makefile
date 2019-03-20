@@ -6,7 +6,7 @@
 #    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/13 19:58:18 by penzo             #+#    #+#              #
-#    Updated: 2019/03/19 12:53:52 by penzo            ###   ########.fr        #
+#    Updated: 2019/03/20 16:38:55 by penzo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ OBJ_PATH	:=	objs
 INC_PATH	:=	includes
 
 SRC_NAME	:=	main.c init_env.c errors.c environ_utils.c shlvl.c \
-	environ_set.c
+	environ_set.c prompt.c cmd_lst_utils.c handle_input.c free.c \
+	my_strsplit.c
 INCL_NAME	:=	21sh.h
 OBJ_NAME	:=	$(SRC_NAME:.c=.o)
 
@@ -35,7 +36,7 @@ LIB_PATH	:=	-Llibft
 LIB_NAME	:=	-lft
 LIB			:=	$(LIB_PATH) $(LIB_NAME)
 
-.PHONY: all, clean, fclean, re, norm, fsa, val, rmh, adh
+.PHONY: all, clean, fclean, re, norm, fsa, val, rmh, adh, tags
 
 all: $(NAME)
 
@@ -63,6 +64,9 @@ $(NAME): $(OBJ) libft/libft.a
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c Makefile
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 	$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
+
+tag:
+	ctags -R .
 
 clean:
 	$(MAKE) clean -C libft
