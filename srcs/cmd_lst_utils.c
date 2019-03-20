@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 char		*my_strtrim(char *str)
 {

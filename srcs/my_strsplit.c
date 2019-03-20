@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 static int	is_blank_or_column(char c)
 {

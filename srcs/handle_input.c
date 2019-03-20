@@ -1,4 +1,4 @@
-#include "21sh.h"
+#include "tosh.h"
 
 /*
 ** split_on_colomn
@@ -37,6 +37,10 @@ void			handle_input(char *input, char **env)
 		return ;
 	print_cmdlst(cmdlst_head);//debug
 	ft_memdel((void*)&input);
-	//do stuff
+	//FOR EACH CMD
+	//expand var
+	//tokenize
+	//lexer
+	//exec tree
 	free_cmdlst(cmdlst_head);
 }

@@ -6,7 +6,7 @@
 #    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/13 19:58:18 by penzo             #+#    #+#              #
-#    Updated: 2019/03/20 16:38:55 by penzo            ###   ########.fr        #
+#    Updated: 2019/03/20 17:46:07 by penzo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ INC_PATH	:=	includes
 
 SRC_NAME	:=	main.c init_env.c errors.c environ_utils.c shlvl.c \
 	environ_set.c prompt.c cmd_lst_utils.c handle_input.c free.c \
-	my_strsplit.c
-INCL_NAME	:=	21sh.h
+	my_strsplit.c lexer.c
+INCL_NAME	:=	tosh.h
 OBJ_NAME	:=	$(SRC_NAME:.c=.o)
 
 SRC			:=	$(addprefix $(SRC_PATH)/,$(SRC_NAME))
