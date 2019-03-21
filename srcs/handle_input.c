@@ -17,6 +17,7 @@ static t_cmdlst	*split_on_colomn(char *input, char **env)//TODO bad name
 		ERROR_MEM;
 	if (!*tmp_tab)
 	{
+		ft_putendl("CHECK111");//when do this happen ?
 		ft_memdel((void*)&tmp_tab);
 		return (NULL);
 	}
@@ -24,7 +25,7 @@ static t_cmdlst	*split_on_colomn(char *input, char **env)//TODO bad name
 		ERROR_MEM;
 	i = 0;
 	while (tmp_tab[++i])
-		add_to_cmdlst(tmp_tab[i], cmdlst_head);
+		add_to_cmdlst(tmp_tab[i], cmdlst_head);//no need to protect
 	ft_memdel((void*)&tmp_tab);
 	return (cmdlst_head);
 }
@@ -38,9 +39,12 @@ void			handle_input(char *input, char **env)
 	print_cmdlst(cmdlst_head);//debug
 	ft_memdel((void*)&input);
 	//FOR EACH CMD
-	//expand var
+	//expand var (plus tard)
 	//tokenize
 	//lexer
 	//exec tree
+
+	my_pipe(cmdlst_head->cmdline);//test
+
 	free_cmdlst(cmdlst_head);
 }

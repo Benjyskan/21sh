@@ -21,11 +21,13 @@ typedef struct		s_cmdlst
 
 typedef enum		e_token
 {
-	TOK_PIPE,
-	TOK_R_ARROW,
-	TOK_RD_ARROW,
-	TOK_L_ARROW,
-	TOK_LD_ARROW
+	TK_PIPE = 1,
+	TK_R_ARROW,
+	TK_RD_ARROW,
+	TK_L_ARROW,
+	TK_LD_ARROW,
+	TK_CMD,
+	TK_FILE
 }					t_token;
 
 /*
@@ -95,4 +97,10 @@ void				print_cmdlst(t_cmdlst *head);//debug
 */
 
 void				free_cmdlst(t_cmdlst *cmdlst_head);
+
+/*
+** test_pipe.c
+*/
+
+int					my_pipe(char *input);
 #endif

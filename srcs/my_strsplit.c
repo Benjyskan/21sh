@@ -57,7 +57,7 @@ static int	get_cmd_count(char *str, int init_len)
 	return (cmd_count);
 }
 
-static void	fill_tab(char *str, int tab_len, char ***tab)
+static void	fill_tab(char *str, int tab_len, char ***tab, int init_len)
 {
 	int		i;
 	int		j;
@@ -74,7 +74,7 @@ static void	fill_tab(char *str, int tab_len, char ***tab)
 			ERROR_MEM;
 		while (str[i])
 			i++;
-		while (!str[i])
+		while (!str[i] && i < init_len)
 			i++;
 	}
 	(*tab)[j] = 0;
@@ -92,7 +92,7 @@ char		**my_strsplit(char *str)
 	cmd_count = get_cmd_count(tmp, init_len);
 	if (!(res = (char**)malloc(sizeof(char**) * (cmd_count + 1))))
 		ERROR_MEM;
-	fill_tab(tmp, cmd_count, &res);
+	fill_tab(tmp, cmd_count, &res, init_len);
 	ft_memdel((void*)&tmp);
 	return (res);
 }

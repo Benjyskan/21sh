@@ -38,7 +38,6 @@ t_cmdlst	*create_cmdlst(char *cmdline)
 	ft_putendl("Creating new node");
 	if (!(new_node = (t_cmdlst*)malloc(sizeof(t_cmdlst))))
 		ERROR_MEM;
-	//if (!(new_node->cmdline = ft_strtrim(cmdline)))//check ft_strtrim in libft
 	if (!(new_node->cmdline = my_strtrim(cmdline)))
 		ERROR_MEM;
 	ft_memdel((void*)&cmdline);
@@ -60,7 +59,6 @@ void		add_to_cmdlst(char *cmdline, t_cmdlst *cmdlst_head)
 	ft_putendl("Adding new node");
 	if (!(new_node = (t_cmdlst*)malloc(sizeof(t_cmdlst))))
 		ERROR_MEM;
-	//if (!(new_node->cmdline = ft_strtrim(cmdline)))
 	if (!(new_node->cmdline = my_strtrim(cmdline)))
 		ERROR_MEM;
 	ft_memdel((void*)&cmdline);
@@ -78,10 +76,8 @@ void		print_cmdlst(t_cmdlst *head)//for debug
 	probe = head;
 	while (probe->next)
 	{
-		//ft_putendl(probe->cmdline);
-		printf("{%s}\n", probe->cmdline);
+		printf("{%s}\n", probe->cmdline);//TODO
 		probe = probe->next;
 	}
 	printf("{%s}\n", probe->cmdline);
-	//ft_putendl(probe->cmdline);
 }
