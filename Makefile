@@ -99,8 +99,8 @@ d: all
 
 norm: adh
 	norminette $(SRCS)
-	norminette $(INCL_DIR)/*.h
+	norminette includes/*.h
 
 test:
 	@echo "-----------------------------------"
-	@echo $(SRCS)
+	vim $(SRCS)

@@ -1,3 +1,4 @@
 :argdo Stdheader
-:argdo wq
-:wq
+:argdo w
+:argdo bd
+:q

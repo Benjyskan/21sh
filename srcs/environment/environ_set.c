@@ -55,7 +55,7 @@ static void	add_env_var(char *var_name, char *var_value, char ***env)
 ** else, realloc env to add a new line
 */
 
-void	set_env_var(char *var_name, char *var_value, char ***env)
+void		set_env_var(char *var_name, char *var_value, char ***env)
 {
 	int		index;
 

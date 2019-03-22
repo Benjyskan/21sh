@@ -46,8 +46,8 @@ char		**init_env(char **env)
 	{
 		new_env = ft_dup_nultab(env);
 		set_shlvl(&new_env);
-		return(new_env);
+		return (new_env);
 	}
 	else
-		return(create_minienv());
+		return (create_minienv());
 }
