@@ -1,5 +1,11 @@
 #include "tosh.h"
 
+static void	bzero_env(char **env, int size)
+{
+	while (size >= 0)
+		env[size--] = NULL;
+}
+
 /*
 ** create_minienv
 ** malloc a minienv
@@ -13,19 +19,15 @@ static char	**create_minienv(void)
 	char	**env;
 	char	*cwd;
 
-	init_lines = 3;
-	if (!(env = (char**)malloc(sizeof(char**) * init_lines)))
+	init_lines = 2;
+	if (!(env = (char**)malloc(sizeof(char**) * (init_lines + 1))))
 		ERROR_MEM;
-	if (!(env[0] = ft_strnew(7 + 8)))
-		ERROR_MEM;
-	ft_strcpy(env[0], "SHLVL=1");
+	bzero_env(env, init_lines);
+	set_env_var("SHLVL", "1", &env);
 	if (!(cwd = getcwd(NULL, 0)))
 		ERROR_MEM;
-	if (!(env[1] = ft_strnew(4 + ft_strlen(cwd))))
-		ERROR_MEM;
-	ft_strcpy(env[1], "PWD=");
-	ft_strcpy(&env[1][4], cwd);
-	env[init_lines - 1] = NULL;
+	set_env_var("PWD", cwd, &env);
+	env[init_lines - 0] = NULL;
 	ft_memdel((void*)&cwd);
 	return (env);
 }
@@ -40,7 +42,7 @@ char		**init_env(char **env)
 {
 	char	**new_env;
 
-	if (*env)
+	if (env && *env)
 	{
 		new_env = ft_dup_nultab(env);
 		set_shlvl(&new_env);
@@ -48,5 +50,4 @@ char		**init_env(char **env)
 	}
 	else
 		return(create_minienv());
-	return (NULL);//TODO when do this happen ?
 }

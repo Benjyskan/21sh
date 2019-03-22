@@ -13,7 +13,7 @@ int		ft_strcmp_before_c(char *search, char *str, char c)//libft ?
 	if (!search || !str || !c)
 		return (0);
 	i = -1;
-	while (str[++i] != c && search[i])
+	while (str[++i] && str[i] != c && search[i])
 	{
 		if (str[i] != search[i])
 			return (0);
@@ -37,6 +37,7 @@ int		get_envline_index(char *search, char **env)
 	i = -1;
 	while (env[++i])
 	{
+		printf("##i: %d\n", i);
 		if (ft_strcmp_before_c(search, env[i], '='))
 			return (i);
 	}

@@ -1,90 +1,96 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/13 19:58:18 by penzo             #+#    #+#              #
-#    Updated: 2019/03/21 16:55:39 by penzo            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+################################################################################
+# Basics #######################################################################
+NAME	:=	21sh
+OPT		:=	
+CC		:=	gcc
+CFLAGS	:=	-Wall -Wextra -Werror
 
-NAME		:=	21sh
-OPT			:=	
+DEBUG_FLAG	:=	-g
+FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
+VAL_FLAGS	:=	--leak-check=full --track-origins=yes --show-leak-kinds=all \
+				--show-reachable=no
 
-CC			:=	gcc
-CFLAGS		:=	-Wextra -Wall -Werror
-#FSA_FLAGS	:=	-pedantic -g3 -O1 -fsanitize=address
-FSA_FLAGS	:=	-g -fsanitize=address
-VAL_FLAGS	:=	-g
+# Includes #####################################################################
+INCL_DIR	:=	includes libft #libft needed ?
+INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-SRC_PATH	:=	srcs
-OBJ_PATH	:=	objs
-INC_PATH	:=	includes
+INCL_FILES	:=	tosh.h #needed ?
 
-SRC_NAME	:=	main.c init_env.c errors.c environ_utils.c shlvl.c \
-	environ_set.c prompt.c cmd_lst_utils.c handle_input.c free.c \
-	my_strsplit.c lexer.c test_pipe.c
-INCL_NAME	:=	tosh.h
-OBJ_NAME	:=	$(SRC_NAME:.c=.o)
+LIB			:=	-Llibft -lft
+LIBFT_A		:=	libft/libft.a
 
-SRC			:=	$(addprefix $(SRC_PATH)/,$(SRC_NAME))
-OBJ			:=	$(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+# Directories ##################################################################
+SRC_DIR	:=	srcs
+	#srcs subdirectories names
+	ENV_DIR		:=	environment
+	ERRORS_DIR	:=	errors
+	#list of all srcs subdirectories
+	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR)
 
-INCL		:=	-Iincludes/ -Ilibft
-LIB_PATH	:=	-Llibft
-LIB_NAME	:=	-lft
-LIB			:=	$(LIB_PATH) $(LIB_NAME)
+#VPATH specifies a list of directories that 'make' should search
+VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 
-.PHONY: all, clean, fclean, re, norm, fsa, val, rmh, adh, tags
+# Srcs file names ##############################################################
+SRC_FILES	:=	cmd_lst_utils.c handle_input.c main.c prompt.c free.c \
+				lexer.c my_strsplit.c test_pipe.c
+	#srcs subfolder file names
+	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
+	ERRORS_FILES	:=	errors.c
 
+#list of all .c files
+C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES)
+
+# Complete path of each .c files ###############################################
+SRC_PATH		:=	$(addprefix $(SRC_DIR)/,$(SRC_FILES))
+ENV_PATH		:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
+ERRORS_PATH		:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
+
+#list of all "path/*.c"
+SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) $(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) $(SRC_PATH)
+
+#Object ########################################################################
+OBJ_DIR	:=	objs
+OBJ_FILES	:=	$(C_FILES:.c=.o)
+OBJS	:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
+
+# Rules ########################################################################
 all: $(NAME)
 
-libft/libft.a:
+$(LIBFT_A):
 	$(MAKE) -C libft
 
-#fsa: $(OBJ) libft/libft.a
-#	$(CC) $(CFLAGS) $(FSA_FLAGS) $(LIB) $^ -o $(NAME)
-#	$(OPT) ./$(NAME)
-fsa: $(SRC)
-	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL) $(LIB) $^ -o $(NAME)
+fsa: $(SRCS) $(LIBFT_A)
+	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB) $(SRCS) -o $(NAME)
 	$(OPT) ./$(NAME)
 
-#val: $(OBJ) libft/libft.a
-#	$(CC) $(CFLAGS) $(VAL_FLAGS) $(LIB) $^ -o $(NAME)
-#	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all \
-#		--show-reachable=no $(OPT) ./$(NAME)
-val: $(SRC) libft/libft.a
-	$(CC) $(CFLAGS) $(VAL_FLAGS) $(INCL) $(LIB) $^ -o $(NAME)
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all \
-		--show-reachable=no $(OPT) ./$(NAME)
+val: $(SRCS) $(LIBFT_A)
+	$(CC) $(DEBUG_FLAG) $(INCL_CMD) $(LIB) $^ -o $(NAME)
+	valgrind $(VAL_FLAGS) $(OPT) ./$(NAME)
 
 rmh:
-	./script/42header_c_rm.sh $(SRC)
+	./script/42header_c_rm.sh $(SRCS)
 
 adh: rmh
-	vim -ns script/42header_add.keys $(SRC)
+	vim -ns script/42header_add.keys $(SRCS)
 
-$(NAME): $(OBJ) libft/libft.a
-	$(CC) $(CFLAGS) $(LIB) $^ -o $@
+$(NAME): $(OBJS) $(LIBFT_A)
+	$(CC) $(CFLAGS) $(INCL_CMD) $^ -o $@
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c Makefile
-	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	$(CC) $(CFLAGS) $(INCL) -o $@ -c $<
+$(OBJ_DIR)/%.o: %.c
+	@mkdir $(OBJ_DIR) 2> /dev/null || true
+	$(CC) $(CFlAGS) $(INCL_CMD) -o $@ -c $<
 
 tag:
 	ctags -R .
 
-clean:
+clean: 
 	$(MAKE) clean -C libft
-	rm -fv $(OBJ)
-	@rmdir $(OBJ_PATH) 2> /dev/null || true
+	$(RM) -rf $(OBJ_DIR)
 
 fclean: clean
 	$(MAKE) fclean -C libft
-	rm -rfv $(NAME).dSYM
-	rm -fv $(NAME)
+	$(RM) $(NAME)
+	$(RM) -r $(NAME).dSYM
 
 re: fclean all
 
@@ -92,5 +98,9 @@ d: all
 	$(OPT) ./$(NAME)
 
 norm: adh
-	norminette $(SRC)
-	norminette $(INC_PATH)/*.h #be careful wildcards
+	norminette $(SRCS)
+	norminette $(INCL_DIR)/*.h
+
+test:
+	@echo "-----------------------------------"
+	@echo $(SRCS)

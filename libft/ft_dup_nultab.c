@@ -6,7 +6,7 @@
 /*   By: penzo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 15:38:35 by penzo             #+#    #+#             */
-/*   Updated: 2019/03/18 23:40:06 by penzo            ###   ########.fr       */
+/*   Updated: 2019/03/22 15:31:07 by penzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	**ft_dup_nultab(char **tab)
 	{
 		if (!(new_tab[i] = ft_strdup(tab[i])))
 		{
-			new_tab[i] = NULL;
 			ft_free_nultab(new_tab);
 			return (NULL);
 		}

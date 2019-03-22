@@ -14,16 +14,10 @@ void	set_shlvl(char ***env)
 	if ((value = get_envline_value("SHLVL", *env)))
 	{
 		shlvl = ft_atoi(value);
-		if (shlvl < 0)
-			set_env_var("SHLVL", "0", env);
-		else if (shlvl == 0)
-			set_env_var("SHLVL", "1", env);
-		else
-		{
-			tmp = ft_itoa(shlvl + 1);
-			set_env_var("SHLVL", tmp, env);
-			ft_memdel((void*)&tmp);
-		}
+		shlvl = shlvl <= 0 ? 1 : shlvl + 1;
+		tmp = ft_itoa(shlvl);
+		set_env_var("SHLVL", tmp, env);
+		ft_memdel((void*)&tmp);
 	}
 	else
 		set_env_var("SHLVL", "1", env);

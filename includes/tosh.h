@@ -27,7 +27,9 @@ typedef enum		e_token
 	TK_L_ARROW,
 	TK_LD_ARROW,
 	TK_CMD,
-	TK_FILE
+	TK_FILE,
+	TK_DQUOTES,
+	TK_SQUOTES
 }					t_token;
 
 /*
