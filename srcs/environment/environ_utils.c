@@ -37,7 +37,6 @@ int		get_envline_index(char *search, char **env)
 	i = -1;
 	while (env[++i])
 	{
-		printf("##i: %d\n", i);
 		if (ft_strcmp_before_c(search, env[i], '='))
 			return (i);
 	}
