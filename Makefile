@@ -33,7 +33,7 @@ VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 # Srcs file names ##############################################################
 SRC_FILES	:=	cmd_lst_utils.c handle_input.c main.c prompt.c free.c \
 				lexer.c my_strsplit.c test_pipe.c
-	#srcs subfolder file names
+	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
 
@@ -50,17 +50,21 @@ SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) $(SRC_PATH)
 
 #Object ########################################################################
-OBJ_DIR	:=	objs
+OBJ_DIR		:=	objs
 OBJ_FILES	:=	$(C_FILES:.c=.o)
-OBJS	:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
+OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
 # Rules ########################################################################
-.PHONY: all fsa val rmh adh tag clean fclean re d norm test
+.PHONY: all fsa val rmh adh tag clean fclean re d norm test ask_lib
 
-all: $(NAME) $(LIBFT_A)
+all: ask_lib $(NAME) tag
+
+ask_lib:
 	@$(MAKE) -qC libft ; if [ $$? != "0" ] ; then\
 		$(MAKE) -C libft;\
 		$(MAKE) $(NAME);\
+		else\
+		echo "nothing to be done for $(LIBFT_A)";\
 		fi
 
 fsa: $(SRCS) $(LIBFT_A)
