@@ -16,7 +16,7 @@ INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
 INCL_FILES	:=	tosh.h #needed ?
 
-LIB			:=	-Llibft -lft
+LIB_INCL	:=	-Llibft -lft
 LIBFT_A		:=	libft/libft.a
 
 # Directories ##################################################################
@@ -57,17 +57,18 @@ OBJS	:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 # Rules ########################################################################
 .PHONY: all fsa val rmh adh tag clean fclean re d norm test
 
-all: $(NAME)
-
-$(LIBFT_A):
-	$(MAKE) -C libft
+all: $(NAME) $(LIBFT_A)
+	@$(MAKE) -qC libft ; if [ $$? != "0" ] ; then\
+		$(MAKE) -C libft;\
+		$(MAKE) $(NAME);\
+		fi
 
 fsa: $(SRCS) $(LIBFT_A)
-	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB) $(SRCS) -o $(NAME)
+	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB_INCL) $(SRCS) -o $(NAME)
 	$(OPT) ./$(NAME)
 
 val: $(SRCS) $(LIBFT_A)
-	$(CC) $(DEBUG_FLAG) $(INCL_CMD) $(LIB) $^ -o $(NAME)
+	$(CC) $(DEBUG_FLAG) $(INCL_CMD) $(LIB_INCL) $^ -o $(NAME)
 	valgrind $(VAL_FLAGS) $(OPT) ./$(NAME)
 
 rmh:
@@ -106,4 +107,4 @@ norm: adh
 
 test:
 	@echo "-----------------------------------"
-	vim $(SRCS)
+	$(MAKE) -qC libft/ ; echo answer=$$?
