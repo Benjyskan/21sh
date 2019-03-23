@@ -46,7 +46,8 @@ ENV_PATH		:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
 ERRORS_PATH		:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
 
 #list of all "path/*.c"
-SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) $(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) $(SRC_PATH)
+SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) $(SRC_PATH)
 
 #Object ########################################################################
 OBJ_DIR	:=	objs
@@ -54,6 +55,8 @@ OBJ_FILES	:=	$(C_FILES:.c=.o)
 OBJS	:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
 # Rules ########################################################################
+.PHONY: all fsa val rmh adh tag clean fclean re d norm test
+
 all: $(NAME)
 
 $(LIBFT_A):
