@@ -32,7 +32,7 @@ VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 
 # Srcs file names ##############################################################
 SRC_FILES	:=	cmd_lst_utils.c handle_input.c main.c prompt.c free.c \
-				lexer.c my_strsplit.c test_pipe.c
+				lexer.c test_pipe.c
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
