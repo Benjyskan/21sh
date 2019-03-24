@@ -6,7 +6,7 @@
 #    By: penzo <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/30 15:37:46 by penzo             #+#    #+#              #
-#    Updated: 2019/03/18 18:38:25 by penzo            ###   ########.fr        #
+#    Updated: 2019/03/23 18:32:10 by penzo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,11 +90,13 @@ DEPS=libft.h
 LIBS	:= -I . 
 
 $(NAME): $(OFILES)
-	ar rc $(NAME) $(OFILES)
+	@ar rc $(NAME) $(OFILES)
+	@echo \"ar rc\" ${NAME:.a=}
 	ranlib $(NAME)
 
 %.o: %.c $(DEPS)
-	$(CC) -o $@ -c $< $(CFLAGS) $(LIBS)
+	@$(CC) -o $@ -c $< $(CFLAGS) $(LIBS)
+	@echo Compiling $@
 
 all: $(NAME)
 

@@ -86,7 +86,8 @@ $(NAME): $(OBJS) $(LIBFT_A)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir $(OBJ_DIR) 2> /dev/null || true
-	$(CC) $(CFlAGS) $(INCL_CMD) -o $@ -c $<
+	@$(CC) $(CFlAGS) $(INCL_CMD) -o $@ -c $<
+	@echo Compiling $@
 
 tag:
 	ctags -R .
