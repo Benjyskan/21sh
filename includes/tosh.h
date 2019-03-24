@@ -32,6 +32,14 @@ typedef enum		e_token
 	TK_SQUOTES
 }					t_token;
 
+typedef enum		e_parser_state
+{
+	NORMAL,
+	IN_CMD,
+	IN_SQUOT,
+	IN_DQUOT
+}					t_parser_state;
+
 /*
 ** main.c
 */
@@ -75,23 +83,17 @@ void				set_env_var(char *var_name, char *var_value, char ***env);
 void				print_prompt(void);
 
 /*
-** my_strsplit.c
-*/
-
-char				**my_strsplit(char *str);
-
-/*
 ** handle_input.c
 */
 
-void				handle_input(char *input, char **env);
+int					handle_input(char *input, char **env);
 
 /*
 ** cmd_lst_utils.c
 */
 
-t_cmdlst			*create_cmdlst(char *cmdline);
-void				add_to_cmdlst(char *cmdline, t_cmdlst *cmdlst_head);
+//t_cmdlst			*create_cmdlst_head(char *cmdline);
+int					add_to_cmdlst(char *cmdline, t_cmdlst **cmdlst_head);
 void				print_cmdlst(t_cmdlst *head);//debug
 
 /*
