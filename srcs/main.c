@@ -59,10 +59,8 @@ int		main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	//check args ?
 	if (!(env_cpy = init_env(env)))
-		return (1);//error
-	//loop
+		return (1);
 	while (42)
 	{
 		if (!(input = ft_strnew(BUF_SIZE)))
@@ -73,15 +71,9 @@ int		main(int argc, char **argv, char **env)
 			ft_memdel((void*)&input);
 			continue ;
 		}
-		//handle input
-		handle_input(input, env_cpy);
-		printf("shlvl index: %d\n", get_envline_index("SHLVL", env_cpy));
-		ft_put_nultab(env_cpy);
+		if (!(handle_input(input, env_cpy)))
+			ft_memdel((void*)&input);
 	}
-
 	ft_free_nultab(env_cpy);
-	//
-	//set_env_var("NEWNEW", "HEHEY", &env_cpy);
-	//
 	return (0);
 }
