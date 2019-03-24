@@ -5,6 +5,8 @@ void	free_cmdlst(t_cmdlst *cmdlst_head)
 	t_cmdlst	*probe;
 	t_cmdlst	*prev;
 
+	if (!cmdlst_head)
+		return ;
 	probe = cmdlst_head;
 	prev = cmdlst_head;
 	while (probe->next)
