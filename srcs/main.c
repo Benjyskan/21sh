@@ -60,7 +60,7 @@ int		main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	if (!(env_cpy = init_env(env)))
-		return (1);
+		return (EXIT_FAILURE);
 	while (42)
 	{
 		if (!(input = ft_strnew(BUF_SIZE)))
@@ -75,5 +75,5 @@ int		main(int argc, char **argv, char **env)
 			ft_memdel((void*)&input);
 	}
 	ft_free_nultab(env_cpy);
-	return (0);
+	return (EXIT_SUCCESS);
 }
