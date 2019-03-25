@@ -7,7 +7,7 @@ static int	is_blank_or_column(char c)
 	return (0);
 }
 
-static int	check_cmdline_state(int state)
+static int	check_cmdline_state(t_parser_state state)
 {
 	if (state == IN_SQUOT)
 	{
@@ -31,8 +31,8 @@ static int	check_cmdline_state(int state)
 
 static int	add_cmdline_to_cmdlst(char *input, t_cmdlst **cmdlst_head)
 {
-	int		i;
-	int		state;
+	int				i;
+	t_parser_state	state;
 
 	i = 0;
 	state = IN_CMD;
@@ -73,9 +73,9 @@ static int	add_cmdline_to_cmdlst(char *input, t_cmdlst **cmdlst_head)
 static int	create_cmdlst_from_input(char *input, char **env,
 		t_cmdlst **cmdlst_head)
 {
-	int			i;
-	int			tmp_int;
-	int			state;
+	int				i;
+	int				tmp_int;
+	t_parser_state	state;
 
 	(void)env;
 	i = -1;
@@ -92,6 +92,9 @@ static int	create_cmdlst_from_input(char *input, char **env,
 			i += tmp_int;
 		}
 	}
+	ft_putendl("---------print cmdlst--------");
+	print_cmdlst(*cmdlst_head);
+	ft_putendl("-----------------------------");
 	return (1);
 }
 
@@ -114,9 +117,6 @@ int		handle_input(char *input, char **env)
 		return (0);
 	}
 	ft_memdel((void*)&input);
-	ft_putendl("---------print cmdlst--------");
-	print_cmdlst(cmdlst_head);
-	ft_putendl("-----------------------------");
 
 	//FOR EACH CMD
 	//expand var (plus tard)

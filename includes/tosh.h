@@ -26,10 +26,10 @@ typedef enum		e_token
 	TK_RD_ARROW,
 	TK_L_ARROW,
 	TK_LD_ARROW,
-	TK_CMD,
-	TK_FILE,
-	TK_DQUOTES,
-	TK_SQUOTES
+	TK_FD_REDI,
+	TK_STR,
+	TK_DQUOT_STR,
+	TK_SQUOT_STR
 }					t_token;
 
 typedef enum		e_parser_state
