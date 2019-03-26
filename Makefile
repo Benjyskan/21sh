@@ -3,7 +3,7 @@
 NAME	:=	21sh
 OPT		:=	
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra #-Werror
 
 DEBUG_FLAG	:=	-g
 FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
@@ -24,32 +24,37 @@ SRC_DIR	:=	srcs
 	#srcs subdirectories names
 	ENV_DIR		:=	environment
 	ERRORS_DIR	:=	errors
+	LEXER_DIR	:=	lexer
 	#list of all srcs subdirectories
-	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR)
+	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR)
 
 #VPATH specifies a list of directories that 'make' should search
 VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 
 # Srcs file names ##############################################################
 SRC_FILES	:=	cmd_lst_utils.c handle_input.c main.c prompt.c free.c \
-				lexer.c test_pipe.c
+				test_pipe.c 
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
+	LEXER_FILES		:=	lexer.c lexer_tools.c
 
 #list of all .c files
-C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES)
+C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)
 
 # Complete path of each .c files ###############################################
 SRC_PATH		:=	$(addprefix $(SRC_DIR)/,$(SRC_FILES))
 ENV_PATH		:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
 ERRORS_PATH		:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
+LEXER_PATH		:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
 
 #list of all "path/*.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
-			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) $(SRC_PATH)
+			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(LEXER_PATH)) \
+			$(SRC_PATH)
 
-#Object ########################################################################
+# Object #######################################################################
 OBJ_DIR		:=	objs
 OBJ_FILES	:=	$(C_FILES:.c=.o)
 OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
@@ -113,3 +118,6 @@ norm: adh
 test:
 	@echo "-----------------------------------"
 	$(MAKE) -qC libft/ ; echo answer=$$?
+	
+vim:
+	vim srcs/handle_input.c

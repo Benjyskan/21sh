@@ -13,23 +13,36 @@
 # define ERROR_MEM error_mem();
 # define ERROR_READ exit(1);//TODO
 
+typedef unsigned char	t_bool;
+
 typedef struct		s_cmdlst
 {
 	char			*cmdline;
 	struct s_cmdlst	*next;
 }					t_cmdlst;
 
-typedef enum		e_token
+typedef struct		s_tklst
 {
-	TK_PIPE = 1,
-	TK_R_ARROW,
-	TK_RD_ARROW,
-	TK_L_ARROW,
-	TK_LD_ARROW,
-	TK_FD_REDI,
-	TK_STR,
-	TK_DQUOT_STR,
-	TK_SQUOT_STR
+	t_token			token;
+	struct s_tklst	*next;
+}					t_tklst;
+
+typedef enum		e_token_type
+{
+	TK_IGNORE,
+	TK_LITERAL,
+	TK_SQ_STR,
+	TK_DQ_STR,
+	TK_REDIRECTION,
+	TK_PIPE
+}					t_token_type;
+
+typedef struct		s_token
+{
+	char			*content;
+	unsigned int	size;
+	t_token_type	type;
+	t_bool			is_delimited;
 }					t_token;
 
 typedef enum		e_parser_state
@@ -86,13 +99,12 @@ void				print_prompt(void);
 ** handle_input.c
 */
 
-int					handle_input(char *input, char **env);
+t_bool				handle_input(char *input, char **env);
 
 /*
 ** cmd_lst_utils.c
 */
 
-//t_cmdlst			*create_cmdlst_head(char *cmdline);
 int					add_to_cmdlst(char *cmdline, t_cmdlst **cmdlst_head);
 void				print_cmdlst(t_cmdlst *head);//debug
 
@@ -107,4 +119,12 @@ void				free_cmdlst(t_cmdlst *cmdlst_head);
 */
 
 int					my_pipe(char *input);
+
+/*
+** lexer_tools.c
+*/
+
+t_bool				is_quotes(char c);
+t_bool				is_white_spaces(char c);
+t_bool				is_shell_char(char c);
 #endif

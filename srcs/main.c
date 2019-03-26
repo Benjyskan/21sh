@@ -7,7 +7,7 @@ char	*ft_realloc(void *data, size_t current_data_size,
 
 	if (current_data_size + append_size < *current_malloc_size)
 		return (data);
-	res = ft_strnew(*current_malloc_size * 2);
+	res = ft_strnew(*current_malloc_size * 2);//TODO protect
 	*current_malloc_size *= 2;
 	res = (char*)ft_memcpy((void*)res, (void*)data, current_data_size);
 	ft_memdel((void*)&data);
@@ -28,7 +28,7 @@ void	read_stdin(char **cmd, char **env)//cpy de skod
 	buf = 0;
 	while ((ret = read(0, &buf, 1) > 0) && buf && buf != '\n')
 	{
-		*cmd = ft_realloc((void*)*cmd, ft_strlen(*cmd), &mall_size, ret);
+		*cmd = ft_realloc((void*)*cmd, ft_strlen(*cmd), &mall_size, ret);//TODO protect
 		ft_strncat((*cmd + i++), &buf, 1);
 	}
 	if (buf == '\n')
@@ -64,7 +64,7 @@ int		main(int argc, char **argv, char **env)
 	while (42)
 	{
 		if (!(input = ft_strnew(BUF_SIZE)))
-			ERROR_MEM;
+			return (EXIT_FAILURE);
 		read_stdin(&input, env_cpy);
 		if (!*input || is_str_empty(input))
 		{

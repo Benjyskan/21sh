@@ -1,13 +1,13 @@
 #include "tosh.h"
 
-static int	is_blank_or_column(char c)
+static t_bool	is_blank_or_column(char c)//TODO
 {
 	if (c == ' ' || c == '\t' || c == ';')
 		return (1);
 	return (0);
 }
 
-static int	check_cmdline_state(t_parser_state state)
+static t_bool	check_cmdline_state(t_parser_state state)
 {
 	if (state == IN_SQUOT)
 	{
@@ -70,7 +70,7 @@ static int	add_cmdline_to_cmdlst(char *input, t_cmdlst **cmdlst_head)
 ** return 0 if it failed
 */
 
-static int	create_cmdlst_from_input(char *input, char **env,
+static t_bool	create_cmdlst_from_input(char *input, char **env,
 		t_cmdlst **cmdlst_head)
 {
 	int				i;
@@ -92,9 +92,6 @@ static int	create_cmdlst_from_input(char *input, char **env,
 			i += tmp_int;
 		}
 	}
-	ft_putendl("---------print cmdlst--------");
-	print_cmdlst(*cmdlst_head);
-	ft_putendl("-----------------------------");
 	return (1);
 }
 
@@ -106,9 +103,10 @@ static int	create_cmdlst_from_input(char *input, char **env,
 ** free input
 */
 
-int		handle_input(char *input, char **env)
+t_bool		handle_input(char *input, char **env)
 {
 	t_cmdlst	*cmdlst_head;
+	t_cmdlst	*probe;
 
 	cmdlst_head = NULL;
 	//TODO add input to history, or do this in main (after readstdin)
@@ -117,12 +115,22 @@ int		handle_input(char *input, char **env)
 		return (0);
 	}
 	ft_memdel((void*)&input);
+	ft_putendl("---------print cmdlst--------");
+	print_cmdlst(cmdlst_head);
+	ft_putendl("-----------------------------");
 
 	//FOR EACH CMD
-	//expand var (plus tard)
-	//tokenize
-	//lexer
-	//exec tree
+	probe = cmdlst_head;
+	while (probe)
+	{
+	//	lexer/tokenize
+		if (!(lexer(probe->cmdlst, env)))
+			return (0);
+	//	expand var
+	//	parse token
+	//	exec tree
+		probe = probe->next;
+	}
 
 	//my_pipe(cmdlst_head->cmdline);//test
 
