@@ -64,7 +64,7 @@ int		main(int argc, char **argv, char **env)
 	while (42)
 	{
 		if (!(input = ft_strnew(BUF_SIZE)))
-			return (EXIT_FAILURE);
+			return (EXIT_FAILURE);//TODO free env
 		read_stdin(&input, env_cpy);
 		if (!*input || is_str_empty(input))
 		{

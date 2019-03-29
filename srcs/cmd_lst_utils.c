@@ -1,4 +1,5 @@
 #include "tosh.h"
+//TODO DELETE ME
 
 /*
 ** my_strtrim protect the strndup use in add_to_cmdlist

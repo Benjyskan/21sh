@@ -1,3 +1,4 @@
+#TODO dependency to ".h"
 ################################################################################
 # Basics #######################################################################
 NAME	:=	21sh
@@ -32,12 +33,12 @@ SRC_DIR	:=	srcs
 VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 
 # Srcs file names ##############################################################
-SRC_FILES	:=	cmd_lst_utils.c handle_input.c main.c prompt.c free.c \
+SRC_FILES	:=	handle_input.c main.c prompt.c free.c \
 				test_pipe.c 
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
-	LEXER_FILES		:=	lexer.c lexer_tools.c
+	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_cmp_table.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)
@@ -48,7 +49,7 @@ ENV_PATH		:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
 ERRORS_PATH		:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
 LEXER_PATH		:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
 
-#list of all "path/*.c"
+#list of all "path/x.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(LEXER_PATH)) \
@@ -111,13 +112,9 @@ re: fclean all
 d: all
 	$(OPT) ./$(NAME)
 
+vim:
+	vim srcs/handle_input.c
+
 norm: adh
 	norminette $(SRCS)
 	norminette includes/*.h
-
-test:
-	@echo "-----------------------------------"
-	$(MAKE) -qC libft/ ; echo answer=$$?
-	
-vim:
-	vim srcs/handle_input.c
