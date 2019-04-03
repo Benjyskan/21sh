@@ -55,11 +55,11 @@ OBJ_FILES	:=	$(C_FILES:.c=.o)
 OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
 # Rules ########################################################################
-.PHONY: all fsa val rmh adh tag clean fclean re d norm test ask_lib
+.PHONY: all fsa val rmh adh tag clean fclean re d norm test ask_libft
 
-all: ask_lib $(NAME) tag
+all: ask_libft $(NAME) tag
 
-ask_lib:
+ask_libft:
 	@$(MAKE) -qC libft ; if [ $$? != "0" ] ; then\
 		$(MAKE) -C libft;\
 		$(MAKE) $(NAME);\
