@@ -40,14 +40,8 @@ t_bool	is_metachar(char c)
 
 t_bool	is_delimiter(char c)
 {
-	if (is_white_spaces(c) || c == '|' || c == '<' || c == '>')
-		return (1);
-	return (0);
-}
-
-t_bool	is_redir(char c)
-{
-	if (c == '<' || c == '>' || c == '&'/*pas sure*/)
+	//if (is_white_spaces(c) || c == '|' || c == '<' || c == '>' || c== ';')
+	if (is_white_spaces(c));
 		return (1);
 	return (0);
 }

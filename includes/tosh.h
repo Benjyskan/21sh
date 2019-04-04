@@ -8,8 +8,10 @@
 # include <limits.h>
 # include <sys/syslimits.h>
 # include "libft.h"
+# include "lexer.h"
 # define BUF_SIZE 128
 # define SHELL_NAME "my_sh"
+# define FD_LIMITS 10
 # define ERROR_MEM error_mem();
 # define ERROR_READ exit(1);//TODO
 
@@ -20,44 +22,6 @@ typedef unsigned char	t_bool;
 //	char			*cmdline;
 //	struct s_cmdlst	*next;
 //}					t_cmdlst;
-
-typedef enum		e_token_type
-{
-	TK_IGNORE,
-	TK_LITERAL,//1
-	TK_SQ_STR,
-	TK_DQ_STR,
-	TK_REDIRECTION,
-	TK_PIPE,
-	TK_SEMI,
-	TK_42SH
-}					t_token_type;
-
-typedef struct		s_token
-{
-	char			*content;
-	size_t			size;
-	t_token_type	type;
-	t_bool			is_delimited;
-}					t_token;
-
-typedef struct		s_tklst
-{
-	t_token			*token;
-	struct s_tklst	*next;
-}					t_tklst;
-
-typedef struct		s_operation
-{
-	char			str[4];
-	unsigned char	size;
-	t_token_type	type;
-}					t_operation;
-
-typedef struct		s_op_chart
-{
-	t_operation		op_chart[20];
-}					t_op_chart;
 
 /*typedef enum		e_tk_type
 {
@@ -82,9 +46,6 @@ typedef enum		e_lexer_state
 	LEX_IN_DQUOT
 }					t_lexer_state;
 
-//DEBUG TEJME
-void	print_token(t_token *token);//debug
-void	print_token_list(t_tklst *tklst_head);
 /*
 ** main.c
 */
@@ -169,7 +130,6 @@ t_bool				is_white_spaces(char c);
 t_bool				is_shell_char(char c);
 t_bool				is_delimiter(char c);
 t_bool				is_metachar(char c);
-t_bool				is_redir(char c);
 
 /*
 ** lexer_cmp_table.c

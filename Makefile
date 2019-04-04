@@ -15,7 +15,7 @@ VAL_FLAGS	:=	--leak-check=full --track-origins=yes --show-leak-kinds=all \
 INCL_DIR	:=	includes libft #libft needed ?
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h #needed ?
+INCL_FILES	:=	tosh.h #needed ? lexer.h ast.h
 
 LIB_INCL	:=	-Llibft -lft
 LIBFT_A		:=	libft/libft.a
@@ -26,8 +26,9 @@ SRC_DIR	:=	srcs
 	ENV_DIR		:=	environment
 	ERRORS_DIR	:=	errors
 	LEXER_DIR	:=	lexer
+	PARSER_DIR	:=	token_parser
 	#list of all srcs subdirectories
-	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR)
+	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR)
 
 #VPATH specifies a list of directories that 'make' should search
 VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
@@ -38,21 +39,26 @@ SRC_FILES	:=	handle_input.c main.c prompt.c free.c \
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
-	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_cmp_table.c
+	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
+						tklst_utils.c
+	PARSER_FILES	:=	token_parser.c
 
 #list of all .c files
-C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)
+C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
+			$(PARSER_FILES)
 
 # Complete path of each .c files ###############################################
 SRC_PATH		:=	$(addprefix $(SRC_DIR)/,$(SRC_FILES))
 ENV_PATH		:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
 ERRORS_PATH		:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
 LEXER_PATH		:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
+PARSER_PATH		:=	$(addprefix $(PARSER_DIR)/,$(PARSER_FILES))
 
 #list of all "path/x.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(LEXER_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(PARSER_PATH)) \
 			$(SRC_PATH)
 
 # Object #######################################################################
