@@ -21,7 +21,10 @@ typedef enum		e_token_type
 	TK_REDIRECTION,
 	TK_PIPE,
 	//TK_SEMI,
-	TK_CTRl_OP,
+	//TK_AND
+	//TK_OR
+	//TK_AMP
+	TK_CTRL_OP,
 	TK_42SH
 }					t_token_type;
 
@@ -74,7 +77,7 @@ t_token	*get_token(char **cmdline, t_op_chart *op_chart);
 */
 
 t_token	*create_token(char *cmdline, size_t size, t_token_type type);
-t_tklst	*create_tklst_node(t_token *token);
+t_tklst	*create_tklst_node(t_token *token); //static ? 
 t_bool	add_token_to_tklst(t_token *token, t_tklst **tklst_head);
 
 /*

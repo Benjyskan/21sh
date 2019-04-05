@@ -1,79 +1,153 @@
-#include "tosh.h"
+#include "lexer.h"
+#include "ast.h"
 
-char	*ft_realloc(void *data, size_t current_data_size,
-		size_t *current_malloc_size, size_t append_size)
+struct command
 {
-	char	*res;
+	const char **argv;
+};
 
-	if (current_data_size + append_size < *current_malloc_size)
-		return (data);
-	res = ft_strnew(*current_malloc_size * 2);//TODO protect
-	*current_malloc_size *= 2;
-	res = (char*)ft_memcpy((void*)res, (void*)data, current_data_size);
-	ft_memdel((void*)&data);
+int spawn_proc (int in, int out, char **argv)
+{
+	pid_t pid;
+
+	if (!argv || !*argv)
+		return (-1);
+	if ((pid = fork()) == 0)
+	{
+		if (in != 0)
+		{
+			dup2(in, 0);
+			close(in);
+		}
+		if (out != 1)
+		{
+			dup2(out, 1);
+			close(out);
+		}
+		return (execvp(argv[0], argv));
+	}
+	return (pid);
+}
+
+char	**create_argv(t_tklst *tklst, int len)
+{
+	char	**res;
+	int		i;
+
+	if (!(res = malloc(sizeof(*res) * (len + 1))))
+		return (NULL);
+	i = 0;
+	res[len] = NULL;
+	while (i < len)
+	{
+		res[i] = ft_strdup(tklst->token->content);//strndup
+		tklst = tklst->next;
+		i++;
+	}
 	return (res);
 }
 
-void	read_stdin(char **cmd, char **env)//cpy de skod
+char	**get_argv(t_tklst *tklst)
 {
-	int		ret;
-	char	buf;
-	int		i;
-	size_t	mall_size;
+	int		len;
+	t_tklst	*probe;
 
-	(void)env;//tejme
-	print_prompt();
-	mall_size = BUF_SIZE;
-	i = 0;
-	buf = 0;
-	while ((ret = read(0, &buf, 1) > 0) && buf && buf != '\n')
+	if (!(probe = tklst))
+		return (NULL);
+	len = 0;
+	while(probe && probe->token->type == TK_LITERAL)
 	{
-		*cmd = ft_realloc((void*)*cmd, ft_strlen(*cmd), &mall_size, ret);//TODO protect
-		ft_strncat((*cmd + i++), &buf, 1);
+		len++;
+		probe = probe->next;
 	}
-	if (buf == '\n')
-		return ;
-	else if (ret == 0)
-		exit (1);//error_exit(*cmd, env);
-	else if (ret < 0 || (!buf && ret))
-		ERROR_READ;
+	if (len < 1)
+		return (NULL);
+	return (create_argv(tklst, len));
 }
 
-static int	is_str_empty(char *str)
+int	fork_pipes(int n, t_tklst *tklst)
 {
-	int		i;
+	int i;
+	int in;
+	char **argv;
+	int fd[2];
 
-	i = -1;
-	while (str[++i])
+	in = 0;
+	i = 0;
+	if (!(argv = get_argv(tklst)))//should be simple commands
+		return (0);
+	while (i < n - 1)
 	{
-		if (str[i] != ' ' && str[i] != '\t' && str[i] != ';')
+		pipe(fd);
+
+		spawn_proc(in, fd[1], argv);
+		close(fd[1]);
+		in = fd[0];
+		i++;
+		while (tklst && tklst->token->type == TK_LITERAL)
+			tklst = tklst->next;
+		while (tklst && tklst->token->type != TK_LITERAL)
+			tklst = tklst->next;
+		if (!(argv = get_argv(tklst)))//should be simple commands
 			return (0);
 	}
-	return (1);
+	if (in != 0)
+		dup2(in, 0);
+	return (execvp(argv[0], argv));
 }
 
-int		main(int argc, char **argv, char **env)
+static int	is_simple_cmd_token(t_tklst *probe)
 {
-	char	**env_cpy;
-	char	*input;
+	if (!probe)
+		return (0);
+	if (probe->token->type == TK_LITERAL
+			|| probe->token->type == TK_SQ_STR
+			|| probe->token->type == TK_DQ_STR
+			|| probe->token->type == TK_REDIRECTION)
+		return (1);
+	else
+		return (0);
+}
 
-	(void)argc;
-	(void)argv;
-	if (!(env_cpy = init_env(env)))
-		return (EXIT_FAILURE);
-	while (42)
+t_pipelst	*parse_pipeline(t_tklst *tklst)
+{
+	int	len;
+	t_tklst *probe;
+
+	if (!tklst)
+		return (NULL);
+	len = 1;
+	probe = tklst;
+	while (probe)
 	{
-		if (!(input = ft_strnew(BUF_SIZE)))
-			return (EXIT_FAILURE);//TODO free env
-		read_stdin(&input, env_cpy);
-		if (!*input || is_str_empty(input))
+		if (!is_simple_cmd_token(probe))
 		{
-			ft_memdel((void*)&input);
-			continue ;
+			printf("ERROR: bad '|' syntax\n");
+			return (NULL);
 		}
-		if (!(handle_input(input, env_cpy)))
-			ft_memdel((void*)&input);
+		while (is_simple_cmd_token(probe)) //continue on simple_cmd tokens
+			probe = probe->next;
+		if (probe && probe->next && (probe->token->type == TK_PIPE)) // is a pipe and not empty after
+		{
+			probe = probe->next;
+			len++;
+		}
 	}
-	ft_free_nultab(env_cpy);
-	return (EXIT_SUCCESS);
+	fork_pipes(len, tklst);
+}
+
+int	main(void)
+{
+	// ls | sort -r | uniq
+	t_tklst *tklst;;
+
+	tklst = NULL;
+	add_token_to_tklst(create_token("ls", 2, TK_LITERAL), &tklst);
+	add_token_to_tklst(create_token("-l", 2, TK_LITERAL), &tklst);
+	add_token_to_tklst(create_token("-a", 2, TK_LITERAL), &tklst);
+	add_token_to_tklst(create_token("|", 1, TK_PIPE), &tklst);
+	add_token_to_tklst(create_token("wc", 2, TK_LITERAL), &tklst);
+	printf("--- OUTPUT ---\n");
+	parse_pipeline(tklst);
+	return (0);
 }

@@ -34,7 +34,7 @@ SRC_DIR	:=	srcs
 VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 
 # Srcs file names ##############################################################
-SRC_FILES	:=	handle_input.c main.c prompt.c free.c \
+SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 				test_pipe.c 
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
@@ -70,13 +70,12 @@ OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 .PHONY: all fsa val rmh adh tag clean fclean re d norm test ask_lib
 
 all: ask_lib $(NAME) tag
+	@./$(NAME)
 
 ask_lib:
 	@$(MAKE) -qC libft ; if [ $$? != "0" ] ; then\
 		$(MAKE) -C libft;\
 		$(MAKE) $(NAME);\
-		else\
-		echo "nothing to be done for $(LIBFT_A)";\
 		fi
 
 fsa: $(SRCS) $(LIBFT_A)
@@ -102,7 +101,7 @@ $(OBJ_DIR)/%.o: %.c
 	@echo Compiling $@
 
 tag:
-	ctags -R .
+	@ctags -R .
 
 clean: 
 	$(MAKE) clean -C libft

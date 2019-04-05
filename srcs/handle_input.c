@@ -1,5 +1,6 @@
 #include "tosh.h"
 #include "lexer.h"
+#include "ast.h"
 
 /*
 ** handle_input
@@ -20,11 +21,11 @@ t_bool	handle_input(char *input, char **env)
 	//parser >> Tree
 	printf("### lexer SUCCESS\n");
 	print_token_list(tklst_head);
-	if (!(ast_head = token_parser(tklst_head)))
+/*	if (!(ast_head = token_parser(tklst_head)))
 	{
 		printf("### Parsing FAILED\n");
 		return (0);
 	}
-	printf("### Parsing SUCCESS\n");
+	printf("### Parsing SUCCESS\n");*/
 	return (1);
 }

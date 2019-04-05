@@ -44,7 +44,7 @@ t_ast			*token_parser(t_tklst *tklst_head)
 }
 */
 
-t_ast	*init_ast(t_cmdtype *cmdtype, t_ast *next)
+/*t_ast	*init_ast(t_cmdtype *cmdtype, t_ast *next)
 {
 	t_ast	*new_node;
 
@@ -72,7 +72,7 @@ void	create_redirection_table(t_tklst *tklst_head)
 		}
 		else if (is_redir_op(tklst_probe->token->type))
 	}
-}
+}*/
 
 /*
 ** token_parser
@@ -86,7 +86,7 @@ void	create_redirection_table(t_tklst *tklst_head)
 ** -create the redir_table of each cmd accordingly
 */
 
-t_ast	*token_parser(t_tklst *tklst_head)
+/*t_ast	*token_parser(t_tklst *tklst_head)
 {
 	t_ast	*ast_head;
 	t_ast	*ast_probe;
@@ -113,4 +113,4 @@ t_ast	*token_parser(t_tklst *tklst_head)
 
 	//!!!!!PIPE!!!!
 	return (ast_head);
-}
+}*/
