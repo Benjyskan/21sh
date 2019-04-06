@@ -95,23 +95,31 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 **	list that's given out to parse_argv
 */
 
-void	print_null_tab(char **argv)
+void	print_token_tab(t_token **argv)
 {
 	int i;
+	t_token *tmp;
 
 	if (!argv || !*argv)
 		return ;
 	i = 0;
 	while (argv[i])
 	{
-		dprintf(2, "ARGV[%d] %s\n", i, argv[i]);
+		tmp = argv[i];
+		dprintf(2, "ARGV[%d]:\t", i);
+		while (tmp && tmp->type != TK_EAT && tmp->type != TK_PIPE)
+		{
+			dprintf(2, "%s\t", tmp->content);
+			tmp = tmp->next;
+		}
+		dprintf(2, "\n");
 		i++;
 	}
 }
 
 int		parse_redir(t_token *begin, int in, int out) 
 {
-	char	**argv;
+	t_token	**argv;
 	t_token	*current;
 	t_token	*prev;
 
@@ -138,13 +146,13 @@ int		parse_redir(t_token *begin, int in, int out)
 		dprintf(2, "Redirecton parsing error\n");
 		return (0);
 	}
-	if (!(argv = get_argv_from_tokens(begin)))
+	if (!(argv = (t_token**)get_argv_from_tokens(begin)))
 	{
 		dprintf(2, "error argv is null\n");
 		return (0);
 	}
-	print_null_tab(argv);
-	return (execvp(argv[0], (char* const*)argv)); // should be parse_argv
+	print_token_tab(argv);
+	return (parse_expands(argv));// should be parse_argv
 }
 
 void	redirect(int old_fd, int new_fd)

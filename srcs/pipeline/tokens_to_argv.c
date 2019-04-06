@@ -6,22 +6,23 @@
 ** argv.
 */
 
-static char		**create_argv(t_token *token, int argv_len)
+static void		**create_argv(t_token *token, int argv_len)
 {
-	char	**res;
+	void	**res;
 	int		i;
 
-	if (!(res = malloc(sizeof(*res) * (argv_len + 1))))
+	if (!(res = (void**)malloc(sizeof(*res) * (argv_len + 1))))
 		return (NULL);
 	i = 0;
 	res[argv_len] = NULL;
 	printf("argv_len: %d\n", argv_len);
 	while (i < argv_len)
 	{
-		while (token->type == TK_EAT)
+		while (token && token->type == TK_EAT)
 			token = token->next;
-		if (!(res[i] = ft_strdup(token->content)))
-			ERROR_MEM;
+		res[i] = token;
+		while (is_argv_token(token))
+			token = token->next;
 		i++;
 	}
 	return (res);
@@ -42,7 +43,7 @@ t_bool	is_argv_token(t_token *probe)
 **	to create the corresponding 
 */
 
-char			**get_argv_from_tokens(t_token *token)
+void			**get_argv_from_tokens(t_token *token)
 {
 	int		argv_len;
 	t_token	*probe;

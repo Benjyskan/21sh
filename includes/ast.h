@@ -51,7 +51,7 @@ int				parse_pipeline(t_token *token);
 void			redirect(int old_fd, int new_fd);
 
 t_bool			is_simple_cmd_token(t_token *probe);
-char			**get_argv_from_tokens(t_token *token);
+void			**get_argv_from_tokens(t_token *token);
 
 t_bool			is_argv_token(t_token *probe);
 
@@ -60,4 +60,5 @@ t_bool			is_argv_token(t_token *probe);
 */
 
 int				parse_redir(t_token *current, int fd_in, int fd_out);
+int				parse_expands(t_token **argv);
 #endif

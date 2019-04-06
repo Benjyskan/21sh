@@ -47,7 +47,6 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		{
 			close(fd[0]);//check return value
 			printf("CURRENT IN: %s\n", current->content);
-			dprintf(1, "salut");
 			return (parse_redir(current, in, fd[1]));
 		}
 		close(fd[1]);
