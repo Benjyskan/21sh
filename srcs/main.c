@@ -1,28 +1,7 @@
 #include "lexer.h"
 #include "ast.h"
 
-int spawn_proc (int in, int out, char **argv)
-{
-	pid_t pid;
 
-	if (!argv || !*argv)
-		return (-1);
-	if ((pid = fork()) == 0)
-	{
-		if (in != 0)
-		{
-			dup2(in, 0);
-			close(in);
-		}
-		if (out != 1)
-		{
-			dup2(out, 1);
-			close(out);
-		}
-		return (execvp(argv[0], argv));
-	}
-	return (pid);
-}
 
 char	**create_argv(t_tklst *tklst, int len)
 {
@@ -60,6 +39,34 @@ char	**get_argv(t_tklst *tklst)
 	return (create_argv(tklst, len));
 }
 
+static void	redirect(int old_fd, int new_fd)
+{
+	if (old_fd != new_fd)
+	{
+		if (dup2(old_fd, new_fd) != -1)
+			close(old_fd);
+		else
+			printf("error with dup2\n");
+	}
+}
+
+static int	run(char * const* argv, int in, int out)
+{
+	redirect(in, STDIN_FILENO);
+	redirect(out, STDOUT_FILENO);
+	return (execvp(argv[0], (char* const*)argv));//should be parsing func here
+}
+
+int 		spawn_proc (int in, int out, char **argv)
+{
+	pid_t pid;
+
+	if (!argv || !*argv)
+		return (-1);
+
+	return (1);// ? parent process
+}
+
 int	fork_pipes(int n, t_tklst *tklst)
 {
 	int i;
@@ -75,22 +82,27 @@ int	fork_pipes(int n, t_tklst *tklst)
 		return (0);
 	while (i < n - 1)
 	{
-		pipe(fd);
-
-		spawn_proc(in, fd[1], argv);
+		if (pipe(fd)) //check_error
+			printf("pipe error\n");
+		if ((pid = fork()) == -1)
+			printf("fork error\n");//TODO
+		else if (pid == 0)
+		{
+			close(fd[0]);//check return value
+			run((char* const*)argv, in, fd[1]); // check return value ?
+		}
 		close(fd[1]);
+		close(in);
 		in = fd[0];
 		i++;
 		while (tklst && tklst->token->type == TK_LITERAL)
 			tklst = tklst->next;
-		while (tklst && tklst->token->type != TK_LITERAL)
+		while (tklst && tklst->token->type != TK_LITERAL) // opti ?
 			tklst = tklst->next;
 		if (!(argv = get_argv(tklst)))//should be simple commands
 			return (0);
 	}
-	if (in != 0)
-		dup2(in, 0);
-	return (printf("fail: %d\n", execvp(argv[0], argv))); // check -1 for problem; why no fork ?
+	return (run((char* const*)argv, in, STDOUT_FILENO));
 }
 
 static int	is_simple_cmd_token(t_tklst *probe)
@@ -139,9 +151,9 @@ int	main(void)
 	t_tklst *tklst;;
 
 	tklst = NULL;
-	add_token_to_tklst(create_token("./segv", 6, TK_LITERAL), &tklst);
-	add_token_to_tklst(create_token("|", 1, TK_PIPE), &tklst);
 	add_token_to_tklst(create_token("ls", 2, TK_LITERAL), &tklst);
+	add_token_to_tklst(create_token("|", 1, TK_PIPE), &tklst);
+	add_token_to_tklst(create_token("wc", 2, TK_LITERAL), &tklst);
 	printf("--- OUTPUT ---\n");
 	parse_pipeline(tklst);
 	return (0);

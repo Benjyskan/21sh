@@ -25,5 +25,12 @@
 	- dup(new_fd, fd_before)
 
 <<
+	- after: file
+	- if no after: parse error
+	- before : colle, fd(only positive ints ? -> atoi)
+	- if no before : fd_before = 0
+	- new_fd = open AFTER (if fail: No such file or directory) (O_RDONLY)
+	- dup(new_fd, fd_before)
+
 
 >&
