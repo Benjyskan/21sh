@@ -15,13 +15,15 @@ typedef unsigned char	t_bool;
 typedef enum		e_token_type
 {
 	TK_WSPACE,
-	TK_LITERAL,//1
+	TK_WORD,//1
 	TK_SQ_STR,
 	TK_DQ_STR,
 	TK_REDIRECTION,
 	TK_PIPE,
-	//TK_SEMI,
-	TK_CTRl_OP,
+	TK_AND,
+	TK_OR,
+	TK_AMP,
+	TK_SEMI,
 	TK_42SH
 }					t_token_type;
 

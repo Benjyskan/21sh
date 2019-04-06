@@ -14,8 +14,8 @@ static void	fill_op_chart(t_op_chart *op_chart)
 	create_op_chart_elem(&op_chart->op_chart[1], "$((", 3, TK_42SH);
 	create_op_chart_elem(&op_chart->op_chart[2], ">>", 2, TK_REDIRECTION);
 	create_op_chart_elem(&op_chart->op_chart[3], "<<", 2, TK_REDIRECTION);
-	create_op_chart_elem(&op_chart->op_chart[4], "&&", 2, TK_42SH);
-	create_op_chart_elem(&op_chart->op_chart[5], "||", 2, TK_42SH);
+	create_op_chart_elem(&op_chart->op_chart[4], "&&", 2, TK_AND);
+	create_op_chart_elem(&op_chart->op_chart[5], "||", 2, TK_OR);
 	create_op_chart_elem(&op_chart->op_chart[6], ">&", 2, TK_REDIRECTION);
 	create_op_chart_elem(&op_chart->op_chart[7], "<&", 2, TK_REDIRECTION);
 	create_op_chart_elem(&op_chart->op_chart[8], "&>", 2, TK_REDIRECTION);
@@ -29,8 +29,8 @@ static void	fill_op_chart(t_op_chart *op_chart)
 	create_op_chart_elem(&op_chart->op_chart[16], "|", 1, TK_PIPE);
 	create_op_chart_elem(&op_chart->op_chart[17], "<", 1, TK_REDIRECTION);
 	create_op_chart_elem(&op_chart->op_chart[18], ">", 1, TK_REDIRECTION);
-	create_op_chart_elem(&op_chart->op_chart[19], ";", 1, TK_CTRL_OP);
-	create_op_chart_elem(&op_chart->op_chart[20], "&", 1, TK_42SH);
+	create_op_chart_elem(&op_chart->op_chart[19], ";", 1, TK_SEMI);
+	create_op_chart_elem(&op_chart->op_chart[20], "&", 1, TK_AMP);
 	op_chart->op_chart[OP_CHART_SIZE - 1].size = 0;//end of table
 }
 
