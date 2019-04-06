@@ -1,11 +1,6 @@
 #include "lexer.h"
 #include "ast.h"
 
-struct command
-{
-	const char **argv;
-};
-
 int spawn_proc (int in, int out, char **argv)
 {
 	pid_t pid;
@@ -70,9 +65,11 @@ int	fork_pipes(int n, t_tklst *tklst)
 	int i;
 	int in;
 	char **argv;
+	pid_t	pid;
+	int		stat;
 	int fd[2];
 
-	in = 0;
+	in = STDIN_FILENO;
 	i = 0;
 	if (!(argv = get_argv(tklst)))//should be simple commands
 		return (0);
@@ -93,7 +90,7 @@ int	fork_pipes(int n, t_tklst *tklst)
 	}
 	if (in != 0)
 		dup2(in, 0);
-	return (execvp(argv[0], argv));
+	return (printf("fail: %d\n", execvp(argv[0], argv))); // check -1 for problem; why no fork ?
 }
 
 static int	is_simple_cmd_token(t_tklst *probe)
@@ -133,20 +130,18 @@ t_pipelst	*parse_pipeline(t_tklst *tklst)
 			len++;
 		}
 	}
-	fork_pipes(len, tklst);
+	printf("RES: %d\n", fork_pipes(len, tklst));
+	return (NULL);
 }
 
 int	main(void)
 {
-	// ls | sort -r | uniq
 	t_tklst *tklst;;
 
 	tklst = NULL;
-	add_token_to_tklst(create_token("ls", 2, TK_LITERAL), &tklst);
-	add_token_to_tklst(create_token("-l", 2, TK_LITERAL), &tklst);
-	add_token_to_tklst(create_token("-a", 2, TK_LITERAL), &tklst);
+	add_token_to_tklst(create_token("./segv", 6, TK_LITERAL), &tklst);
 	add_token_to_tklst(create_token("|", 1, TK_PIPE), &tklst);
-	add_token_to_tklst(create_token("wc", 2, TK_LITERAL), &tklst);
+	add_token_to_tklst(create_token("ls", 2, TK_LITERAL), &tklst);
 	printf("--- OUTPUT ---\n");
 	parse_pipeline(tklst);
 	return (0);
