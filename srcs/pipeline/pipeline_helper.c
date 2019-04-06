@@ -1,6 +1,10 @@
 #include "lexer.h"
 #include "ast.h"
 
+/*
+** Given the simple_command length, create and fills the corresponding
+*/
+
 static char	**create_argv(t_tklst *tklst, int len)
 {
 	char	**res;
@@ -19,6 +23,11 @@ static char	**create_argv(t_tklst *tklst, int len)
 	return (res);
 }
 
+/*
+**	Counts the length of the simple_command and asks create_simple_cmd
+**	to create the corresponding 
+*/
+
 char	**get_argv_from_tokens(t_tklst *tklst)
 {
 	int		len;
@@ -35,17 +44,4 @@ char	**get_argv_from_tokens(t_tklst *tklst)
 	if (len < 1)
 		return (NULL);
 	return (create_argv(tklst, len));
-}
-
-int	is_simple_cmd_token(t_tklst *probe)
-{
-	if (!probe)
-		return (0);
-	if (probe->token->type == TK_LITERAL
-			|| probe->token->type == TK_SQ_STR
-			|| probe->token->type == TK_DQ_STR
-			|| probe->token->type == TK_REDIRECTION)
-		return (1);
-	else
-		return (0);
 }

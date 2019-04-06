@@ -1,35 +1,43 @@
 #include "lexer.h"
 #include "ast.h"
 
-static int	run(char * const* argv, int in, int out)
+/*
+**	Returns the next simple_command (the one after the next pipe), if there
+**	is one.
+**	Should not return NULL because it is called n - 1 times
+*/
+
+static t_tklst *get_next_simple_command(t_tklst *begin)
 {
-	redirect(in, STDIN_FILENO);
-	redirect(out, STDOUT_FILENO);
-	return (execvp(argv[0], (char* const*)argv));//should be parsing func here
+	while (is_simple_cmd_token(begin))
+		begin = begin->next;
+	if (begin && begin->token->type == TK_PIPE)
+		return (begin->next);
+	else
+	{
+		printf("Error ???\n");
+		return (begin); //error ?
+	}
 }
 
-static t_tklst *get_next_simple_command(t_tklst *tklst)
-{
-	while (tklst && tklst->token->type == TK_LITERAL)
-		tklst = tklst->next;
-	while (tklst && tklst->token->type != TK_LITERAL) // opti ?
-		tklst = tklst->next;
-	return (tklst);
-}
+/*
+**	Manages all pipes and fds, while handing the simple command to parse_redir
+**	for redirection parsing and execution. Note that i < n - 1, because piping \
+**	the last command is never needed.
+*/
 
-static int	fork_pipes(int n, t_tklst *tklst)
+static int	fork_pipes(int num_simple_commands, t_tklst *begin)
 {
-	int i;
+	int i; // num_simple_commands - 1 can decrement
 	int in;
-	char **argv;
 	pid_t	pid;
+	t_tklst *current;
 	int fd[2];
 
 	in = STDIN_FILENO;
 	i = 0;
-	if (!(argv = get_argv_from_tokens(tklst)))//should be simple commands
-		return (0);
-	while (i < n - 1)
+	current = begin;
+	while (i < num_simple_commands - 1)
 	{
 		if (pipe(fd)) //check_error
 			printf("pipe error\n");
@@ -38,43 +46,46 @@ static int	fork_pipes(int n, t_tklst *tklst)
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
-			run((char* const*)argv, in, fd[1]); // check return value ?
+			return (parse_redir(current, in, fd[1]));
 		}
 		close(fd[1]);
 		close(in);
 		in = fd[0];
 		i++;
-		tklst = get_next_simple_command(tklst);
-		if (!(argv = get_argv_from_tokens(tklst)))//should be simple commands
-			return (0);
+		current = get_next_simple_command(current);
 	}
-	return (run((char* const*)argv, in, STDOUT_FILENO));
+	//free tklst ? even though tklst might be in use in children ?
+	return (parse_redir(current, in, STDOUT_FILENO));
 }
 
-t_pipelst	*parse_pipeline(t_tklst *tklst)
+/*
+** First counts the number of pipes and checks for correct pipe syntax
+** then hands the token list to fork_pipes to handle pipes.
+*/
+
+int			parse_pipeline(t_tklst *tklst) // no need for t_pipelst ?
 {
-	int	len;
+	int	num_simple_commands;
 	t_tklst *probe;
 
 	if (!tklst)
-		return (NULL);
-	len = 1;
+		return (0);
+	num_simple_commands = 1;
 	probe = tklst;
 	while (probe)
 	{
 		if (!is_simple_cmd_token(probe))
 		{
 			printf("ERROR: bad '|' syntax\n");
-			return (NULL);
+			return (0);
 		}
 		while (is_simple_cmd_token(probe)) //continue on simple_cmd tokens
 			probe = probe->next;
 		if (probe && probe->next && (probe->token->type == TK_PIPE)) // is a pipe and not empty after
 		{
 			probe = probe->next;
-			len++;
+			num_simple_commands++;
 		}
 	}
-	printf("RES: %d\n", fork_pipes(len, tklst));
-	return (NULL);
+	return (fork_pipes(num_simple_commands, tklst));
 }
