@@ -9,7 +9,7 @@
 
 static t_tklst *get_next_simple_command(t_tklst *begin)
 {
-	while (is_simple_cmd_token(begin))
+	while (is_simple_cmd_token(begin->token))
 		begin = begin->next;
 	if (begin && begin->token->type == TK_PIPE)
 		return (begin->next);
@@ -74,12 +74,12 @@ int			parse_pipeline(t_tklst *tklst) // no need for t_pipelst ?
 	probe = tklst;
 	while (probe)
 	{
-		if (!is_simple_cmd_token(probe))
+		if (!is_simple_cmd_token(probe->token))
 		{
 			printf("ERROR: bad '|' syntax\n");
 			return (0);
 		}
-		while (is_simple_cmd_token(probe)) //continue on simple_cmd tokens
+		while (probe && is_simple_cmd_token(probe->token)) //continue on simple_cmd tokens
 			probe = probe->next;
 		if (probe && probe->next && (probe->token->type == TK_PIPE)) // is a pipe and not empty after
 		{

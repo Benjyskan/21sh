@@ -14,7 +14,7 @@ typedef unsigned char	t_bool;
 
 typedef enum		e_token_type
 {
-	TK_WSPACE,
+	TK_EAT,
 	TK_LITERAL,//1
 	TK_SQ_STR,
 	TK_DQ_STR,
@@ -33,6 +33,7 @@ typedef struct		s_token
 	char			*content;
 	size_t			size;
 	t_token_type	type;
+	int				discarded;
 	t_bool			is_delimited;
 }					t_token;
 

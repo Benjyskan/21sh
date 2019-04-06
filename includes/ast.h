@@ -3,6 +3,7 @@
 
 #include "tosh.h"
 #include "lexer.h"
+#include <fcntl.h>
 
 typedef enum		e_cmdtype
 {
@@ -57,7 +58,14 @@ t_ast			*token_parser(t_tklst *tklst_head);
 int				parse_pipeline(t_tklst *tklst);
 void			redirect(int old_fd, int new_fd);
 
-int				is_simple_cmd_token(t_tklst *probe);
+t_bool			is_simple_cmd_token(t_token *probe);
 char			**get_argv_from_tokens(t_tklst *tklst);
 
+t_bool			is_argv_token(t_token *probe);
+
+/*
+** Redirections parsing
+*/
+
+int				parse_redir(t_tklst *current, int fd_in, int fd_out);
 #endif

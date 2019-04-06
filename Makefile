@@ -44,7 +44,7 @@ SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
 						tklst_utils.c
 	PARSER_FILES	:=	token_parser.c
-	PIPELINE_FILES	:=	parse_pipeline.c pipeline_helper.c parse_redirection.c
+	PIPELINE_FILES	:=	parse_pipeline.c tokens_to_argv.c parse_redirection.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\

@@ -22,6 +22,7 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 		new_token->is_delimited = 1;
 	else
 		new_token->is_delimited = 0;
+	new_token->discarded = 0;
 	print_token(new_token);
 	return (new_token);
 }
