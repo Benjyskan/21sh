@@ -50,4 +50,14 @@ typedef struct		s_pipelst
 
 t_ast			*token_parser(t_tklst *tklst_head);
 
+/*
+** Pipeline parsing
+*/
+
+t_pipelst		*parse_pipeline(t_tklst *tklst);
+void			redirect(int old_fd, int new_fd);
+
+int				is_simple_cmd_token(t_tklst *probe);
+char			**get_argv_from_tokens(t_tklst *tklst);
+
 #endif

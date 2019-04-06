@@ -23,12 +23,14 @@ LIBFT_A		:=	libft/libft.a
 # Directories ##################################################################
 SRC_DIR	:=	srcs
 	#srcs subdirectories names
-	ENV_DIR		:=	environment
-	ERRORS_DIR	:=	errors
-	LEXER_DIR	:=	lexer
-	PARSER_DIR	:=	token_parser
+	ENV_DIR			:=	environment
+	ERRORS_DIR		:=	errors
+	LEXER_DIR		:=	lexer
+	PARSER_DIR		:=	token_parser
+	PIPELINE_DIR	:=	pipeline
 	#list of all srcs subdirectories
-	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR)
+	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR) \
+					$(PIPELINE_DIR)
 
 #VPATH specifies a list of directories that 'make' should search
 VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
@@ -42,23 +44,26 @@ SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
 						tklst_utils.c
 	PARSER_FILES	:=	token_parser.c
+	PIPELINE_FILES	:=	parse_pipeline.c pipeline_helper.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
-			$(PARSER_FILES)
+			$(PARSER_FILES) $(PIPELINE_FILES)
 
 # Complete path of each .c files ###############################################
-SRC_PATH		:=	$(addprefix $(SRC_DIR)/,$(SRC_FILES))
-ENV_PATH		:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
-ERRORS_PATH		:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
-LEXER_PATH		:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
-PARSER_PATH		:=	$(addprefix $(PARSER_DIR)/,$(PARSER_FILES))
+SRC_PATH			:=	$(addprefix $(SRC_DIR)/,$(SRC_FILES))
+ENV_PATH			:=	$(addprefix $(ENV_DIR)/,$(ENV_FILES))
+ERRORS_PATH			:=	$(addprefix $(ERRORS_DIR)/,$(ERRORS_FILES))
+LEXER_PATH			:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
+PARSER_PATH			:=	$(addprefix $(PARSER_DIR)/,$(PARSER_FILES))
+PIPELINE_PATH		:=	$(addprefix $(PIPELINE_DIR)/,$(PIPELINE_FILES))
 
 #list of all "path/x.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(ERRORS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(LEXER_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(PARSER_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(PIPELINE_PATH)) \
 			$(SRC_PATH)
 
 # Object #######################################################################
