@@ -14,14 +14,14 @@ typedef unsigned char	t_bool;
 
 typedef enum		e_token_type
 {
-	TK_WSPACE,
+	TK_EAT,
 	TK_WORD,//1
 	TK_SQ_STR,
 	TK_DQ_STR,
 	TK_REDIRECTION,
 	TK_PIPE,
-	TK_AND,
-	TK_OR,
+	TK_AND,//=OR
+	TK_OR,//=AND
 	TK_AMP,
 	TK_SEMI,
 	TK_42SH
@@ -32,14 +32,18 @@ typedef struct		s_token
 	char			*content;
 	size_t			size;
 	t_token_type	type;
-	t_bool			is_delimited;
+	//t_bool			is_delimited;
+	struct s_token	*next;
+	//struct s_token	*prev;
 }					t_token;
 
+/*
 typedef struct		s_tklst
 {
 	t_token			*token;
 	struct s_tklst	*next;
 }					t_tklst;
+*/
 
 typedef struct		s_operation
 {
@@ -56,8 +60,8 @@ typedef struct		s_op_chart
 }					t_op_chart;
 
 //DEBUG TEJME
-void	print_token(t_token *token);//debug
-void	print_token_list(t_tklst *tklst_head);
+void	print_token(t_token *token);
+void	print_token_list(t_token *token_head);
 
 /*
 ** get_token.c
@@ -68,7 +72,8 @@ t_token	*get_squot_token(char **cmdline);
 t_token	*get_regular_token(char **cmdline);
 t_token	*get_redir_token(char **cmdline);
 t_token	*get_monochar(char **cmdline);
-t_token	*check_if_redir_or_literal(char **cmdline);
+//t_token	*check_if_redir_or_literal(char **cmdline);
+t_token	*get_eat_token(char **cmdline);
 t_token	*get_token(char **cmdline, t_op_chart *op_chart);
 
 /*
@@ -76,8 +81,8 @@ t_token	*get_token(char **cmdline, t_op_chart *op_chart);
 */
 
 t_token	*create_token(char *cmdline, size_t size, t_token_type type);
-t_tklst	*create_tklst_node(t_token *token);
-t_bool	add_token_to_tklst(t_token *token, t_tklst **tklst_head);
+//t_tklst	*create_tklst_node(t_token *token);
+void	add_token_to_list(t_token *token, t_token **token_head);
 
 /*
 ** lexer_op_chart.c

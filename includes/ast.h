@@ -7,7 +7,7 @@
 typedef struct		s_ast//useless
 {
 	//struct s_ast	*parent;
-	t_tklst			*tklst;
+	t_token			*token;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_ast;
@@ -22,24 +22,12 @@ typedef struct		s_simplecmd
 {
 	int				redir_table[4];
 	char			**cmd_table;
-}					t_simplecmd
-
-/*
-** t_pipelst
-** is a list of simplecmd
-** redirection will be set as we parse the pipelst ??
-*/
-
-typedef struct		s_pipelst
-{
-	t_simplecmd		*simplecmd;
-	t_pipelst		*next;
-}					t_pipelst
+}					t_simplecmd;
 
 /*
 ** token_parser.c
 */
 
-t_ast			*token_parser(t_tklst *tklst_head);
+t_ast			*token_parser(t_token *token_head);
 
 #endif

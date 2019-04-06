@@ -38,31 +38,32 @@ t_bool	is_metachar(char c)
 	return (0);
 }
 
+/*
 t_bool	is_delimiter(char c)
 {
 	//if (is_white_spaces(c) || c == '|' || c == '<' || c == '>' || c== ';')
-	if (is_white_spaces(c));
+	if (is_white_spaces(c))
 		return (1);
 	return (0);
 }
+*/
 
 void	print_token(t_token *token)//debug
 {
-	printf("TOKEN{\n\tcontent: {%s}\n\tsize: %lu\n\ttype: %d\n\tis_delimited: %d\n}\n", 
+	printf("TOKEN{\n\tcontent: {%s}\n\tsize: %lu\n\ttype: %d\n}\n", 
 			token->content,
 			token->size,
-			token->type,
-			token->is_delimited);
+			token->type);
 }
 
-void	print_token_list(t_tklst *tklst_head)//debug
+void	print_token_list(t_token *token_head)//debug
 {
-	t_tklst	*probe;
+	t_token	*probe;
 
-	probe = tklst_head;
+	probe = token_head;
 	while (probe)
 	{
-		print_token(probe->token);
+		print_token(probe);
 		probe = probe->next;
 	}
 }
