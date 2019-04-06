@@ -16,7 +16,8 @@ static char		**create_argv(t_tklst *tklst, int len)
 	res[len] = NULL;
 	while (i < len)
 	{
-		res[i] = ft_strdup(tklst->token->content);//strndup
+		if (!(res[i] = ft_strdup(tklst->token->content)))
+			ERROR_MEM;
 		tklst = tklst->next;
 		i++;
 	}
