@@ -17,20 +17,6 @@
 
 typedef unsigned char	t_bool;
 
-//typedef struct		s_cmdlst//useless
-//{
-//	char			*cmdline;
-//	struct s_cmdlst	*next;
-//}					t_cmdlst;
-
-/*typedef enum		e_tk_type
-{
-	LITERAl,
-	SQUOT_STR,
-	DQUOT_STR
-	//+
-}					t_tk_type;*/
-
 typedef enum		e_parser_state
 {
 	NORMAL,
@@ -119,7 +105,7 @@ int					my_pipe(char *input);
 
 //int					lexer(t_cmdlst *cmdlst, char **env);
 //t_tklst				lexer(t_cmdlst *cmdlst, char **env);
-t_tklst				*lexer(char *cmdline, char **env);
+t_token				*lexer(char *cmdline, char **env);
 
 /*
 ** lexer_tools.c

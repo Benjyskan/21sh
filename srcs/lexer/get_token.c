@@ -52,7 +52,7 @@ t_token	*get_regular_token(char **cmdline)
 	i = 0;
 	while ((*cmdline)[i] && !is_metachar((*cmdline)[i]))
 		i++;
-	if (!(token = create_token(*cmdline, i, TK_LITERAL)))
+	if (!(token = create_token(*cmdline, i, TK_WORD)))
 		return (NULL);
 	*cmdline = *cmdline + i;
 	return (token);
@@ -78,28 +78,26 @@ t_token	*get_monochar(char **cmdline)
 {
 	t_token	*token;
 
-	if (!(token = create_token(*cmdline, 1, TK_LITERAL)))
+	if (!(token = create_token(*cmdline, 1, TK_WORD)))
 		return (NULL);
-	*cmdline = *cmdline + 1;
-	//ou (*cmdline)++;
+	//*cmdline = *cmdline + 1;
+	(*cmdline)++;
 	return (token);
 }
 
-/*//useless
-t_token	*check_if_redir_or_literal(char **cmdline)
+t_token	*get_eat_token(char **cmdline)
 {
+	t_token	*token;
 	size_t	i;
 
 	i = 0;
-	while ((*cmdline)[i] && ft_isdigit((*cmdline)[i]))
+	while (is_white_spaces((*cmdline)[i]))
 		i++;
-	if (is_white_spaces((*cmdline)[i]) || ft_isalpha((*cmdline)[i])
-			|| (*cmdline)[i] == '\\')
-		return (get_regular_token(cmdline));
-	else
-		return (get_redir_token(cmdline));//ICI
+	if (!(token = create_token(*cmdline, i, TK_EAT)))
+		return (NULL);
+	*cmdline = *cmdline + i;
+	return (token);
 }
-*/
 
 t_token	*get_token(char **cmdline, t_op_chart *op_chart)
 {
@@ -116,6 +114,8 @@ t_token	*get_token(char **cmdline, t_op_chart *op_chart)
 		(*cmdline)++;
 		return (get_monochar(cmdline));
 	}
+	else if (is_white_spaces(**cmdline))
+		return (get_eat_token(cmdline));
 	//else if (cmp_with_op_chart(cmdline, op_chart))
 	else if ((token = cmp_with_op_chart(cmdline, op_chart)))
 		return (token);

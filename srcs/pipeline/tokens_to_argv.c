@@ -5,7 +5,7 @@
 ** Given the simple_command length, create and fills the corresponding
 */
 
-static char		**create_argv(t_tklst *tklst, int len)
+static char		**create_argv(t_token *token, int len)
 {
 	char	**res;
 	int		i;
@@ -16,9 +16,9 @@ static char		**create_argv(t_tklst *tklst, int len)
 	res[len] = NULL;
 	while (i < len)
 	{
-		if (!(res[i] = ft_strdup(tklst->token->content)))
+		if (!(res[i] = ft_strdup(token->content)))
 			ERROR_MEM;
-		tklst = tklst->next;
+		token = token->next;
 		i++;
 	}
 	return (res);
@@ -28,7 +28,7 @@ t_bool	is_argv_token(t_token *probe)
 {
 	if (!probe)
 		return (0);
-	if (probe->type == TK_LITERAL || probe->type == TK_SQ_STR
+	if (probe->type == TK_WORD || probe->type == TK_SQ_STR
 			|| probe->type == TK_DQ_STR)
 		return (1);
 	return (0);
@@ -39,20 +39,20 @@ t_bool	is_argv_token(t_token *probe)
 **	to create the corresponding 
 */
 
-char			**get_argv_from_tokens(t_tklst *tklst)
+char			**get_argv_from_tokens(t_token *token)
 {
 	int		len;
-	t_tklst	*probe;
+	t_token	*probe;
 
-	if (!(probe = tklst))
+	if (!(probe = token))
 		return (NULL);
 	len = 0;
-	while(probe && is_argv_token(probe->token) && probe->token->discarded == 0)
+	while(probe && is_argv_token(probe) && probe->discarded == 0)
 	{
 		len++;
 		probe = probe->next;
 	}
 	if (len < 1)
 		return (NULL);
-	return (create_argv(tklst, len));
+	return (create_argv(token, len));
 }

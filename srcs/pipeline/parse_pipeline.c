@@ -7,11 +7,11 @@
 **	Should not return NULL because it is called n - 1 times
 */
 
-static t_tklst *get_next_simple_command(t_tklst *begin)
+static t_token *get_next_simple_command(t_token *begin)
 {
-	while (is_simple_cmd_token(begin->token))
+	while (is_simple_cmd_token(begin))
 		begin = begin->next;
-	if (begin && begin->token->type == TK_PIPE)
+	if (begin && begin->type == TK_PIPE)
 		return (begin->next);
 	else
 	{
@@ -26,12 +26,12 @@ static t_tklst *get_next_simple_command(t_tklst *begin)
 **	the last command is never needed.
 */
 
-static int	fork_pipes(int num_simple_commands, t_tklst *begin)
+static int	fork_pipes(int num_simple_commands, t_token *begin)
 {
 	int i; // num_simple_commands - 1 can decrement
 	int in;
 	pid_t	pid;
-	t_tklst *current;
+	t_token *current;
 	int fd[2];
 
 	in = STDIN_FILENO;
@@ -54,7 +54,7 @@ static int	fork_pipes(int num_simple_commands, t_tklst *begin)
 		i++;
 		current = get_next_simple_command(current);
 	}
-	//free tklst ? even though tklst might be in use in children ?
+	//free token ? even though token might be in use in children ?
 	return (parse_redir(current, in, STDOUT_FILENO));
 }
 
@@ -63,29 +63,29 @@ static int	fork_pipes(int num_simple_commands, t_tklst *begin)
 ** then hands the token list to fork_pipes to handle pipes.
 */
 
-int			parse_pipeline(t_tklst *tklst) // no need for t_pipelst ?
+int			parse_pipeline(t_token *token) // no need for t_pipelst ?
 {
 	int	num_simple_commands;
-	t_tklst *probe;
+	t_token *probe;
 
-	if (!tklst)
+	if (!token)
 		return (0);
 	num_simple_commands = 1;
-	probe = tklst;
+	probe = token;
 	while (probe)
 	{
-		if (!is_simple_cmd_token(probe->token))
+		if (!is_simple_cmd_token(probe))
 		{
 			printf("ERROR: bad '|' syntax\n");
 			return (0);
 		}
-		while (probe && is_simple_cmd_token(probe->token)) //continue on simple_cmd tokens
+		while (probe && is_simple_cmd_token(probe)) //continue on simple_cmd tokens
 			probe = probe->next;
-		if (probe && probe->next && (probe->token->type == TK_PIPE)) // is a pipe and not empty after
+		if (probe && probe->next && (probe->type == TK_PIPE)) // is a pipe and not empty after
 		{
 			probe = probe->next;
 			num_simple_commands++;
 		}
 	}
-	return (fork_pipes(num_simple_commands, tklst));
+	return (fork_pipes(num_simple_commands, token));
 }

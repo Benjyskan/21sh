@@ -5,16 +5,9 @@
 #include "lexer.h"
 #include <fcntl.h>
 
-typedef enum		e_cmdtype
-{
-	SIMPLE_CMD = 1,
-	PIPELINES
-}					t_cmdtype;
-
-
 typedef struct		s_ast//useless
 {
-	struct s_ast	*parent;
+	//struct s_ast	*parent;
 	t_token			*token;
 	struct s_ast	*left;
 	struct s_ast	*right;
@@ -30,7 +23,6 @@ typedef struct		s_simplecmd
 {
 	int				redir_table[4];
 	char			**cmd_table;
-	//t_tklst			*tklst_head;
 }					t_simplecmd;
 
 /*
@@ -49,17 +41,17 @@ typedef struct		s_pipelst
 ** token_parser.c
 */
 
-t_ast			*token_parser(t_tklst *tklst_head);
+t_ast			*token_parser(t_token *token_head);
 
 /*
 ** Pipeline parsing
 */
 
-int				parse_pipeline(t_tklst *tklst);
+int				parse_pipeline(t_token *token);
 void			redirect(int old_fd, int new_fd);
 
 t_bool			is_simple_cmd_token(t_token *probe);
-char			**get_argv_from_tokens(t_tklst *tklst);
+char			**get_argv_from_tokens(t_token *token);
 
 t_bool			is_argv_token(t_token *probe);
 
@@ -67,5 +59,5 @@ t_bool			is_argv_token(t_token *probe);
 ** Redirections parsing
 */
 
-int				parse_redir(t_tklst *current, int fd_in, int fd_out);
+int				parse_redir(t_token *current, int fd_in, int fd_out);
 #endif
