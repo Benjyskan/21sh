@@ -60,9 +60,11 @@ void	print_token_list(t_token *token_head)//debug
 {
 	t_token	*probe;
 
+	ft_putendl("Printing token list");
 	probe = token_head;
 	while (probe)
 	{
+		printf("probe->next add: %p\n", probe);
 		print_token(probe);
 		probe = probe->next;
 	}

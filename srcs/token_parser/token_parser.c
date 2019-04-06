@@ -2,70 +2,87 @@
 #include "lexer.h"
 #include "ast.h"
 
-t_ast	*init_ast(void)
+t_ast	*init_ast(t_ast *new_node, t_token *token_head, t_ast *ast_root)
 {
-	t_ast	*ast_root;
-
-	if (!(ast_root = (t_ast*)malloc(sizeof(*ast_root))))
-	{
-		ft_putendl_fd("malloc failed in init_ast", 2);
-		return (NULL);
-	}
-	ast_root->token = NULL;
-	ast_root->left = NULL;
-	ast_root->right = NULL;
+	new_node->token = token_head;
+	new_node->left = NULL;
+	new_node->right = NULL;
+	ast_root = new_node;
 	return (ast_root);
 }
 
-t_ast	*create_ast_node(t_token *token_head, t_token *token_probe)
+t_ast	*insert_ast_node(t_token *token_head, t_ast **ast_root)
 {
-	t_ast	*new_cmd_node;
-	t_ast	*new_op_node;
+	t_token_type	new_node_weight;
+	t_ast			*new_node;
+	t_ast			*ast_probe;
 
-	if (token_probe)
+	printf("In insert_ast_node: %s\n", token_head->content);
+	if (!(new_node = (t_ast*)malloc(sizeof(*new_node))))
 	{
-		if (!(new_op_node = (t_ast*)malloc(sizeof(*new_op_node))))
-		{
-			ft_putendl_fd("malloc failed in create_ast_node", 2);
-			return (NULL);//TODO free nicely plz
-		}
-		new_op_node->token = token_probe;
-		new_op_node->token->next = NULL;
+		ft_putendl_fd("malloc failed in insert_ast_node", 2);
+		return (NULL);
 	}
-	if (!(new_cmd_node = (t_ast*)malloc(sizeof(*new_cmd_node))))
+	if (*ast_root == NULL)
+		return (init_ast(new_node, token_head, *ast_root));
+	new_node_weight = token_head->type;//get first token weight
+	new_node->token = token_head;
+	//find placement (need recusrion)
+	ast_probe = *ast_root;
+	if (new_node_weight >= (*ast_root)->token->type)
 	{
-		ft_putendl_fd("malloc failed in create_ast_node", 2);
-		return (NULL);//TODO free nicely plz
+		*ast_root = new_node;//reroot
+		(*ast_root)->left = ast_probe;
 	}
-	//
-	return (new_node);
+	else if (new_node_weight < (*ast_root)->token->type)
+	{
+		ast_probe->right = new_node;
+	}
+	return (*ast_root);//tmp
 }
 
-t_bool	add_cmd_to_ast(t_token **token_head, t_ast **ast_root)
+t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 {
 	t_token	*token_probe;
-	t_ast	*new_node;
+	t_token	*token_prev;
+	t_ast	*ast_probe;
 
 	token_probe = *token_head;
-	while (token_probe && !is_ctrl_op_token(token_probe->token->type))
+	ast_probe = *ast_root;
+	while (token_probe && !(is_ctrl_op_token(token_probe)))
+	{
+		token_prev = token_probe;
 		token_probe = token_probe->next;
-	//i'm at the end of token or on a ctrl_op token, so token_probe might be NULL
-	if (!(new_node = create_ast_node(token_head, token_probe)))
-		return (0);
-	insert_ast_node(new_node, ast_root
+	}
+	if (!token_probe)//end of tklst
+	{
+		*ast_root = insert_ast_node(*token_head, ast_root);
+		*token_head = NULL;//check me
+		return (1);
+	}
+	else
+	{
+		//here: verif if "&& &&"
+		token_prev->next = NULL;
+		*ast_root = insert_ast_node(*token_head, ast_root);
+		*token_head = token_probe->next;
+		token_probe->next = NULL;
+		*ast_root = insert_ast_node(token_probe, ast_root);
+		if (*token_head == NULL)
+			return (0);//error
+	}
 	return (1);
 }
 
-t_ast	*token_parser(t_token *token_head)
+t_ast	*create_ast(t_token *token_head)
 {
 	t_ast	*ast_root;
 
-	if (!(ast_root = init_ast))//bof: autant checker et l'init dans add_cmd_to_ast
-		return (NULL);
+	ast_root = NULL;
 	while (token_head)
 	{
-		if (!(add_cmd_to_ast(&token_head, &ast_root)))
-			return (NULL);//if fail: need to free the all ast
+		if (!(add_node_to_ast(&token_head, &ast_root)))
+			return (NULL);//free ast
 	}
 	return (ast_root);
 }

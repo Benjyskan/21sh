@@ -104,7 +104,7 @@ t_token	*get_token(char **cmdline, t_op_chart *op_chart)
 	t_token	*token;
 
 	//should i strncmp(*cmdline with a table of pattern ??
-	system("read -p \"Press enter to continue\"");
+	//system("read -p \"Press enter to continue\"");
 	if (**cmdline == '"')
 		return (get_dquot_token(cmdline));
 	else if (**cmdline == '\'')

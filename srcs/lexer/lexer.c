@@ -20,6 +20,6 @@ t_token	*lexer(char *cmdline, char **env)
 		add_token_to_list(current_token, &token_head);
 	}
 	//ft_memdel((void*)op_chart);
-	//should i add a NULL token ?
+	//should i add a NULL token ? nop
 	return (token_head);
 }

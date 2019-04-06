@@ -12,6 +12,7 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 	}
 	new_token->size = size;
 	new_token->type = type;
+	new_token->next = NULL;
 	if (!(new_token->content = ft_strndup(cmdline, size)))
 	{
 		ft_memdel((void*)&new_token);//TODO check me
