@@ -19,8 +19,6 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 		return (NULL);
 	}
 	new_token->next = NULL;
-	new_token->discarded = 0;
-	print_token(new_token);
 	return (new_token);
 }
 
@@ -31,7 +29,6 @@ void	add_token_to_list(t_token *token, t_token **token_head)
 	if (*token_head == NULL)
 	{
 		*token_head = token;
-		printf("in add_token_to_tklst: {%s}\n", (*token_head)->content);
 		return ;
 	}
 	probe = *token_head;

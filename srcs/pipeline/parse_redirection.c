@@ -36,7 +36,7 @@ static t_bool		check_fd_prev(t_token *prev)
 		{
 			if (!ft_isalnum(prev->content[i]))
 			{
-				prev->discarded = 1;
+				prev->type = TK_EAT;
 				return (1);
 			}
 			i++;
@@ -67,25 +67,25 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 				&& next->type != TK_WORD
 				&& next->type != TK_DQ_STR))
 		{
-			printf("Bad syntax error near REDIR token\n");
+			dprintf(2, "Bad syntax error near REDIR token\n");
 			return (0);
 		}
 		if ((old_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0640)) < 0) // should be func like "parse" quotes and expand name
 		{
 			// close previous
-			printf("errno: {%d}\n", errno);
+			dprintf(2, "errno: {%d}\n", errno);
 			perror(strerror(errno));
-			printf("error opening file\n");
+			dprintf(2, "error opening file\n");
 			return (0);
 		}
 		redirect(old_fd, new_fd);
-		redir->discarded = 1;
-		next->discarded = 0;
+		redir->type = TK_EAT;
+		next->type = TK_EAT;
 		if (write(1, "c'est pas moi\n", 10) < 0)
 			dprintf(2, "error in write\n");
 		return (1);
 	}
-	printf("Not '>' token\n");
+	dprintf(2, "Not '>' token\n");
 	return (0);
 }
 
@@ -94,6 +94,20 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 **	by calling apply_redirections then creates an argv
 **	list that's given out to parse_argv
 */
+
+void	print_null_tab(char **argv)
+{
+	int i;
+
+	if (!argv || !*argv)
+		return ;
+	i = 0;
+	while (argv[i])
+	{
+		dprintf(2, "ARGV[%d] %s\n", i, argv[i]);
+		i++;
+	}
+}
 
 int		parse_redir(t_token *begin, int in, int out) 
 {
@@ -110,11 +124,9 @@ int		parse_redir(t_token *begin, int in, int out)
 		if (apply_redirections(current, NULL) == 0)
 			return (0);
 	prev = current;
-	printf("CURR: %s\n", current->content);
 	current = current->next;
 	while (current)
 	{
-		printf("CURR: %s\n", current->content);
 		if ((current->type == TK_REDIRECTION) && ft_strncmp(">", current->content, 2) == 0)
 			if (apply_redirections(current, prev) == 0)
 				return (0);
@@ -123,20 +135,15 @@ int		parse_redir(t_token *begin, int in, int out)
 	}
 	if (current && current->type == TK_REDIRECTION)
 	{
-		printf("Redirecton parsing error\n");
+		dprintf(2, "Redirecton parsing error\n");
 		return (0);
 	}
 	if (!(argv = get_argv_from_tokens(begin)))
 	{
-		printf("error argv is null\n");
+		dprintf(2, "error argv is null\n");
 		return (0);
 	}
-	int i = 0;
-	while (argv[i])
-	{
-		dprintf(2, "argv[%d]: %s\n", i, argv[i]);
-		i++;
-	}
+	print_null_tab(argv);
 	return (execvp(argv[0], (char* const*)argv)); // should be parse_argv
 }
 
@@ -147,6 +154,6 @@ void	redirect(int old_fd, int new_fd)
 		if (dup2(old_fd, new_fd) != -1)
 			close(old_fd);
 		else
-			printf("error with dup2\n");
+			dprintf(2, "error with dup2\n");
 	}
 }

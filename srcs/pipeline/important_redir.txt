@@ -34,3 +34,14 @@
 
 
 >&
+	-
+	-
+
+
+tableau de (void*) pointeurs sur tokens.
+Expansion des $ des tokens (sauf s_quote); en boucle ?
+On enleve les quotes.
+On cat les tokens (char*)str;
+On redirige nos pointeurs vers ces memes str;
+
+on envoie (en castant) l'argv a exec.

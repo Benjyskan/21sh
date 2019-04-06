@@ -50,11 +50,10 @@ t_bool	is_delimiter(char c)
 
 void	print_token(t_token *token)//debug
 {
-	printf("TOKEN{\n\tcontent: {%s}\n\tsize: %lu\n\ttype: %d\n\tdiscarded: %d\n\tnext: %p\n", 
+	printf("TOKEN{\n\tcontent: {%s}\n\tsize: %lu\n\ttype: %d\n\tnext: %p\n", 
 			token->content,
 			token->size,
 			token->type,
-			token->discarded,
 			token->next);
 }
 

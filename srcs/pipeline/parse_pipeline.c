@@ -46,6 +46,8 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
+			printf("CURRENT IN: %s\n", current->content);
+			dprintf(1, "salut");
 			return (parse_redir(current, in, fd[1]));
 		}
 		close(fd[1]);
@@ -55,6 +57,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		current = get_next_simple_command(current);
 	}
 	//free token ? even though token might be in use in children ?
+	printf("CURRENT: %s\n", current->content);
 	return (parse_redir(current, in, STDOUT_FILENO));
 }
 

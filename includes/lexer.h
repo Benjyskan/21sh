@@ -32,7 +32,6 @@ typedef struct		s_token
 	char			*content;
 	size_t			size;
 	t_token_type	type;
-	int				discarded;
 	struct s_token	*next;
 }					t_token;
 
