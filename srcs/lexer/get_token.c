@@ -35,6 +35,8 @@ t_token	*get_squot_token(char **cmdline)
 	if ((*cmdline)[i] == 0)
 	{
 		ft_putendl_fd("Unmatched '.", 2);
+		//read
+		//append & incre i
 		return (NULL);
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_SQ_STR)))

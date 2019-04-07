@@ -36,4 +36,5 @@ t_ast			*create_ast(t_token *token_head);
 
 t_bool			is_ctrl_op_token(t_token *token);
 
+void			print_ast(t_ast *root);//debug
 #endif

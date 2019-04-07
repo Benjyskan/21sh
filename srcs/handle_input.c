@@ -31,5 +31,6 @@ t_bool	handle_input(char *input, char **env)
 	}
 	printf("### Parsing SUCCESS\n");
 	//print TREE ?
+	print_ast(ast_root);
 	return (1);
 }
