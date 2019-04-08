@@ -55,11 +55,10 @@ t_token		**get_argv_from_tokens(t_token *token)
 		while (probe && is_argv_token(probe))
 			probe = probe->next;
 		argv_len++;
-		while (probe && probe->type == TK_EAT)
+		while (probe && (probe->type == TK_EAT || probe->type == TK_PIPE))
 			probe = probe->next;
 	}
 	if (argv_len < 1)
 		return (NULL);
-	dprintf(2, "Length of token_array: %d, %s\n", argv_len, token->content);
 	return (create_argv(token, argv_len));
 }
