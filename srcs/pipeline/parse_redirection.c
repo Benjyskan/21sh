@@ -57,17 +57,15 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 	t_token *next;
 	int		new_fd;
 
-	if (redir && ft_strncmp(redir->content, ">", 2) == 0)
+	if (redir && ft_strncmp(redir->content, ">", 2) == 0) // only '>'
 	{
 		new_fd = check_fd_prev(prev);
 		next = redir->next;
  		while (next && (next->type == TK_EAT))
 			next = next->next;
-		if (!next || (next->type != TK_SQ_STR
-				&& next->type != TK_WORD
-				&& next->type != TK_DQ_STR))
+		if (!is_argv_token(next)) // should not have to check
 		{
-			dprintf(2, "Bad syntax error near REDIR token\n");
+			dprintf(2, "Bad syntax error near REDIR token\n"); 
 			return (0);
 		}
 		if ((old_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0640)) < 0) // should be func like "parse" quotes and expand name
@@ -123,6 +121,7 @@ int		parse_redir(t_token *begin, int in, int out)
 	t_token	*current;
 	t_token	*prev;
 
+	dprintf(2, "HERE: %s, IN: %d, OUT: %d\n", begin->content, in, out);
 	redirect(in, STDIN_FILENO); // might pass in and out to other function instead of redirecting right away ?
 	redirect(out, STDOUT_FILENO);
 	current = begin;
@@ -135,7 +134,7 @@ int		parse_redir(t_token *begin, int in, int out)
 	current = current->next;
 	while (current)
 	{
-		if ((current->type == TK_REDIRECTION) && ft_strncmp(">", current->content, 2) == 0)
+		if ((current->type == TK_REDIRECTION) && ft_strncmp(">", current->content, 2) == 0) //only '>'
 			if (apply_redirections(current, prev) == 0)
 				return (0);
 		prev = current;

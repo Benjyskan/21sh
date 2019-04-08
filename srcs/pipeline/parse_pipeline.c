@@ -36,27 +36,31 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 
 	in = STDIN_FILENO;
 	i = 0;
-	current = begin;
+	current = begin; // could use begin everywhere ?
+	dprintf(2, "NUM: %d\n", num_simple_commands);
 	while (i < num_simple_commands - 1)
 	{
-		if (pipe(fd)) //check_error
+		if (pipe(fd))
+		{
 			printf("pipe error\n");
+			return (0);
+		}
 		if ((pid = fork()) == -1)
 			printf("fork error\n");//TODO
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
-			printf("CURRENT IN: %s\n", current->content);
 			return (parse_redir(current, in, fd[1]));
 		}
-		close(fd[1]);
-		close(in);
-		in = fd[0];
-		i++;
-		current = get_next_simple_command(current);
+		else if (pid > 0)
+		{
+			close(fd[1]);
+			close(in);
+			in = fd[0];
+			i++;
+			current = get_next_simple_command(current);
+		}
 	}
-	//free token ? even though token might be in use in children ?
-	printf("CURRENT: %s\n", current->content);
 	return (parse_redir(current, in, STDOUT_FILENO));
 }
 
@@ -76,7 +80,7 @@ int			parse_pipeline(t_token *token) // no need for t_pipelst ?
 	probe = token;
 	while (probe)
 	{
-		if (!is_simple_cmd_token(probe))
+		if (!is_simple_cmd_token(probe)) // should not have to check
 		{
 			printf("ERROR: bad '|' syntax\n");
 			return (0);

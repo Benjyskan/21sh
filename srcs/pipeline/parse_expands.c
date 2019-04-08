@@ -15,7 +15,9 @@ static char	*concatenate_tokens(t_token *token)
 		len += ft_strlen(probe->content);
 		probe = probe->next;
 	}
-	if (!(res = ft_strnew(len)))
+	if (!len)
+		return  (NULL);
+	else if (!(res = ft_strnew(len)))
 		ERROR_MEM;
 	probe = token;
 	while (is_argv_token(probe))
@@ -23,7 +25,7 @@ static char	*concatenate_tokens(t_token *token)
 		res = ft_strcat(res, probe->content);
 		probe = probe->next;
 	}
-	printf("TOKEN: [%s], RES: {%s}\n", token->content, res);
+	dprintf(2, "TOKEN: [%s], RES: {%s}\n", token->content, res);
 	return (res);
 }
 
@@ -39,12 +41,15 @@ int		execute_command(t_token **token_argv)
 
 	i = 0;
 	argv = (char**)token_argv;
-	printf("-- EXEC -- \n");
+	dprintf(2, "-- EXEC -- \n");
 	while (token_argv[i])
 	{
 		argv[i] = concatenate_tokens(token_argv[i]);
 		i++;
 	}
+	if((dprintf(2, "executing: %s\n", argv[0])) < 1)
+		dprintf(2,  "FAILED TO DPRINTF ON 4\n");
+	i = 0;
 	execvp(argv[0], (char * const*)argv);
 	return (1);
 }
@@ -92,7 +97,7 @@ static char	*expand_string(char *str)
 
 	if (ft_strchr(str, '$'))
 	{
-		printf("found a $\n");
+		dprintf(2, "found a $\n");
 		if (!(res = ft_strdup("YOOOO"))) // need to change type size ! check null
 			ERROR_MEM;
 		free(str);
