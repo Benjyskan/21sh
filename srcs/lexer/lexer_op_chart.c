@@ -13,7 +13,7 @@ static void	fill_op_chart(t_op_chart *op_chart)
 	create_op_chart_elem(&op_chart->op_chart[0], ">>-", 3, TK_REDIRECTION);
 	create_op_chart_elem(&op_chart->op_chart[1], "$((", 3, TK_42SH);
 	create_op_chart_elem(&op_chart->op_chart[2], ">>", 2, TK_REDIRECTION);
-	create_op_chart_elem(&op_chart->op_chart[3], "<<", 2, TK_REDIRECTION);
+	create_op_chart_elem(&op_chart->op_chart[3], "<<", 2, TK_HEREDOC);
 	create_op_chart_elem(&op_chart->op_chart[4], "&&", 2, TK_AND);
 	create_op_chart_elem(&op_chart->op_chart[5], "||", 2, TK_OR);
 	create_op_chart_elem(&op_chart->op_chart[6], ">&", 2, TK_REDIRECTION);
@@ -39,7 +39,7 @@ t_op_chart	*get_op_chart(void)//i shouldn't malloc ??
 	t_op_chart	*op_chart;
 
 	if (!(op_chart = (t_op_chart*)malloc(sizeof(*op_chart))))
-		return (NULL);
+		ERROR_MEM;
 	fill_op_chart(op_chart);
 	return (op_chart);
 }

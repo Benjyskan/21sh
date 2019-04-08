@@ -39,8 +39,7 @@ SRC_FILES	:=	handle_input.c main.c prompt.c free.c \
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
-	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
-						tklst_utils.c
+	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c
 	PARSER_FILES	:=	token_parser.c token_parser_utils.c
 
 #list of all .c files

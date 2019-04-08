@@ -47,6 +47,8 @@ char				**init_env(char **env);
 */
 
 void				error_mem(void);
+void				syntax_error_near(t_token *token);
+//void				error_mem(char *func_name);
 
 /*
 ** shlvl.c
@@ -81,30 +83,11 @@ void				print_prompt(void);
 t_bool				handle_input(char *input, char **env);
 
 /*
-** cmd_lst_utils.c
-*/
-
-//int					add_to_cmdlst(char *cmdline, t_cmdlst **cmdlst_head);
-//void				print_cmdlst(t_cmdlst *head);//debug
-
-/*
-** free.c
-*/
-
-//void				free_cmdlst(t_cmdlst *cmdlst_head);
-
-/*
-** test_pipe.c
-*/
-
-int					my_pipe(char *input);
-
-/*
 ** lexer.c
 */
 
-//int					lexer(t_cmdlst *cmdlst, char **env);
-//t_tklst				lexer(t_cmdlst *cmdlst, char **env);
+t_token				*create_token(char *cmdline, size_t size, t_token_type type);
+void				add_token_to_list(t_token *token, t_token **token_head);
 t_token				*lexer(char *cmdline, char **env);
 
 /*
@@ -116,6 +99,7 @@ t_bool				is_white_spaces(char c);
 t_bool				is_shell_char(char c);
 t_bool				is_delimiter(char c);
 t_bool				is_metachar(char c);
+t_bool				is_and_or_token(t_token *token);
 
 /*
 ** lexer_cmp_table.c

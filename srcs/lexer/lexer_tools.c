@@ -38,15 +38,12 @@ t_bool	is_metachar(char c)
 	return (0);
 }
 
-/*
-t_bool	is_delimiter(char c)
+t_bool	is_and_or_token(t_token *token)
 {
-	//if (is_white_spaces(c) || c == '|' || c == '<' || c == '>' || c== ';')
-	if (is_white_spaces(c))
+	if (token->type == TK_OR || token->type == TK_AND)
 		return (1);
 	return (0);
 }
-*/
 
 void	print_token(t_token *token)//debug
 {
