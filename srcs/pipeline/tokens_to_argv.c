@@ -6,12 +6,12 @@
 ** argv.
 */
 
-static void		**create_argv(t_token *token, int argv_len)
+static t_token		**create_argv(t_token *token, int argv_len)
 {
-	void	**res;
+	t_token	**res;
 	int		i;
 
-	if (!(res = (void**)malloc(sizeof(*res) * (argv_len + 1))))
+	if (!(res = (t_token**)malloc(sizeof(*res) * (argv_len + 1))))
 		return (NULL);
 	i = 0;
 	res[argv_len] = NULL;
@@ -42,7 +42,7 @@ t_bool	is_argv_token(t_token *probe)
 **	to create the corresponding 
 */
 
-void			**get_argv_from_tokens(t_token *token)
+t_token		**get_argv_from_tokens(t_token *token)
 {
 	int		argv_len;
 	t_token	*probe;
@@ -60,6 +60,6 @@ void			**get_argv_from_tokens(t_token *token)
 	}
 	if (argv_len < 1)
 		return (NULL);
-	dprintf(2, "LEN: %d, %s\n", argv_len, token->content);
+	dprintf(2, "Length of token_array: %d, %s\n", argv_len, token->content);
 	return (create_argv(token, argv_len));
 }
