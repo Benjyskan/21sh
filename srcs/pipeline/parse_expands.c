@@ -8,50 +8,55 @@
 
 int		parse_quotes(t_token **argv)
 {
-	int i;
+	int		i;
+	t_token	*probe;
 
 	(void)argv;
 	i = 0;
 	while (argv[i])
 	{
-		dprintf(2, "QUOTES: argv[%d]:\t", i);
-		while (argv[i] && argv[i]->type != TK_EAT && argv[i]->type != TK_PIPE)
-		{
-			dprintf(2, "%s\t", argv[i]->content);
-			argv[i] = argv[i]->next;
-		}
-		dprintf(2, "\n");
+		probe = argv[i];
+		while (probe && probe->type != TK_EAT && probe->type != TK_PIPE)
+			probe = probe->next;
 		i++;
 	}
+	print_token_tab(argv);
 	return (1);
 }
-
-/*
-** parses_expands and hands the argv to parse_quotes
-*/
 
 static char	*expand_string(char *str)
 {
 	char *res;
 
 	if (ft_strchr(str, '$'))
-		printf("found!");
-	res = ft_strdup("YOOOO"); // need to change type size !
-	free(str);
+	{
+		printf("found a $\n");
+		res = ft_strdup("YOOOO"); // need to change type size !
+		free(str);
+	}
+	else
+		res = str;
 	return (res);
 }
+
+/*
+** parses_expands and hands the argv to parse_quotes
+*/
 
 int		parse_expands(t_token **argv)
 {
 	int		i;
+	t_token *probe;
 
 	i = 0;
 	while (argv[i])
 	{
-		if (argv[i]->type == TK_DQ_STR || argv[i]->type == TK_WORD) //missing a while (argv[i]->next)
+		probe = argv[i];
+		while (probe && (probe->type == TK_DQ_STR || probe->type == TK_WORD))
 		{
-			argv[i]->content = expand_string(argv[i]->content);
-			argv[i]->size = ft_strlen(argv[i]->content);
+			probe->content = expand_string(probe->content);
+			probe->size = ft_strlen(probe->content);
+			probe = probe->next;
 		}
 		i++;
 	}
