@@ -32,8 +32,7 @@ t_bool	is_argv_token(t_token *probe)
 {
 	if (!probe)
 		return (0);
-	if (probe->type == TK_WORD || probe->type == TK_SQ_STR
-			|| probe->type == TK_DQ_STR)
+	if (probe->type == TK_WORD || is_quote_token(probe))
 		return (1);
 	return (0);
 }

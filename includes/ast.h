@@ -61,4 +61,5 @@ t_bool			is_argv_token(t_token *probe);
 
 int				parse_redir(t_token *current, int fd_in, int fd_out);
 int				parse_expands(t_token **argv);
+t_bool			is_quote_token(t_token *probe);
 #endif
