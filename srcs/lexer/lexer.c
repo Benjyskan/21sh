@@ -44,10 +44,10 @@ t_token	*lexer(char *cmdline, char **env)
 {
 	t_token		*token_head;
 	t_token		*current_token;
-	t_op_chart	*op_chart;
+	t_operation	*op_chart;
 	t_token		*prev_token;
 
-	op_chart = get_op_chart();//protect me && free me
+	op_chart = get_op_chart();
 	//print_op_table(op_chart);//debug
 	token_head = NULL;
 	prev_token = NULL;

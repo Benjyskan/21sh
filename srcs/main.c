@@ -64,7 +64,10 @@ int		main(int argc, char **argv, char **env)
 	while (42)
 	{
 		if (!(input = ft_strnew(BUF_SIZE)))
+		{
+			ft_free_nultab(env_cpy);
 			return (EXIT_FAILURE);//TODO free env
+		}
 		read_stdin(&input, env_cpy);
 		if (!*input || is_str_empty(input))
 		{
@@ -72,7 +75,7 @@ int		main(int argc, char **argv, char **env)
 			continue ;
 		}
 		if (!(handle_input(input, env_cpy)))
-			ft_memdel((void*)&input);
+			ft_memdel((void*)&input);//bof, TODO store input after lexer
 	}
 	ft_free_nultab(env_cpy);
 	return (EXIT_SUCCESS);

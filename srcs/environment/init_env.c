@@ -44,7 +44,8 @@ char		**init_env(char **env)
 
 	if (env && *env)
 	{
-		new_env = ft_dup_nultab(env);
+		if (!(new_env = ft_dup_nultab(env)))
+			return (NULL);
 		set_shlvl(&new_env);
 		return (new_env);
 	}

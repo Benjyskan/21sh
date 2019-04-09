@@ -101,10 +101,4 @@ t_bool				is_delimiter(char c);
 t_bool				is_metachar(char c);
 t_bool				is_and_or_token(t_token *token);
 
-/*
-** lexer_cmp_table.c
-*/
-
-t_op_chart			*get_op_chart(void);
-void				print_op_table(t_op_chart *op_chart);//debug
 #endif

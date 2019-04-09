@@ -85,7 +85,7 @@ t_token	*get_eat_token(char **cmdline)
 	return (token);
 }
 
-t_token	*get_token(char **cmdline, t_op_chart *op_chart)
+t_token	*get_token(char **cmdline, t_operation *op_chart)
 {
 	t_token	*token;
 
@@ -99,7 +99,7 @@ t_token	*get_token(char **cmdline, t_op_chart *op_chart)
 		return (get_monochar(cmdline));
 	else if (is_white_spaces(**cmdline))
 		return (get_eat_token(cmdline));
-	else if ((token = cmp_with_op_chart(cmdline, op_chart)))
+	else if ((token = get_op_chart_token(cmdline, op_chart)))
 		return (token);
 	else//bof, need other conditions
 		return (get_regular_token(cmdline));
