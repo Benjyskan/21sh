@@ -17,21 +17,6 @@
 
 typedef unsigned char	t_bool;
 
-typedef enum		e_parser_state
-{
-	NORMAL,
-	IN_CMD,
-	IN_SQUOT,
-	IN_DQUOT
-}					t_parser_state;
-
-typedef enum		e_lexer_state
-{
-	LEX_NORMAL,
-	LEX_IN_SQUOT,
-	LEX_IN_DQUOT
-}					t_lexer_state;
-
 /*
 ** main.c
 */
