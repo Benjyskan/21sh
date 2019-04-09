@@ -70,13 +70,13 @@ t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 			token_prev = token_probe;
 		token_probe = token_probe->next;
 	}
-	if (!token_probe)//end of tklst
+	if (!token_probe)//															end of token list
 	{
 		insert_ast_node(*token_head, ast_root);
 		*token_head = NULL;//check me
 		return (1);
 	}
-	else//i'm on CTRL_OP
+	else//																		i'm in a CTRL_OP
 	{
 		if (*token_head == token_probe || !null_terminat_properly(token_prev))//verif if "&& &&"//useless if i check in lexer
 		{
@@ -88,8 +88,6 @@ t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 		*token_head = token_probe->next;
 		token_probe->next = NULL;
 		insert_ast_node(token_probe, ast_root);
-		//if (*token_head == NULL)//why ?
-		//	return (0);//error
 	}
 	return (1);
 }

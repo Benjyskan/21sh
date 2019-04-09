@@ -16,17 +16,17 @@ t_bool	handle_input(char *input, char **env)
 
 	if (!(token_head = lexer(input, env)))
 	{
-		printf("### lexer FAILED\n");
+		printf("\x1B[31m""### Lexer FAILED""\x1B[0m""\n");
 		return (0);//check me
 	}
-	printf("### lexer SUCCESS\n");
+	printf("\x1B[32m""### Lexer SUCCESS""\x1B[0m""\n");
 	//print_token_list(token_head);
 	if (!(ast_root = create_ast(token_head)))
 	{
-		printf("### Parsing FAILED\n");
+		printf("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
 		return (0);
 	}
-	printf("### Parsing SUCCESS\n");
+	printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	print_ast(ast_root);
 	//exec_ast
 	return (1);
