@@ -24,20 +24,34 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 	return (new_token);
 }
 
-void	add_token_to_list(t_token *token, t_token **token_head)
+t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
+		, t_token **token_head)
 {
 	t_token	*probe;
 
+	if ((!prev_token && current_token->type > TK_DQ_STR) || (prev_token
+			&& (current_token->type > TK_DQ_STR
+				&& prev_token->type > TK_DQ_STR)))
+	{
+		syntax_error_near(current_token);
+		return (0);
+	}
+	if (prev_token && prev_token->type == TK_HEREDOC
+			&& current_token->type != TK_EAT)
+	{
+		printf("HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
+		//bash:syntax error near unexpected token `newline'; should i tokenise '\n' ??
+	}
 	if (!(*token_head))
 	{
-		*token_head = token;
-		return ;
+		*token_head = current_token;
+		return (1);
 	}
 	probe = *token_head;
 	while (probe->next)
 		probe = probe->next;
-	probe->next = token;
-	return ;
+	probe->next = current_token;
+	return (1);
 }
 
 t_token	*lexer(char *cmdline, char **env)
@@ -48,27 +62,17 @@ t_token	*lexer(char *cmdline, char **env)
 	t_token		*prev_token;
 
 	op_chart = get_op_chart();
-	//print_op_table(op_chart);//debug
 	token_head = NULL;
 	prev_token = NULL;
 	while (cmdline && *cmdline)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
-			return (NULL);
-		//printf("CMDLINE: {%s}\n", cmdline);
-		if (prev_token && (current_token->type > TK_DQ_STR
-					&& prev_token->type > TK_DQ_STR))
 		{
-			ft_putstr("NEW ");
-			syntax_error_near(current_token);
+			ERROR_MEM;
 			return (NULL);
 		}
-		if (prev_token && prev_token->type == TK_HEREDOC
-				&& current_token->type != TK_EAT)//check HEREDOC
-		{
-			printf("HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
-		}
-		add_token_to_list(current_token, &token_head);
+		if (!(add_token_to_list(current_token, prev_token, &token_head)))//recover*
+			return (NULL);
 		if (current_token->type != TK_EAT)
 			prev_token = current_token;
 	}
@@ -77,6 +81,5 @@ t_token	*lexer(char *cmdline, char **env)
 		ft_putendl("tmp, tklst end with '&&' or '||': READ_MODE");
 		return (NULL);//TMP
 	}
-	//ft_memdel((void*)op_chart);
 	return (token_head);
 }

@@ -8,6 +8,7 @@
 # include <limits.h>
 # include <sys/syslimits.h>
 # include "libft.h"
+
 # define ERROR_MEM error_mem();
 
 typedef unsigned char	t_bool;
@@ -54,11 +55,6 @@ void	print_token_list(t_token *token_head);
 ** get_token.c
 */
 
-t_token	*get_dquot_token(char **cmdline);
-t_token	*get_squot_token(char **cmdline);
-t_token	*get_regular_token(char **cmdline);
-t_token	*get_monochar(char **cmdline);
-t_token	*get_eat_token(char **cmdline);
 t_token	*get_token(char **cmdline, t_operation *op_chart);
 
 /*

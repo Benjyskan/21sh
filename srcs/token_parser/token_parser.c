@@ -78,7 +78,7 @@ t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	}
 	else//i'm on CTRL_OP
 	{
-		if (*token_head == token_probe || !null_terminat_properly(token_prev))//verif if "&& &&"
+		if (*token_head == token_probe || !null_terminat_properly(token_prev))//verif if "&& &&"//useless if i check in lexer
 		{
 			ft_putstr("ICICI");
 			syntax_error_near(token_probe);
