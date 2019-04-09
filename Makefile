@@ -45,7 +45,8 @@ SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 						tklst_utils.c
 	PARSER_FILES	:=	
 	PIPELINE_FILES	:=	parse_pipeline.c tokens_to_argv.c parse_redirection.c \
-						parse_expands.c
+						parse_expansions.c parse_dollars.c	\
+						parse_tildes.c parse_quotes.c is_token.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
