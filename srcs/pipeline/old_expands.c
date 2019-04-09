@@ -10,6 +10,8 @@ static char	*concatenate_tokens(t_token *token)
 	if (!(probe = token))
 		return (NULL);
 	len = 0;
+	while (probe && probe->type == TK_EAT)
+		probe = probe->next;
 	while (is_argv_token(probe))
 	{
 		len += ft_strlen(probe->content);
@@ -20,6 +22,8 @@ static char	*concatenate_tokens(t_token *token)
 	else if (!(res = ft_strnew(len)))
 		ERROR_MEM;
 	probe = token;
+	while (probe && probe->type == TK_EAT)
+		probe = probe->next;
 	while (is_argv_token(probe))
 	{
 		res = ft_strcat(res, probe->content);
@@ -42,16 +46,24 @@ int		execute_command(t_token **token_argv)
 	i = 0;
 	argv = (char**)token_argv;
 	dprintf(2, "-- EXEC -- \n");
+	dprintf(2, "TOKEN_ARGV[0], %s\n", (token_argv[0])->content);
 	while (token_argv[i])
 	{
+		dprintf(2, "CONCATENATING\n");
 		argv[i] = concatenate_tokens(token_argv[i]);
 		i++;
 	}
-	if((dprintf(2, "executing: %s\n", argv[0])) < 1)
-		dprintf(2,  "FAILED TO DPRINTF ON 4\n");
+	dprintf(2, "executing: %s\n", argv[0]);
 	i = 0;
+	while (argv[i])
+	{
+		dprintf(2, "argv[%d], %s\n", i, argv[i]);
+		i++;
+	}
+	dprintf(2, "argv[%d], %s\n", i , argv[i]);
 	execvp(argv[0], (char * const*)argv);
-	return (1);
+	dprintf(2, "EXEC RETURNED -1\n");
+	return (0);
 }
 
 t_bool	is_quote_token(t_token *probe)
@@ -64,7 +76,7 @@ t_bool	is_quote_token(t_token *probe)
 		return (0);
 }
 
-int		parse_quotes(t_token **token_argv)
+int		parse_quote(t_token **token_argv)
 {
 	int		i;
 	t_token	*probe;
@@ -128,5 +140,5 @@ int		parse_expands(t_token **token_argv)
 		}
 		i++;
 	}
-	return (parse_quotes(token_argv));
+	return (parse_quote(token_argv));
 }

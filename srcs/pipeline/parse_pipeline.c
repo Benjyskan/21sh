@@ -50,7 +50,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
-			return (parse_redir(current, in, fd[1]));
+			return (parse_expands(current, in, fd[1]));
 		}
 		else if (pid > 0)
 		{
@@ -61,7 +61,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 			current = get_next_simple_command(current);
 		}
 	}
-	return (parse_redir(current, in, STDOUT_FILENO));
+	return (parse_expands(current, in, STDOUT_FILENO));
 }
 
 /*

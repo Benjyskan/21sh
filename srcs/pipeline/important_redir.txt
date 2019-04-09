@@ -38,6 +38,12 @@
 	-
 
 
+Process:
+	- l 's' a | 
+	- Tilde expansion on quotes
+	- $ expand
+	- quote removal by taking token, appending to it, while freeing token i encounter and splitting on EAT and REDIR
+
 tableau de (void*) pointeurs sur tokens.
 Expansion des $ des tokens (sauf s_quote); en boucle ?
 On enleve les quotes.

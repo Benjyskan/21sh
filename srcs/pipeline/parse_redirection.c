@@ -59,7 +59,7 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 
 	if (redir && ft_strncmp(redir->content, ">", 2) == 0) // only '>'
 	{
-		new_fd = check_fd_prev(prev);
+		old_fd = check_fd_prev(prev);
 		next = redir->next;
  		while (next && (next->type == TK_EAT))
 			next = next->next;
@@ -68,7 +68,7 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 			dprintf(2, "Bad syntax error near REDIR token\n"); 
 			return (0);
 		}
-		if ((old_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0640)) < 0) // should be func like "parse" quotes and expand name
+		if ((new_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0640)) < 0) // should be func like "parse" quotes and expand name
 		{
 			// close previous
 			dprintf(2, "errno: {%d}\n", errno);
@@ -76,22 +76,15 @@ static int		apply_redirections(t_token *redir, t_token *prev) // for '>' only
 			dprintf(2, "error opening file\n");
 			return (0);
 		}
-		redirect(old_fd, new_fd);
+		dprintf(2, "REDIR: NAME: %s, OLD: %d, NEW: %d\n", redir->content, old_fd, new_fd);
+		redirect(new_fd, old_fd);
 		redir->type = TK_EAT;
 		next->type = TK_EAT;
-		if (write(1, "c'est pas moi\n", 10) < 0)
-			dprintf(2, "error in write\n");
 		return (1);
 	}
 	dprintf(2, "Not '>' token\n");
 	return (0);
 }
-
-/*
-**	Applies first basic redirections, applies useful redirections 
-**	by calling apply_redirections then creates an argv
-**	list that's given out to parse_argv
-*/
 
 void	print_token_tab(t_token **argv)
 {
@@ -115,9 +108,15 @@ void	print_token_tab(t_token **argv)
 	}
 }
 
+/*
+**	Applies first basic redirections, applies useful redirections 
+**	by calling apply_redirections then creates an argv
+**	list that's given out to parse_argv
+*/
+
 int		parse_redir(t_token *begin, int in, int out) 
 {
-	t_token	**argv;
+	t_token	**token_argv;
 	t_token	*current;
 	t_token	*prev;
 
@@ -132,26 +131,30 @@ int		parse_redir(t_token *begin, int in, int out)
 			return (0);
 	prev = current;
 	current = current->next;
-	while (current)
+	while (current && current->type != TK_PIPE)
 	{
+//		dprintf(2, "CURRENT: %s\n", current->content);
 		if ((current->type == TK_REDIRECTION) && ft_strncmp(">", current->content, 2) == 0) //only '>'
+		{
+			dprintf(2, "APPLYING REDIR, %s\n", current->content);
 			if (apply_redirections(current, prev) == 0)
 				return (0);
+		}
 		prev = current;
 		current = current->next;
 	}
-	if (current && current->type == TK_REDIRECTION)
+	if (current && current->type == TK_REDIRECTION) // ???
 	{
 		dprintf(2, "Redirecton parsing error\n");
 		return (0);
 	}
-	if (!(argv = (t_token**)get_argv_from_tokens(begin)))
+	if (!(token_argv = (t_token**)get_argv_from_tokens(begin)))
 	{
 		dprintf(2, "error argv is null\n");
 		return (0);
 	}
-	print_token_tab(argv);
-	return (parse_expands(argv));// should be parse_argv
+	print_token_tab(token_argv);
+	return (parse_expands(token_argv));// should be parse_argv
 }
 
 void	redirect(int old_fd, int new_fd)

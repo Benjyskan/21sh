@@ -15,7 +15,6 @@ static t_token		**create_argv(t_token *token, int argv_len)
 		return (NULL);
 	i = 0;
 	res[argv_len] = NULL;
-	printf("argv_len: %d\n", argv_len);
 	while (i < argv_len)
 	{
 		while (token && token->type == TK_EAT && token->type == TK_PIPE)
@@ -60,5 +59,6 @@ t_token		**get_argv_from_tokens(t_token *token)
 	}
 	if (argv_len < 1)
 		return (NULL);
+	dprintf(2, "TOKEN_ARGV LEN: %d\n", argv_len);
 	return (create_argv(token, argv_len));
 }
