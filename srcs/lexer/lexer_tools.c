@@ -49,9 +49,17 @@ t_bool	is_logic_or_pipe(t_token *token)
 
 t_bool	is_two_ctrlop_or_redir_following(t_token *prev_token, t_token *current_token)
 {
-	if (prev_token && (prev_token->type > TK_DQ_STR && current_token->type > TK_DQ_STR))
+	if (!prev_token)
+		return (0);
+	if (prev_token->type >= TK_PIPE && current_token->type >= TK_PIPE)
 	{
 		ft_putstr("333");
+		syntax_error_near(current_token);
+		return (1);
+	}
+	if (is_redir_token(prev_token) && is_redir_token(current_token))
+	{
+		ft_putstr("444");
 		syntax_error_near(current_token);
 		return (1);
 	}

@@ -25,7 +25,8 @@ static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 {
 	t_ast			*new_node;
 
-	new_node = create_ast_node(new_token, NULL, NULL);
+	if (!(new_node = create_ast_node(new_token, NULL, NULL)))
+		return (0);//bof
 	if (!*(ast_root))
 	{
 		*ast_root = new_node;
@@ -69,17 +70,20 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	}
 	if (!token_probe)//end of token list
 	{
-		insert_ast_node(*token_head, ast_root);
+		if (!(insert_ast_node(*token_head, ast_root)))
+			return (0);
 		*token_head = NULL;
 		return (1);
 	}
 	else//i'm on a CTRL_OP
 	{
 		null_terminate_properly(token_prev);
-		insert_ast_node(*token_head, ast_root);
+		if (!(insert_ast_node(*token_head, ast_root)))
+			return (0);
 		*token_head = token_probe->next;
 		token_probe->next = NULL;
-		insert_ast_node(token_probe, ast_root);
+		if (!(insert_ast_node(token_probe, ast_root)))
+			return (0);
 	}
 	return (1);
 }
