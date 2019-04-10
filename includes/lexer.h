@@ -55,21 +55,8 @@ void	print_token_list(t_token *token_head);
 ** get_token.c
 */
 
-t_token	*get_dquot_token(char **cmdline);
-t_token	*get_squot_token(char **cmdline);
-t_token	*get_regular_token(char **cmdline);
-t_token	*get_redir_token(char **cmdline);
-t_token	*get_monochar(char **cmdline);
-t_token	*get_eat_token(char **cmdline);
-t_token	*get_token(char **cmdline, t_op_chart *op_chart);
-
-/*
-** tklst_utils.c
-*/
-
-t_token	*create_token(char *cmdline, size_t size, t_token_type type);
-void	add_token_to_list(t_token *token, t_token **token_head);
 t_token	*get_token(char **cmdline, t_operation *op_chart);
+t_token	*create_token(char *cmdline, size_t size, t_token_type type);
 
 /*
 ** lexer_op_chart.c
