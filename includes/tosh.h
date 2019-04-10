@@ -8,29 +8,14 @@
 # include <limits.h>
 # include <sys/syslimits.h>
 # include "libft.h"
+# include "lexer.h"
 # define BUF_SIZE 128
 # define SHELL_NAME "my_sh"
+# define FD_LIMITS 10
 # define ERROR_MEM error_mem();
 # define ERROR_READ exit(1);//TODO
 
-typedef struct		s_cmdlst
-{
-	char			*cmdline;
-	struct s_cmdlst	*next;
-}					t_cmdlst;
-
-typedef enum		e_token
-{
-	TK_PIPE = 1,
-	TK_R_ARROW,
-	TK_RD_ARROW,
-	TK_L_ARROW,
-	TK_LD_ARROW,
-	TK_CMD,
-	TK_FILE,
-	TK_DQUOTES,
-	TK_SQUOTES
-}					t_token;
+typedef unsigned char	t_bool;
 
 typedef enum		e_parser_state
 {
@@ -39,6 +24,13 @@ typedef enum		e_parser_state
 	IN_SQUOT,
 	IN_DQUOT
 }					t_parser_state;
+
+typedef enum		e_lexer_state
+{
+	LEX_NORMAL,
+	LEX_IN_SQUOT,
+	LEX_IN_DQUOT
+}					t_lexer_state;
 
 /*
 ** main.c
@@ -86,25 +78,49 @@ void				print_prompt(void);
 ** handle_input.c
 */
 
-int					handle_input(char *input, char **env);
+t_bool				handle_input(char *input, char **env);
 
 /*
 ** cmd_lst_utils.c
 */
 
-//t_cmdlst			*create_cmdlst_head(char *cmdline);
-int					add_to_cmdlst(char *cmdline, t_cmdlst **cmdlst_head);
-void				print_cmdlst(t_cmdlst *head);//debug
+//int					add_to_cmdlst(char *cmdline, t_cmdlst **cmdlst_head);
+//void				print_cmdlst(t_cmdlst *head);//debug
 
 /*
 ** free.c
 */
 
-void				free_cmdlst(t_cmdlst *cmdlst_head);
+//void				free_cmdlst(t_cmdlst *cmdlst_head);
 
 /*
 ** test_pipe.c
 */
 
 int					my_pipe(char *input);
+
+/*
+** lexer.c
+*/
+
+//int					lexer(t_cmdlst *cmdlst, char **env);
+//t_tklst				lexer(t_cmdlst *cmdlst, char **env);
+t_token				*lexer(char *cmdline, char **env);
+
+/*
+** lexer_tools.c
+*/
+
+t_bool				is_quotes(char c);
+t_bool				is_white_spaces(char c);
+t_bool				is_shell_char(char c);
+t_bool				is_delimiter(char c);
+t_bool				is_metachar(char c);
+
+/*
+** lexer_cmp_table.c
+*/
+
+t_op_chart			*get_op_chart(void);
+void				print_op_table(t_op_chart *op_chart);//debug
 #endif

@@ -1,5 +1,6 @@
 #include "tosh.h"
 
+/*
 void	free_cmdlst(t_cmdlst *cmdlst_head)
 {
 	t_cmdlst	*probe;
@@ -19,3 +20,4 @@ void	free_cmdlst(t_cmdlst *cmdlst_head)
 	ft_memdel((void*)&probe->cmdline);
 	ft_memdel((void*)&prev);
 }
+*/
