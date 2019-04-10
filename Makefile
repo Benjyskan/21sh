@@ -44,8 +44,8 @@ SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
 						tklst_utils.c
 	PARSER_FILES	:=	
-	PIPELINE_FILES	:=	parse_pipeline.c tokens_to_argv.c parse_redirections.c \
-						parse_expansions.c parse_dollars.c	\
+	PIPELINE_FILES	:=	parse_pipeline.c parse_redirections.c \
+						parse_expansions.c parse_dollars.c execute_commands.c \
 						parse_tildes.c parse_quotes.c is_token.c
 
 #list of all .c files

@@ -65,4 +65,5 @@ t_bool			parse_tildes(t_token *token_head);
 t_bool			parse_expands(t_token *token_head, int in, int out);
 t_bool			parse_dollars(t_token *token_head);
 t_bool			parse_quotes(t_token *token_head);
+t_bool			execute_tokens(t_token *token_head);
 #endif

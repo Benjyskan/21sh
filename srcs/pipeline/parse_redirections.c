@@ -69,12 +69,6 @@ t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?
 		return (0);
 }
 
-static	t_bool	execute_tokens(t_token *token_head)
-{
-	(void)token_head;
-	return (1);
-}
-
 t_bool	parse_redirections(t_token *token_head)
 {
 	t_token	*current;
@@ -96,5 +90,6 @@ t_bool	parse_redirections(t_token *token_head)
 		prev = current;
 		current = current->next;
 	}
+	dprintf(2, "token: %s\n", token_head->content);
 	return (execute_tokens(token_head));
 }
