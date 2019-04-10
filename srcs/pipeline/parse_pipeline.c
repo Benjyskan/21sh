@@ -31,13 +31,10 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 	int i; // num_simple_commands - 1 can decrement
 	int in;
 	pid_t	pid;
-	t_token *current;
 	int fd[2];
 
 	in = STDIN_FILENO;
 	i = 0;
-	current = begin; // could use begin everywhere ?
-	dprintf(2, "NUM: %d\n", num_simple_commands);
 	while (i < num_simple_commands - 1)
 	{
 		if (pipe(fd))
@@ -50,7 +47,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
-			return (parse_expands(current, in, fd[1]));
+			return (parse_expands(begin, in, fd[1]));
 		}
 		else if (pid > 0)
 		{
@@ -58,10 +55,10 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 			close(in);
 			in = fd[0];
 			i++;
-			current = get_next_simple_command(current);
+			begin = get_next_simple_command(begin);
 		}
 	}
-	return (parse_expands(current, in, STDOUT_FILENO));
+	return (parse_expands(begin, in, STDOUT_FILENO));
 }
 
 /*
@@ -80,11 +77,6 @@ int			parse_pipeline(t_token *token) // no need for t_pipelst ?
 	probe = token;
 	while (probe)
 	{
-		if (!is_simple_cmd_token(probe)) // should not have to check
-		{
-			printf("ERROR: bad '|' syntax\n");
-			return (0);
-		}
 		while (probe && is_simple_cmd_token(probe)) //continue on simple_cmd tokens
 			probe = probe->next;
 		if (probe && probe->next && (probe->type == TK_PIPE)) // is a pipe and not empty after
