@@ -157,13 +157,4 @@ int		parse_redir(t_token *begin, int in, int out)
 	return (parse_expands(token_argv));// should be parse_argv
 }
 
-void	redirect(int old_fd, int new_fd)
-{
-	if (old_fd != new_fd)
-	{
-		if (dup2(old_fd, new_fd) != -1)
-			close(old_fd);
-		else
-			dprintf(2, "error with dup2\n");
-	}
-}
+

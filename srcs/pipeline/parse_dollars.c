@@ -3,6 +3,7 @@
 
 static t_bool	expand_dollars(t_token *token_head)
 {
+	(void)token_head;
 	return (0);
 }
 
