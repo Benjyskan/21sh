@@ -1,28 +1,28 @@
 #include "ast.h"
 #include "lexer.h"
 
-t_bool	is_simple_cmd_token(t_token *probe) //static ?
-{
-	if (!probe)
-		return (0);
-	if (probe->type < TK_PIPE)
-		return (1);
-	else
-		return (0);
-}
+/*
+**	Applies the redirection : example : redirect(2, 0) will make fd 2 become
+**	STDIN
+*/
 
 void	redirect(int old_fd, int new_fd)
 {
 	if (old_fd != new_fd)
 	{
 		if (dup2(old_fd, new_fd) != -1)
-			close(old_fd); //check close return ?
+			close(old_fd); //check close return value ?
 		else
 			dprintf(2, "error with dup2: old_fd: %d, new_fd: %d\n", old_fd, new_fd);
 	}
 }
 
-int		check_fd_prev(t_token *prev)
+/*
+**	Checks to see if the previous token is a valid fd token.
+**	Returns -1 if it is not.
+*/
+
+int		check_fd_prev(t_token *prev) //should rename 
 {
 	int	i;
 	if (!prev)
@@ -44,6 +44,10 @@ int		check_fd_prev(t_token *prev)
 		return (-1);
 }
 
+/*
+**	Calls the appropriate function for the current redirection token.
+*/
+
 t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?
 {
 	if (!redir)
@@ -54,12 +58,16 @@ t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?
 		redir_dgreat(redir, prev);
 	else if (ft_strncmp(redir->content, "<", 2) == 0)
 		redir_less(redir, prev);
-	else if (ft_strncmp(redir->content, "<<", 3) == 0)
+	else if (ft_strncmp(redir->content, "<<", 3) == 0) //TODO
 		redir_dless(redir, prev);
 	else
 		return (0);
 	return (1);
 }
+
+/*
+**	Parses the simple_command for redirections and applies them
+*/
 
 t_bool	parse_redirections(t_token *token_head)
 {

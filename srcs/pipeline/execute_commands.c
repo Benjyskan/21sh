@@ -74,15 +74,6 @@ t_bool		execute_argv(char	**argv)
 	return (1);
 }
 
-t_bool		is_argv_token(t_token *probe) //TODO: put in util folder
-{
-	if (!probe)
-		return (0);
-	if (probe->type == TK_WORD || is_quote_token(probe))
-		return (1);
-	return (0);
-}
-
 t_bool		execute_tokens(t_token *token_head)
 {
 	unsigned int	argv_len;
