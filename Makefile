@@ -80,7 +80,6 @@ OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
 
 all: ask_libft $(NAME) tag
-	@./$(NAME)
 
 
 ask_libft:
