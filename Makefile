@@ -3,7 +3,7 @@
 # Basics #######################################################################
 NAME	:=	21sh
 OPT		:=	
-CC		:=	gcc
+CC		:=	gcc -g
 CFLAGS	:=	-Wall -Wextra #-Werror
 
 DEBUG_FLAG	:=	-g

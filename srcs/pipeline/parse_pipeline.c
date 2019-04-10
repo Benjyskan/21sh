@@ -39,11 +39,11 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 	{
 		if (pipe(fd))
 		{
-			printf("pipe error\n");
+			printf("pipe error\n"); //dprintf
 			return (0);
 		}
 		if ((pid = fork()) == -1)
-			printf("fork error\n");//TODO
+			printf("fork error\n");//TODO dprintf
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
@@ -58,7 +58,18 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 			begin = get_next_simple_command(begin);
 		}
 	}
-	return (parse_expands(begin, in, STDOUT_FILENO));
+	if ((pid = fork()) == -1)
+	{
+		dprintf(2, "fork error\n");
+		return (0);
+	}
+	else if (pid == 0)
+		return (parse_expands(begin, in, STDOUT_FILENO));
+	else
+	{
+		wait(&pid);
+		return (1);
+	}
 }
 
 /*
