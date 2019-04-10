@@ -51,10 +51,7 @@ static t_bool	is_full_of_whitespaces(char *input)
 	while (input[++i])
 	{
 		if (!is_white_spaces(input[i]))
-		{
-			printf("{%c} is not wp\n", *input);
 			return (0);
-		}
 	}
 	return (1);
 }
@@ -82,7 +79,6 @@ int		main(int argc, char **argv, char **env)
 			ft_memdel((void*)&input);
 			continue;
 		}
-		ft_putendl("NOT FULL WP");
 		if (!(handle_input(input, env_cpy)))
 			ft_memdel((void*)&input);
 	}
