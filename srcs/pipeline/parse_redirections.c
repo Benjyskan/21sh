@@ -32,7 +32,8 @@ static int		check_fd_prev(t_token *prev)
 		i = 0;
 		while (prev->content[i])
 		{
-			if (!ft_isalnum(prev->content[i]))
+			if (!ft_isdigit(prev->content[i]))
+				dprintf(2, "NOT ALNUM\n");
 				return (1);
 			i++;
 		}
@@ -55,7 +56,7 @@ t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?
 		next = redir->next;
 		while (next->type == TK_EAT) // need functions that does this
 			next = next->next;
-		if ((new_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC), 0640) < 0)
+		if ((new_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC), 640) < 0)
 		{
 			dprintf(2, "error openening file\n");
 			return (0);
