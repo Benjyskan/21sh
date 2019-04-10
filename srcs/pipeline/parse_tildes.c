@@ -18,11 +18,16 @@ static t_bool	tild_expand(t_token *token_head)
 
 t_bool	parse_tildes(t_token *token_head)
 {
+	t_bool	res;
+	res = 0;
 	while (token_head && token_head->type < TK_PIPE)
 	{
 		if (token_head->type == TK_WORD || token_head->type == TK_DQ_STR)
-			return (tild_expand(token_head));
+		{
+			res = 1;
+			tild_expand(token_head);
+		}
 		token_head = token_head->next;
 	}
-	return (0);
+	return (res);
 }

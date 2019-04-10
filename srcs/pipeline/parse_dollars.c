@@ -9,11 +9,17 @@ static t_bool	expand_dollars(t_token *token_head)
 
 t_bool			parse_dollars(t_token *token_head)
 {
+	t_bool	res;
+
+	res = 0;
 	while (token_head && token_head->type < TK_PIPE)
 	{
 		if (token_head->type == TK_WORD || token_head->type == TK_DQ_STR)
-			return (expand_dollars(token_head));
+		{
+			res = 1;
+			expand_dollars(token_head);
+		}
 		token_head = token_head->next;
 	}
-	return (0);
+	return (res);
 }

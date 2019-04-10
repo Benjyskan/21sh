@@ -1,6 +1,11 @@
 #include "lexer.h"
 #include "ast.h"
 
+/*
+**	Does not change token_head->type to TK_WORD because we need to know the
+**	orginal type for redirections.
+*/
+
 static t_bool	expand_quotes(t_token *token_head)
 {
 	char	*old_content;
@@ -13,17 +18,22 @@ static t_bool	expand_quotes(t_token *token_head)
 		free(old_content);
 		return (1);
 	}
-	token_head->type = TK_WORD;
 	return (0);
 }
 
 t_bool	parse_quotes(t_token *token_head)
 {
+	t_bool	res;
+
+	res = 0;
 	while (token_head && token_head->type < TK_PIPE)
 	{
 		if (token_head->type == TK_SQ_STR || token_head->type == TK_DQ_STR)
-			return (expand_quotes(token_head));
+		{
+			res = 1;
+			expand_quotes(token_head);
+		}
 		token_head = token_head->next;
 	}
-	return (0);
+	return (res);
 }
