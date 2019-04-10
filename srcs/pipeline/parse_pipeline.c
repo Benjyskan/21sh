@@ -32,6 +32,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 	int in;
 	pid_t	pid;
 	pid_t	wpid;
+	int		status;
 	int fd[2];
 
 	in = STDIN_FILENO;
@@ -59,6 +60,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 			begin = get_next_simple_command(begin);
 		}
 	}
+	status = 0; //necessary ?
 	if ((pid = fork()) == -1)
 	{
 		dprintf(2, "fork error\n");
@@ -68,9 +70,9 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		return (parse_expands(begin, in, STDOUT_FILENO));
 	else
 	{
-		while ((wpid = wait(NULL)) > 0)
+		while ((wpid = wait(&status)) > 0) //not sure if it's proper
 			;
-		return (1);
+		return (WEXITSTATUS(status));
 	}
 }
 

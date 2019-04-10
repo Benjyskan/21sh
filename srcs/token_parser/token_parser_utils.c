@@ -19,9 +19,9 @@ t_bool	exec_ast(t_ast *root)
 		return (exec_ast(root->right)); // check if that's true
 	}
 	else if (root->token->type == TK_AND)
-		return (exec_ast(root->left) && exec_ast(root->right));
-	else if (root->token->type == TK_OR)
 		return (exec_ast(root->left) || exec_ast(root->right));
+	else if (root->token->type == TK_OR)
+		return (exec_ast(root->left) && exec_ast(root->right));
 	else
 		return (parse_pipeline(root->token));
 }
