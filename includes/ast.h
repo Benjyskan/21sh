@@ -66,4 +66,11 @@ t_bool			parse_expands(t_token *token_head, int in, int out);
 t_bool			parse_dollars(t_token *token_head);
 t_bool			parse_quotes(t_token *token_head);
 t_bool			execute_tokens(t_token *token_head);
+
+t_bool			redir_great(t_token *redir, t_token *prev);
+t_bool			redir_dgreat(t_token *redir, t_token *prev);
+t_bool			redir_less(t_token *redir, t_token *prev);
+t_bool			redir_dless(t_token *redir, t_token *prev);
+
+int				check_fd_prev(t_token *prev);
 #endif

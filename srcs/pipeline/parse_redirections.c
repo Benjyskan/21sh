@@ -16,13 +16,13 @@ void	redirect(int old_fd, int new_fd)
 	if (old_fd != new_fd)
 	{
 		if (dup2(old_fd, new_fd) != -1)
-			close(old_fd);
+			close(old_fd); //check close return ?
 		else
-			dprintf(2, "error with dup2\n");
+			dprintf(2, "error with dup2: old_fd: %d, new_fd: %d\n", old_fd, new_fd);
 	}
 }
 
-static int		check_fd_prev(t_token *prev)
+int		check_fd_prev(t_token *prev)
 {
 	int	i;
 	if (!prev)
@@ -46,28 +46,19 @@ static int		check_fd_prev(t_token *prev)
 
 t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?
 {
-	int		old_fd;
-	t_token	*next;
-	int		new_fd;
-
-	if (redir && ft_strncmp(redir->content, ">", 2) == 0) // only >
-	{
-		old_fd = check_fd_prev(prev);
-		next = redir->next;
-		while (next->type == TK_EAT) // need functions that does this
-			next = next->next;
-		if ((new_fd = open(next->content, O_WRONLY | O_CREAT | O_TRUNC), 640) < 0)
-		{
-			dprintf(2, "error openening file\n");
-			return (0);
-		}
-		redirect(new_fd, old_fd);
-		redir->type = TK_EAT;
-		next->type = TK_EAT; // if I dont check is_argv i will segfault on deference
-		return (1);
-	}
+	if (!redir)
+		return (0);
+	if (ft_strncmp(redir->content, ">", 2) == 0) // only >
+		redir_great(redir, prev);
+	else if (ft_strncmp(redir->content, ">>", 3) == 0)
+		redir_dgreat(redir, prev);
+	else if (ft_strncmp(redir->content, "<", 2) == 0)
+		redir_less(redir, prev);
+	else if (ft_strncmp(redir->content, "<<", 3) == 0)
+		redir_dless(redir, prev);
 	else
 		return (0);
+	return (1);
 }
 
 t_bool	parse_redirections(t_token *token_head)
@@ -91,6 +82,5 @@ t_bool	parse_redirections(t_token *token_head)
 		prev = current;
 		current = current->next;
 	}
-	dprintf(2, "token: %s\n", token_head->content);
 	return (execute_tokens(token_head));
 }

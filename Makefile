@@ -46,7 +46,8 @@ SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 	PARSER_FILES	:=	
 	PIPELINE_FILES	:=	parse_pipeline.c parse_redirections.c \
 						parse_expansions.c parse_dollars.c execute_commands.c \
-						parse_tildes.c parse_quotes.c is_token.c
+						parse_tildes.c parse_quotes.c is_token.c \
+						redir_great.c redir_dgreat.c redir_less.c redir_dless.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
