@@ -43,15 +43,18 @@ void	read_stdin(char **cmd, char **env)//cpy de skod
 		ERROR_READ;
 }
 
-static int	is_str_empty(char *str)
+static t_bool	is_full_of_whitespaces(char *input)
 {
-	int		i;
+	int		i;//TODO protect
 
 	i = -1;
-	while (str[++i])
+	while (input[++i])
 	{
-		if (str[i] != ' ' && str[i] != '\t' && str[i] != ';')
+		if (!is_white_spaces(input[i]))
+		{
+			printf("{%c} is not wp\n", *input);
 			return (0);
+		}
 	}
 	return (1);
 }
@@ -73,13 +76,15 @@ int		main(int argc, char **argv, char **env)
 			return (EXIT_FAILURE);//TODO free env
 		}
 		read_stdin(&input, env_cpy);
-		if (!*input || is_str_empty(input))//TODO tejme
+		//store input in history here
+		if (is_full_of_whitespaces(input))
 		{
 			ft_memdel((void*)&input);
-			continue ;
+			continue;
 		}
+		ft_putendl("NOT FULL WP");
 		if (!(handle_input(input, env_cpy)))
-			ft_memdel((void*)&input);//bof, TODO store input after lexer
+			ft_memdel((void*)&input);
 	}
 	ft_free_nultab(env_cpy);
 	return (EXIT_SUCCESS);

@@ -20,7 +20,7 @@ t_bool	handle_input(char *input, char **env)
 		return (0);//check me
 	}
 	printf("### lexer SUCCESS\n");
-	//print_token_list(token_head);
+	print_token_list(token_head);
 	if (!(ast_root = create_ast(token_head)))
 	{
 		printf("\x1B[31m""### Parser FAILED""\x1B[0m""\n");

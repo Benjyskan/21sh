@@ -16,7 +16,10 @@ t_bool	exec_ast(t_ast *root)
 	if (root->token->type == TK_SEMI)
 	{
 		exec_ast(root->left);
-		return (exec_ast(root->right)); // check if that's true
+		if (root->right)//penzo added this
+			return (exec_ast(root->right)); // check if that's true
+		else
+			return (1);//penzo test
 	}
 	else if (root->token->type == TK_AND)
 		return (exec_ast(root->left) || exec_ast(root->right));
