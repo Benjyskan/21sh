@@ -70,7 +70,7 @@ int		main(int argc, char **argv, char **env)
 			return (EXIT_FAILURE);//TODO free env
 		}
 		read_stdin(&input, env_cpy);
-		if (!*input || is_str_empty(input))
+		if (!*input || is_str_empty(input))//TODO tejme
 		{
 			ft_memdel((void*)&input);
 			continue ;
