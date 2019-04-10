@@ -35,7 +35,10 @@ void	read_stdin(char **cmd, char **env)//cpy de skod
 	if (buf == '\n')
 		return ;
 	else if (ret == 0)
+	{
+		dprintf(2, " REkKKKKT\n\n");
 		exit (1);//error_exit(*cmd, env);
+	}
 	else if (ret < 0 || (!buf && ret))
 		ERROR_READ;
 }

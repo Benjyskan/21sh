@@ -31,6 +31,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 	int i; // num_simple_commands - 1 can decrement
 	int in;
 	pid_t	pid;
+	pid_t	wpid;
 	int fd[2];
 
 	in = STDIN_FILENO;
@@ -52,7 +53,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		else if (pid > 0)
 		{
 			close(fd[1]);
-			close(in);
+			//close(in); // check if it's a proper way of doing things
 			in = fd[0];
 			i++;
 			begin = get_next_simple_command(begin);
@@ -67,7 +68,8 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		return (parse_expands(begin, in, STDOUT_FILENO));
 	else
 	{
-		wait(&pid);
+		while ((wpid = wait(NULL)) > 0)
+			;
 		return (1);
 	}
 }
