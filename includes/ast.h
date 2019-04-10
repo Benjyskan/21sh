@@ -5,9 +5,8 @@
 #include "lexer.h"
 #include <fcntl.h>
 
-typedef struct		s_ast//useless
+typedef struct		s_ast
 {
-	//struct s_ast	*parent;
 	t_token			*token;
 	struct s_ast	*left;
 	struct s_ast	*right;
@@ -41,7 +40,8 @@ typedef struct		s_pipelst
 ** token_parser.c
 */
 
-t_ast			*token_parser(t_token *token_head);
+//t_ast			*token_parser(t_token *token_head);
+t_ast			*create_ast(t_token *token_head);
 
 /*
 ** Pipeline parsing
@@ -66,4 +66,8 @@ t_bool			parse_expands(t_token *token_head, int in, int out);
 t_bool			parse_dollars(t_token *token_head);
 t_bool			parse_quotes(t_token *token_head);
 t_bool			execute_tokens(t_token *token_head);
+
+t_bool			is_ctrl_op_token(t_token *token);
+
+void			print_ast(t_ast *root);//debug
 #endif

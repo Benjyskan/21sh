@@ -1,5 +1,14 @@
 #include "tosh.h"
 
+//Control operators:
+//|| ! && & ; ;; | |& ( )
+//	List terminators
+//	; &
+//	logical operators
+//	&& || !
+//	pipe operators
+//	| |&
+
 t_bool	is_quotes(char c)
 {
 	if (c == '\'' || c == '"')
@@ -14,13 +23,6 @@ t_bool	is_white_spaces(char c)
 	return (0);
 }
 
-t_bool	is_shell_char(char c)
-{
-	if (is_quotes(c) || is_white_spaces(c) || c == '<' || c == '>' || c == '|')
-		return (1);
-	return (0);
-}
-
 t_bool	is_parenth(char c)
 {
 	if (c == '[' || c == ']' || c == '(' || c == ')')
@@ -28,7 +30,6 @@ t_bool	is_parenth(char c)
 	return (0);
 }
 
-// 
 t_bool	is_metachar(char c)
 {
 	if (is_white_spaces(c) || is_parenth(c) || is_quotes(c) || c  == '*'
@@ -38,33 +39,47 @@ t_bool	is_metachar(char c)
 	return (0);
 }
 
-/*
-t_bool	is_delimiter(char c)
+t_bool	is_logic_or_pipe(t_token *token)
 {
-	//if (is_white_spaces(c) || c == '|' || c == '<' || c == '>' || c== ';')
-	if (is_white_spaces(c))
+	if (token->type == TK_OR
+			|| token->type == TK_AND || token->type == TK_PIPE)
 		return (1);
 	return (0);
 }
-*/
 
-void	print_token(t_token *token)//debug
+t_bool	is_two_ctrlop_or_redir_following(t_token *prev_token, t_token *current_token)
 {
-	printf("TOKEN{\n\tcontent: {%s}\n\tsize: %lu\n\ttype: %d\n\tnext: %p\n", 
-			token->content,
-			token->size,
-			token->type,
-			token->next);
+	if (!prev_token)
+		return (0);
+	if (prev_token->type >= TK_PIPE && current_token->type >= TK_PIPE)
+	{
+		ft_putstr("333");
+		syntax_error_near(current_token);
+		return (1);
+	}
+	if (is_redir_token(prev_token) && is_redir_token(current_token))
+	{
+		ft_putstr("444");
+		syntax_error_near(current_token);
+		return (1);
+	}
+	return (0);
 }
 
-void	print_token_list(t_token *token_head)//debug
+t_bool	is_redir_token(t_token *token)
 {
-	t_token	*probe;
+	if (token->type > TK_DQ_STR && token->type <= TK_HEREDOC)
+		return (1);
+	return (0);
+}
 
-	probe = token_head;
-	while (probe)
+t_bool	token_list_start_with_ctrl_op(t_token *prev_token, t_token *current_token)
+{
+	if (!prev_token && current_token->type >= TK_PIPE)
 	{
-		print_token(probe);
-		probe = probe->next;
+		ft_putstr("111");
+		syntax_error_near(current_token);
+		return (1);
 	}
+	return (0);
 }

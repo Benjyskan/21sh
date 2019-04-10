@@ -1,22 +1,69 @@
 #include "lexer.h"
 #include "ast.h"
 
-int	main(void)
+void	read_stdin(char **cmd, char **env)//cpy de skod
 {
-	t_token *token_head;
+	int		ret;
+	char	buf;
+	int		i;
+	size_t	mall_size;
 
-	token_head = NULL;
-	add_token_to_list(create_token("l", 1, TK_WORD), &token_head);
-	add_token_to_list(create_token("'s'", 3, TK_DQ_STR), &token_head);
-	add_token_to_list(create_token("|", 1, TK_PIPE), &token_head);
-	add_token_to_list(create_token(" ", 1, TK_EAT), &token_head);
-	add_token_to_list(create_token("ls", 2, TK_WORD), &token_head);
-/*	add_token_to_list(create_token(" ", 1, TK_EAT), &token_head);
-	add_token_to_list(create_token(">", 1, TK_REDIRECTION), &token_head);
-	add_token_to_list(create_token("test", 4, TK_WORD), &token_head);*/
-//	system("read -p \"Press enter to continue\"");
-	print_token_list(token_head);
-	printf("--- OUTPUT ---\n");
-	parse_pipeline(token_head);
-	return (0);
+	(void)env;//tejme
+	print_prompt();
+	mall_size = BUF_SIZE;
+	i = 0;
+	buf = 0;
+	while ((ret = read(0, &buf, 1) > 0) && buf && buf != '\n')
+	{
+		*cmd = ft_realloc((void*)*cmd, ft_strlen(*cmd), &mall_size, ret);//TODO protect
+		ft_strncat((*cmd + i++), &buf, 1);
+	}
+	if (buf == '\n')
+		return ;
+	else if (ret == 0)
+		exit (1);//error_exit(*cmd, env);
+	else if (ret < 0 || (!buf && ret))
+		ERROR_READ;
+}
+
+static int	is_str_empty(char *str)
+{
+	int		i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != ';')
+			return (0);
+	}
+	return (1);
+}
+
+int		main(int argc, char **argv, char **env)
+{
+	char	**env_cpy;
+	char	*input;
+
+	(void)argc;
+	(void)argv;
+	if (!(env_cpy = init_env(env)))
+		return (EXIT_FAILURE);
+	while (42)
+	{
+		if (!(input = ft_strnew(BUF_SIZE)))
+		{
+			ft_free_nultab(env_cpy);
+			return (EXIT_FAILURE);//TODO free env
+		}
+		read_stdin(&input, env_cpy);
+		if (!*input || is_str_empty(input))
+		{
+			ft_memdel((void*)&input);
+			continue ;
+		}
+		if (!(handle_input(input, env_cpy)))
+			ft_memdel((void*)&input);//bof, TODO store input after lexer
+	}
+	ft_free_nultab(env_cpy);
+	return (EXIT_SUCCESS);
 }
