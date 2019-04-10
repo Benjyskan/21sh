@@ -26,7 +26,7 @@ int		check_fd_prev(t_token *prev)
 {
 	int	i;
 	if (!prev)
-		return (1);
+		return (-1);
 	if (prev->type == TK_WORD)
 	{
 		i = 0;
@@ -34,14 +34,14 @@ int		check_fd_prev(t_token *prev)
 		{
 			if (!ft_isdigit(prev->content[i]))
 				dprintf(2, "NOT ALNUM\n");
-				return (1);
+				return (-1);
 			i++;
 		}
 		prev->type = TK_EAT;
 		return (ft_atoi(prev->content));
 	}
 	else
-		return (1);
+		return (-1);
 }
 
 t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?

@@ -13,9 +13,9 @@ int	main(void)
 	add_token_to_list(create_token("head", 4, TK_WORD), &token_head);
 	add_token_to_list(create_token(" ", 1, TK_EAT), &token_head);
 	add_token_to_list(create_token("-10", 4, TK_WORD), &token_head);*/
-	add_token_to_list(create_token("ls", 2, TK_WORD), &token_head);
-	add_token_to_list(create_token(">>", 2, TK_REDIRECTION), &token_head);
 	add_token_to_list(create_token("cat", 3, TK_WORD), &token_head);
+	add_token_to_list(create_token("<", 1, TK_REDIRECTION), &token_head);
+	add_token_to_list(create_token("auteur", 6, TK_WORD), &token_head);
 /*	add_token_to_list(create_token(" ", 1, TK_EAT), &token_head);
 	add_token_to_list(create_token(">", 1, TK_REDIRECTION), &token_head);
 	add_token_to_list(create_token("test", 4, TK_WORD), &token_head);*/
