@@ -11,6 +11,8 @@ t_bool	is_ctrl_op_token(t_token *token)
 
 t_bool	exec_ast(t_ast *root)
 {
+	if (!root)
+		dprintf(2, "Error: NULL node\n");
 	if (root->token->type == TK_SEMI)
 	{
 		exec_ast(root->left);
