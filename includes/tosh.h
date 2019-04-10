@@ -17,21 +17,6 @@
 
 typedef unsigned char	t_bool;
 
-typedef enum		e_parser_state
-{
-	NORMAL,
-	IN_CMD,
-	IN_SQUOT,
-	IN_DQUOT
-}					t_parser_state;
-
-typedef enum		e_lexer_state
-{
-	LEX_NORMAL,
-	LEX_IN_SQUOT,
-	LEX_IN_DQUOT
-}					t_lexer_state;
-
 /*
 ** main.c
 */
@@ -47,6 +32,8 @@ char				**init_env(char **env);
 */
 
 void				error_mem(void);
+void				syntax_error_near(t_token *token);
+//void				error_mem(char *func_name);
 
 /*
 ** shlvl.c
@@ -81,30 +68,13 @@ void				print_prompt(void);
 t_bool				handle_input(char *input, char **env);
 
 /*
-** cmd_lst_utils.c
-*/
-
-//int					add_to_cmdlst(char *cmdline, t_cmdlst **cmdlst_head);
-//void				print_cmdlst(t_cmdlst *head);//debug
-
-/*
-** free.c
-*/
-
-//void				free_cmdlst(t_cmdlst *cmdlst_head);
-
-/*
-** test_pipe.c
-*/
-
-int					my_pipe(char *input);
-
-/*
 ** lexer.c
 */
 
-//int					lexer(t_cmdlst *cmdlst, char **env);
-//t_tklst				lexer(t_cmdlst *cmdlst, char **env);
+t_token				*create_token(char *cmdline, size_t size
+					, t_token_type type);
+t_bool				add_token_to_list(t_token *current_token
+					, t_token *prev_token, t_token **token_head);
 t_token				*lexer(char *cmdline, char **env);
 
 /*
@@ -113,14 +83,13 @@ t_token				*lexer(char *cmdline, char **env);
 
 t_bool				is_quotes(char c);
 t_bool				is_white_spaces(char c);
-t_bool				is_shell_char(char c);
 t_bool				is_delimiter(char c);
 t_bool				is_metachar(char c);
+t_bool				is_logic_or_pipe(t_token *token);
+t_bool				is_two_ctrlop_or_redir_following(t_token *prev_token
+					, t_token *current_token);
+t_bool				token_list_start_with_ctrl_op(t_token *prev_token
+					, t_token *current_token);
+t_bool				is_redir_token(t_token *token);
 
-/*
-** lexer_cmp_table.c
-*/
-
-t_op_chart			*get_op_chart(void);
-void				print_op_table(t_op_chart *op_chart);//debug
 #endif

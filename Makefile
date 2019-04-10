@@ -42,8 +42,8 @@ SRC_FILES	:=	handle_input.c prompt.c free.c main.c \
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
 	ERRORS_FILES	:=	errors.c
 	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
-						tklst_utils.c
-	PARSER_FILES	:=	
+						lexer_debug.c
+	PARSER_FILES	:=	token_parser.c token_parser_utils.c
 	PIPELINE_FILES	:=	parse_pipeline.c parse_redirections.c \
 						parse_expansions.c parse_dollars.c execute_commands.c \
 						parse_tildes.c parse_quotes.c is_token.c \
