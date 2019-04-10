@@ -71,7 +71,8 @@ t_bool				handle_input(char *input, char **env);
 ** lexer.c
 */
 
-t_token				*create_token(char *cmdline, size_t size, t_token_type type);
+t_token				*create_token(char *cmdline, size_t size
+					, t_token_type type);
 t_bool				add_token_to_list(t_token *current_token
 					, t_token *prev_token, t_token **token_head);
 t_token				*lexer(char *cmdline, char **env);
@@ -82,9 +83,13 @@ t_token				*lexer(char *cmdline, char **env);
 
 t_bool				is_quotes(char c);
 t_bool				is_white_spaces(char c);
-t_bool				is_shell_char(char c);
 t_bool				is_delimiter(char c);
 t_bool				is_metachar(char c);
-t_bool				is_and_or_token(t_token *token);
+t_bool				is_logic_or_pipe(t_token *token);
+t_bool				is_two_ctrlop_or_redir_following(t_token *prev_token
+					, t_token *current_token);
+t_bool				token_list_start_with_ctrl_op(t_token *prev_token
+					, t_token *current_token);
+t_bool				is_redir_token(t_token *token);
 
 #endif

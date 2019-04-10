@@ -2,7 +2,7 @@
 #include "lexer.h"
 #include "ast.h"
 
-t_ast	*create_ast_node(t_token *new_token, t_ast *left, t_ast *right)
+static t_ast	*create_ast_node(t_token *new_token, t_ast *left, t_ast *right)
 {
 	t_ast	*new_node;
 
@@ -14,14 +14,14 @@ t_ast	*create_ast_node(t_token *new_token, t_ast *left, t_ast *right)
 	return (new_node);
 }
 
-t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
+static t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
 {
 	if (!(*ast_root = create_ast_node(new_token, *ast_root, NULL)))
 		return (0);
 	return (1);
 }
 
-t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
+static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 {
 	t_ast			*new_node;
 
@@ -42,20 +42,17 @@ t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 	}
 }
 
-t_bool	null_terminat_properly(t_token *token)
+static void	null_terminate_properly(t_token *token)
 {
-	if (!token)
-		return (0);
-	if (!(token->next))
-		return (1);
+	if (!token || !(token->next))
+		return ;
 	while (token->next->type == TK_EAT)
 		token = token->next;
-	ft_putendl("null terminating");//tmp
 	token->next = NULL;
-	return (1);
+	return ;
 }
 
-t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
+static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 {
 	t_token	*token_probe;
 	t_token	*token_prev;
@@ -66,24 +63,19 @@ t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	token_prev = NULL;
 	while (token_probe && !(is_ctrl_op_token(token_probe)))
 	{
-		if (token_probe->type != TK_EAT)//test
+		if (token_probe->type != TK_EAT)
 			token_prev = token_probe;
 		token_probe = token_probe->next;
 	}
-	if (!token_probe)//															end of token list
+	if (!token_probe)//end of token list
 	{
 		insert_ast_node(*token_head, ast_root);
-		*token_head = NULL;//check me
+		*token_head = NULL;
 		return (1);
 	}
-	else//																		i'm in a CTRL_OP
+	else//i'm on a CTRL_OP
 	{
-		if (*token_head == token_probe || !null_terminat_properly(token_prev))//verif if "&& &&"//useless if i check in lexer
-		{
-			ft_putstr("ICICI");
-			syntax_error_near(token_probe);
-			return (0);
-		}
+		null_terminate_properly(token_prev);
 		insert_ast_node(*token_head, ast_root);
 		*token_head = token_probe->next;
 		token_probe->next = NULL;

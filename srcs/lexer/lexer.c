@@ -29,14 +29,9 @@ t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 {
 	t_token	*probe;
 
-	if ((!prev_token && current_token->type > TK_HEREDOC)//						check if it start with CTRL_OP
-			|| (prev_token && (current_token->type > TK_DQ_STR//				check if 2 REDIR or CTRL_OP a la suite
-				&& prev_token->type > TK_DQ_STR)))//							""
-	{
-		printf("111\n");
-		syntax_error_near(current_token);
+	if (token_list_start_with_ctrl_op(prev_token, current_token)
+			|| is_two_ctrlop_or_redir_following(prev_token, current_token))
 		return (0);
-	}
 	if (prev_token && prev_token->type == TK_HEREDOC
 			&& current_token->type != TK_EAT)
 	{
@@ -55,6 +50,13 @@ t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 	return (1);
 }
 
+static void	init_lexer(t_operation **op_chart, t_token **token_head, t_token **prev_token)
+{
+	*op_chart = get_op_chart();
+	*token_head = NULL;
+	*prev_token = NULL;
+}
+
 t_token	*lexer(char *cmdline, char **env)
 {
 	t_token		*token_head;
@@ -62,36 +64,33 @@ t_token	*lexer(char *cmdline, char **env)
 	t_operation	*op_chart;
 	t_token		*prev_token;
 
-	op_chart = get_op_chart();
-	token_head = NULL;
-	prev_token = NULL;
+	init_lexer(&op_chart, &token_head, &prev_token);
 	while (cmdline && *cmdline)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
 		{
-			ERROR_MEM;//														check with a correct reader//check what happen on 'unquoted'
+			ERROR_MEM;//check with a correct reader//check what happen on 'unquoted'
 			return (NULL);
 		}
-		if (!(add_token_to_list(current_token, prev_token, &token_head)))//recover unexpexted delete*
+		if (!(add_token_to_list(current_token, prev_token, &token_head)))
 			return (NULL);//free token list
 		if (current_token->type != TK_EAT)
 			prev_token = current_token;
 	}
-	if (is_and_or_token(current_token)//check if cmdline end with '&&'
-			|| (is_and_or_token(prev_token) && !current_token->type))//			check if cmdline end with '&&' with only TK_EAT after
+	printf("prev: {%s}, curr: {%s}\n", prev_token->content, current_token->content);//debug
+	if (is_logic_or_pipe(current_token)
+			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
-		ft_putendl("tmp, tklst end with '&&' or '||': READ_MODE");
+		ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
 		return (NULL);//TMP
 	}
-	//test
 	//bash tokenise 'newline', it make easier to check "cat << <ENTER>"
-	else if (prev_token && (prev_token->type > TK_DQ_STR && (current_token->type == TK_EAT || current_token->type > TK_DQ_STR)))
+	else if (prev_token && is_redir_token(prev_token)
+			&& (!current_token->type || is_redir_token(current_token)))
 	{
-		ft_putendl("222");
+		ft_putstr("222");
 		syntax_error_near(current_token);
 		return (NULL);
 	}
-	//endtest
-	printf("prev: {%s}, curr: {%s}\n", prev_token->content, current_token->content);
 	return (token_head);
 }
