@@ -26,7 +26,7 @@ static t_token *get_next_simple_command(t_token *begin)
 **	the last command is never needed.
 */
 
-static int	fork_pipes(int num_simple_commands, t_token *begin)
+static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 {
 	int i; // num_simple_commands - 1 can decrement
 	int in;
@@ -49,7 +49,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
-			return (parse_expands(begin, in, fd[1]));
+			return (parse_expands(begin, in, fd[1], env));
 		}
 		else if (pid > 0)
 		{
@@ -67,7 +67,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 		return (0);
 	}
 	else if (pid == 0)
-		return (parse_expands(begin, in, STDOUT_FILENO));
+		return (parse_expands(begin, in, STDOUT_FILENO, env));
 	else
 	{
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
@@ -81,7 +81,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin)
 ** then hands the token list to fork_pipes to handle pipes.
 */
 
-int			parse_pipeline(t_token *token) // no need for t_pipelst ?
+int			parse_pipeline(t_token *token, char **env) // no need for t_pipelst ?
 {
 	int	num_simple_commands;
 	t_token *probe;
@@ -100,5 +100,5 @@ int			parse_pipeline(t_token *token) // no need for t_pipelst ?
 			num_simple_commands++;
 		}
 	}
-	return (fork_pipes(num_simple_commands, token));
+	return (fork_pipes(num_simple_commands, token, env));
 }

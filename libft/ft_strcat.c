@@ -6,7 +6,7 @@
 /*   By: penzo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 14:06:01 by penzo             #+#    #+#             */
-/*   Updated: 2018/11/20 20:39:01 by penzo            ###   ########.fr       */
+/*   Updated: 2019/04/11 21:25:10 by penzo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strcat(char *s1, const char *s2)
 	int		i;
 	int		s1_len;
 
+	if (!s2)
+		return (s1);
 	i = 0;
 	s1_len = ft_strlen(s1);
 	while (s2[i])

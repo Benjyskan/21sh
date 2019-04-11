@@ -47,7 +47,7 @@ t_ast			*create_ast(t_token *token_head);
 ** Pipeline parsing
 */
 
-int				parse_pipeline(t_token *token);
+int				parse_pipeline(t_token *token, char **env);
 void			redirect(int old_fd, int new_fd);
 
 t_bool			is_simple_cmd_token(t_token *probe);
@@ -61,9 +61,9 @@ t_bool			is_argv_token(t_token *probe);
 
 t_bool			parse_redirections(t_token *token_head);
 t_bool			is_quote_token(t_token *probe);
-t_bool			parse_tildes(t_token *token_head);
-t_bool			parse_expands(t_token *token_head, int in, int out);
-t_bool			parse_dollars(t_token *token_head);
+t_bool			parse_tildes(t_token *token_head, char **env);
+t_bool			parse_expands(t_token *token_head, int in, int out, char **env);
+t_bool			parse_dollars(t_token *token_head, char **env);
 t_bool			parse_quotes(t_token *token_head);
 t_bool			execute_tokens(t_token *token_head);
 
@@ -77,5 +77,5 @@ t_bool			is_ctrl_op_token(t_token *token);
 
 void			print_ast(t_ast *root);//debug
 
-t_bool			exec_ast(t_ast *ast_root);
+t_bool			exec_ast(t_ast *ast_root, char **env);
 #endif

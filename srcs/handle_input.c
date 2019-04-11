@@ -28,7 +28,7 @@ t_bool	handle_input(char *input, char **env)
 	}
 	printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	print_ast(ast_root);
-	exec_ast(ast_root);
+	exec_ast(ast_root, env);
 	//exec_ast
 	return (1);
 }

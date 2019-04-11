@@ -7,7 +7,7 @@ static t_bool	expand_dollars(t_token *token_head)
 	return (0);
 }
 
-t_bool			parse_dollars(t_token *token_head)
+t_bool			parse_dollars(t_token *token_head, char** env)
 {
 	t_bool	res;
 
