@@ -1,7 +1,7 @@
 #include "tosh.h"
 
-static void	create_op_chart_elem(t_operation *op, char *str,
-		unsigned char size, t_token_type type)
+static void	create_op_chart_elem(t_operation *op, char *str
+			, unsigned char size, t_token_type type)
 {
 	ft_strncpy(op->str, str, size + 1);
 	op->size = size;
@@ -42,7 +42,7 @@ t_operation	*get_op_chart(void)
 	return (op_chart);
 }
 
-t_token	*get_op_chart_token(char **cmdline, t_operation *op_chart)
+t_token		*get_op_chart_token(char **cmdline, t_operation *op_chart)
 {
 	int		i;
 	t_token	*token;
@@ -62,7 +62,7 @@ t_token	*get_op_chart_token(char **cmdline, t_operation *op_chart)
 	return (NULL);
 }
 
-void	print_op_table(t_operation *op_chart)//for debug
+void		print_op_table(t_operation *op_chart)//for debug
 {
 	int		i;
 

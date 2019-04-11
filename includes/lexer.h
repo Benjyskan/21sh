@@ -13,10 +13,22 @@
 
 typedef unsigned char	t_bool;
 
+/*
+** TK_EAT should always be 0
+** then in increasing order:
+** Words (simple word, Squot, Dquot, Monochar ?)
+** Redirections
+** Pipe
+** AND OR
+** AMP
+** SEMI
+*/
+
 typedef enum		e_token_type
 {
 	TK_EAT,
 	TK_WORD,//1
+	TK_MONOC,
 	TK_SQ_STR,
 	TK_DQ_STR,
 	TK_REDIRECTION,

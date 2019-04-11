@@ -73,8 +73,8 @@ t_bool				handle_input(char *input, char **env);
 
 t_token				*create_token(char *cmdline, size_t size
 					, t_token_type type);
-t_bool				add_token_to_list(t_token *current_token
-					, t_token *prev_token, t_token **token_head);
+//t_bool				add_token_to_list(t_token *current_token
+//					, t_token *prev_token, t_token **token_head);
 t_token				*lexer(char *cmdline, char **env);
 
 /*

@@ -24,8 +24,8 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 	return (new_token);
 }
 
-t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
-		, t_token **token_head)
+static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
+				, t_token **token_head)
 {
 	t_token	*probe;
 
@@ -50,7 +50,8 @@ t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 	return (1);
 }
 
-static void	init_lexer(t_operation **op_chart, t_token **token_head, t_token **prev_token)
+static void	init_lexer(t_operation **op_chart, t_token **token_head
+			, t_token **prev_token)
 {
 	*op_chart = get_op_chart();
 	*token_head = NULL;

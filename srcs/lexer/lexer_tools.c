@@ -33,7 +33,7 @@ t_bool	is_parenth(char c)
 t_bool	is_metachar(char c)
 {
 	if (is_white_spaces(c) || is_parenth(c) || is_quotes(c) || c  == '*'
-			|| c == '?' || c == '\\' || c == '$' || c == ';' || c == '&'
+			|| c == '?' || c == '\\' || c == ';' || c == '&'
 			|| c == '|' || c == '^' || c == '<' || c == '>')
 		return (1);
 	return (0);

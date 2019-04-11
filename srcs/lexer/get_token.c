@@ -51,6 +51,7 @@ static t_token	*get_regular_token(char **cmdline)
 	i = 0;
 	while ((*cmdline)[i] && !is_metachar((*cmdline)[i]))
 		i++;
+	ft_putendl("oups");
 	if (!(token = create_token(*cmdline, i, TK_WORD)))
 		return (NULL);
 	*cmdline = *cmdline + i;
@@ -62,7 +63,7 @@ static t_token	*get_monochar(char **cmdline)
 	t_token	*token;
 
 	(*cmdline)++;
-	if (!(token = create_token(*cmdline, 1, TK_WORD)))
+	if (!(token = create_token(*cmdline, 1, TK_MONOC)))
 		return (NULL);
 	//if '\''\n' continue reading ?
 	(*cmdline)++;
