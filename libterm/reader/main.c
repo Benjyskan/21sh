@@ -77,14 +77,13 @@ char	*input_loop(void)
 				continue ;
 			}
 			insert_str(&cmd_struct, buf, ret);
-//			ft_strncat(cmd_struct.cmd_line, buf, ret);//not good for cursor
 			execute_str(ERASE_ENDLINE);// should not be necessary if done right
 			ft_putstr_tty(&cmd_struct.cmd_line[cmd_struct.position]);
 			cmd_struct.current_data_size += ret;
 			cmd_struct.position += ret;
 			int i;
 			i = ft_strlen(&cmd_struct.cmd_line[cmd_struct.position]);
-			while (i)
+			while (i) // after write, puts cursor back to its previous position
 			{
 				ft_putstr_tty(LEFTARROW);
 				i--;
