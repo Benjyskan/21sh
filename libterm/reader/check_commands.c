@@ -69,7 +69,7 @@ int		check_for_delete(t_cmd_line *cmd_struct, char *buf)
 	if (ft_strncmp(buf, BACKSPACE, BACKSPACE_LEN + 1) == 0)
 	{
 		if (cmd_struct->position == 0)
-			return (0);
+			return (1);
 		shift_chars(&cmd_struct->cmd_line[cmd_struct->position - 1]);
 		move_arrow_left(cmd_struct);
 		execute_str(ERASE_ENDLINE);

@@ -11,6 +11,19 @@ IMPORTANT : or write char per char ??
 //	move_cursor(cmd_struct.start_pos.col, cmd_struct.start_pos.row);
 }*/
 
+void	insert_str(t_cmd_line *cmd_struct, char *buf, int ret)
+{
+	char *tmp;
+
+
+	if (!(tmp = ft_strdup(&cmd_struct->cmd_line[cmd_struct->position])))
+		return ; //ERROR_MEM;
+	ft_strcpy(&cmd_struct->cmd_line[cmd_struct->position + ret],
+			tmp);
+	ft_strncpy(&cmd_struct->cmd_line[cmd_struct->position], buf, ret);
+	free(tmp);
+}
+
 void	magic_print(char *buf)
 {
 	int	i;
@@ -22,6 +35,7 @@ void	magic_print(char *buf)
 		i++;
 	}
 }
+
 char	*input_loop(void)
 {
 	char	buf[BUF_SIZE + 1];
@@ -35,7 +49,7 @@ char	*input_loop(void)
 	cmd_struct.current_malloc_size = INIT_CMD_LINE_SIZE;
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct.window) == -1)
 	{
-		ft_dprintf(2, "Error ioctl");
+		ft_dprintf(2, "Error ioctl");//TODO
 		return (0);
 	}
 	cmd_struct.position = 0;
@@ -62,10 +76,19 @@ char	*input_loop(void)
 				*buf = 0;
 				continue ;
 			}*/
-			ft_strncat(cmd_struct.cmd_line, buf, ret);//not good for cursor
+			insert_str(&cmd_struct, buf, ret);
+//			ft_strncat(cmd_struct.cmd_line, buf, ret);//not good for cursor
+			execute_str(ERASE_ENDLINE);// should not be necessary if done right
 			ft_putstr_tty(&cmd_struct.cmd_line[cmd_struct.position]);
-			cmd_struct.position += ret;
 			cmd_struct.current_data_size += ret;
+			cmd_struct.position += ret;
+			int i;
+			i = ft_strlen(&cmd_struct.cmd_line[cmd_struct.position]);
+			while (i)
+			{
+				ft_putstr_tty(LEFTARROW);
+				i--;
+			}
 		}
 	}
 	// ret == 0 ? -1 ?

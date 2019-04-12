@@ -80,7 +80,7 @@ ask_libft:
 		fi
 
 fsa: $(SRCS) $(LIBS)
-	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB_INCL) $(SRCS) -o $(NAME)
+	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB_INCL) $(SRCS) reader/*.c -o $(NAME)
 	$(OPT) ./$(NAME)
 
 val: $(SRCS) $(LIBS)
