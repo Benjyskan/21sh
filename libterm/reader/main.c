@@ -71,11 +71,11 @@ char	*input_loop(void)
 		}
 		else
 		{
-/*			if (*buf == '\x1b') // do we want to be able to put escape codes ?
+			if (ret == 1 && *buf == '\x1b') // do we want to be able to put escape codes ?
 			{
 				*buf = 0;
 				continue ;
-			}*/
+			}
 			insert_str(&cmd_struct, buf, ret);
 //			ft_strncat(cmd_struct.cmd_line, buf, ret);//not good for cursor
 			execute_str(ERASE_ENDLINE);// should not be necessary if done right
