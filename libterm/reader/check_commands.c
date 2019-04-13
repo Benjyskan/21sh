@@ -2,11 +2,22 @@
 
 int		check_for_movement(t_cmd_line *cmd_struct, char *buf)
 {
+	int	i;
 	if (ft_strncmp(buf, RIGHTARROW, ARROW_LEN + 1) == 0)
 	{
 		if (cmd_struct->position < cmd_struct->current_data_size)
 		{
-			ft_putstr_tty(RIGHTARROW);
+			if (cmd_struct->cmd_line[cmd_struct->position] == '\t')
+			{
+				i = 0;
+				while (i < 4)
+				{
+					ft_putstr_tty(RIGHTARROW);
+					i++;
+				}
+			}
+			else
+				ft_putstr_tty(RIGHTARROW);
 			cmd_struct->position += 1;
 		}
 	}

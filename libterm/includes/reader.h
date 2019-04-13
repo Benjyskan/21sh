@@ -16,6 +16,7 @@ typedef struct	s_cmd_line {
 	t_pos			start_pos;
 	struct winsize	window;
 	size_t			position;
+	size_t			nb_lines;
 }				t_cmd_line;
 
 /*

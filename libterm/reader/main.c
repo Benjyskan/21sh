@@ -83,7 +83,7 @@ char	*input_loop(void)
 			cmd_struct.position += ret;
 			int i;
 			i = ft_strlen(&cmd_struct.cmd_line[cmd_struct.position]);
-			while (i) // after write, puts cursor back to its previous position
+			while (i) // after write, puts cursor back to its previous position doesn't work with \t
 			{
 				ft_putstr_tty(LEFTARROW);
 				i--;
