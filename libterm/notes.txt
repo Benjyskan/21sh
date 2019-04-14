@@ -21,3 +21,11 @@ prompt_size
 
 
 util function to place cursor according to line_pointer
+
+s a l u t \t
+1 1 1 1 1 4
+
+each line is a : chained list of structs that contain a char* and a disp_size
+read byte per byte
+disp_size = read, write, check if we have moved. Does not work with tabs.
+
