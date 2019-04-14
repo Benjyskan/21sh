@@ -15,7 +15,7 @@ static t_bool	expand_squotes(t_token *token_head)
 		old_content = token_head->content;
 		if (!(token_head->content = ft_strndup((const char*)&(*(token_head->content + 1)), ft_strlen(token_head->content) - 2)))
 			ERROR_MEM;
-		//do stuff
+		//do stuff: rien a faire ?
 		free(old_content);
 		return (1);
 	}
@@ -27,32 +27,6 @@ static t_bool	is_valid_dquotes_escape(char c)
 		return (1);
 	return (0);
 }
-
-/*
-static t_bool	expand_dquotes(t_token	*token_head)
-{
-	char	*old_content;
-	size_t	i;
-
-	old_content = token_head->content;
-	if (!(token_head->content = ft_strndup((const char*)&(*(token_head->content + 1)), ft_strlen(token_head->content) - 2)))
-		ERROR_MEM;
-	//<backslash> should escape only when followed by {$,`,",\,<newline>}
-	//do stuff
-	i = 1;
-	while (token_head->content[i] < ft_strlen)
-	{
-		if (token_head->content[i] == '\\' && is_valid_dquotes_escape(token_head->content[i + 1]))
-		{
-			ft_putendl("ESCAPE");
-
-		}
-		i++;
-	}
-	ft_memdel((void*)&old_content);
-	return (1);
-}
-*/
 
 static size_t	get_new_len(char *str, size_t old_len)
 {

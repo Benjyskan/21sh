@@ -70,14 +70,14 @@ int		main(int argc, char **argv, char **env)
 		if (!(input = ft_strnew(BUF_SIZE)))
 		{
 			ft_free_nultab(env_cpy);
-			return (EXIT_FAILURE);//TODO free env
+			return (EXIT_FAILURE);
 		}
 		read_stdin(&input, env_cpy);
 		//store input in history here
 		if (is_full_of_whitespaces(input))
 		{
 			ft_memdel((void*)&input);
-			continue;
+			continue ;
 		}
 		if (!(handle_input(input, env_cpy)))
 			ft_memdel((void*)&input);

@@ -56,6 +56,13 @@ t_token			**get_argv_from_tokens(t_token *token);
 t_bool			is_argv_token(t_token *probe);
 
 /*
+** free
+*/
+
+void				free_ast(t_ast *ast_root);
+void				free_token_list(t_token *token_head);
+
+/*
 ** Redirections parsing
 */
 

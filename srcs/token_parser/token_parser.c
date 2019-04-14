@@ -32,6 +32,8 @@ static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 		*ast_root = new_node;
 		return (1);
 	}
+	ft_memdel((void*)&new_node);//test
+	ft_putendl("freeing new node");//test
 	if (new_token->type  >= (*ast_root)->token->type)
 		return (reroot_ast(new_token, ast_root));
 	else

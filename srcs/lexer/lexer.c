@@ -50,6 +50,11 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 	return (1);
 }
 
+/*
+** init_lexer
+** set the variables the lexer needs
+*/
+
 static void	init_lexer(t_operation **op_chart, t_token **token_head
 			, t_token **prev_token)
 {
@@ -57,6 +62,11 @@ static void	init_lexer(t_operation **op_chart, t_token **token_head
 	*token_head = NULL;
 	*prev_token = NULL;
 }
+
+/*
+** lexer
+** run through the cmdline and tokenize it
+*/
 
 t_token	*lexer(char *cmdline, char **env)
 {

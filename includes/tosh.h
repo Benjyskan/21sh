@@ -9,6 +9,7 @@
 # include <sys/syslimits.h>
 # include "libft.h"
 # include "lexer.h"
+# include "ast.h"
 # define BUF_SIZE 128
 # define SHELL_NAME "my_sh"
 # define FD_LIMITS 10

@@ -35,8 +35,8 @@ static char		*substitute_env_var(char *old_str, size_t *i
 	ft_strncpy(new_str, old_str, *i);
 	ft_strcpy(new_str + *i, var_value);
 	*i += ft_strlen(var_value);
-	ft_strcpy(new_str + *i, old_str + *i
-			- ft_strlen(var_value) + (ft_strlen(var_name) + 1));
+	ft_strcpy(new_str + *i
+			, old_str + *i - ft_strlen(var_value) + (ft_strlen(var_name) + 1));
 	--(*i);
 	ft_memdel((void*)&old_str);
 	ft_memdel((void*)&var_name);

@@ -20,6 +20,8 @@ t_bool	handle_input(char *input, char **env)
 		return (0);//check me
 	}
 	printf("### lexer SUCCESS\n");
+	printf("POST LEXER: input: {%s}\n", input);
+	ft_memdel((void*)&input);
 	print_token_list(token_head);
 	if (!(ast_root = create_ast(token_head)))
 	{
@@ -29,6 +31,8 @@ t_bool	handle_input(char *input, char **env)
 	printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	print_ast(ast_root);
 	exec_ast(ast_root, env);
-	//exec_ast
+	ft_putendl("THE END");
+	free_ast(ast_root);
+	//print_ast(ast_root);
 	return (1);
 }
