@@ -9,30 +9,34 @@
 # define CTRL_D "\x04"
 # define CTRL_C "\x03"
 
-typedef struct	s_cmd_line {
-	char			*cmd_line;
-	size_t			current_data_size;
-	size_t			current_malloc_size;
+typedef struct	s_input {
 	t_pos			start_pos;
 	struct winsize	window;
-	size_t			position;
-	size_t			nb_lines;
-}				t_cmd_line;
+	struct t_line	**line;
+}				t_input;
+
+typedef struct	s_line {
+	char			*data;
+	int				disp_size;
+	int				selected;
+	struct s_line	*next;
+	struct s_line	*prev;
+}				t_line;
 
 /*
 **	Input checking
 */
 
-int		check_for_movement(t_cmd_line *cmd_struct, char *buf);
+int		check_for_movement(t_input *input, char *buf);
 int		check_for_quit(char *buf);
 int		check_for_signal(char *buf);
-int		check_for_delete(t_cmd_line *cmd_struct, char *buf);
+int		check_for_delete(t_input *input, char *buf);
 
 /*
 **	Arrow movement
 */
 
-void	move_arrow_left(t_cmd_line *cmd_struct);
+//void	move_arrow_left(t_cmd_line *cmd_struct);
 
 void	clean_exit(int exitno);
 #endif

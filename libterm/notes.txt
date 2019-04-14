@@ -29,3 +29,17 @@ each line is a : chained list of structs that contain a char* and a disp_size
 read byte per byte
 disp_size = read, write, check if we have moved. Does not work with tabs.
 
+
+struct global_input
+	struct window	window_size;
+	t_pos			starting_position;
+	struct t_line	**line;
+
+struct s_line
+	char			*data;
+	int				disp_size;
+	t_bool			selected;
+	struct s_line	*next;
+	struct s_line	*prev;
+
+in the end, simply append all s_lines->data
