@@ -59,8 +59,6 @@ static t_bool	expand_dquotes(t_token	*token_head)
 	if (!(new_str = ft_strnew(get_new_len(token_head->content, old_len))))
 		ERROR_MEM;
 	i = 1;
-	//while (token_head->content[i] < old_len - 1)
-	//while (i < old_len - 1)
 	while (i < new_len + 1)
 	{
 		if (token_head->content[i] == '\\' && is_valid_dquotes_escape(token_head->content[i + 1]))
@@ -69,12 +67,11 @@ static t_bool	expand_dquotes(t_token	*token_head)
 			token_head->content++;//degueu, can't free
 		}
 		new_str[i - 1] = token_head->content[i];
-		printf("NEW_STR: {%s}\n", new_str);
+		//printf("NEW_STR: {%s}\n", new_str);
 		i++;
 	}
 	//ft_memdel((void*)&token_head->content);//can't cause i moved the pointer
 	token_head->content = new_str;
-	ft_putendl("YOUPI");
 	return (1);//tmp
 }
 

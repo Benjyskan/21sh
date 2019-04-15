@@ -39,19 +39,17 @@ t_bool	parse_tildes(t_token *token_head, char **env)
 	
 	curr_token = token_head;
 	prev_token = NULL;
-	ft_putendl("##########in Parse_tildes");
+	//ft_putendl("##########in Parse_tildes");
 	while (curr_token)
 	{
 		if (curr_token->type == TK_WORD && is_valid_tilde(curr_token, prev_token))//~ doesn't expand in ""
 		{
-			printf("OUAI, {%s}\n", curr_token->content);
 			if (!replace_tilde(&curr_token->content, env))
 				return (0);
-			printf("NOW: {%s}\n", curr_token->content);
 		}
 		prev_token = curr_token;
 		curr_token = curr_token->next;
 	}
-	ft_putendl("################");
+	//ft_putendl("################");
 	return (1);//tmp
 }

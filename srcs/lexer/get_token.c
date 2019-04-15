@@ -19,7 +19,7 @@ static t_token	*get_dquot_token(char **cmdline)
 		return (NULL);
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_DQ_STR)))
-		return (NULL);
+		return (NULL);//ERROR_MEM
 	*cmdline = *cmdline + i;
 	return (token);
 }
@@ -35,7 +35,7 @@ static t_token	*get_squot_token(char **cmdline)
 	if ((*cmdline)[i] == 0)
 	{
 		ft_putendl_fd("Unmatched '. READ_MODE PLZ", 2);
-		return (NULL);
+		return (NULL);//ERROR_MEM
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_SQ_STR)))
 		return (NULL);
@@ -51,7 +51,6 @@ static t_token	*get_regular_token(char **cmdline)
 	i = 0;
 	while ((*cmdline)[i] && !is_metachar((*cmdline)[i]))
 		i++;
-	ft_putendl("oups");
 	if (!(token = create_token(*cmdline, i, TK_WORD)))
 		return (NULL);
 	*cmdline = *cmdline + i;

@@ -13,7 +13,7 @@ t_bool	exec_ast(t_ast *root, char **env)
 {
 	if (!root)
 		dprintf(2, "Error: NULL node\n");
-	if (root->token->type == TK_SEMI)
+	if (root->token->type == TK_SEMI)//TK_AMP
 	{
 		exec_ast(root->left, env);
 		if (root->right)//penzo added this
