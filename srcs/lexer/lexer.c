@@ -93,6 +93,9 @@ t_token	*lexer(char *cmdline, char **env)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
 		ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
+		//read_more
+		//concat cmdline + read_more
+		//redo
 		return (NULL);//TMP
 	}
 	//bash tokenise 'newline', it make easier to check "cat << <ENTER>"
