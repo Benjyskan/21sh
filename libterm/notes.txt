@@ -1,3 +1,5 @@
+DOES NOT SUPPORT UNICODE OR TABS;
+
 Each lines has a struct corresponding to it.
 The input_cmd is a list of those structs.
 
@@ -5,7 +7,7 @@ A chained list of cmd_line structs. Doubly linked (move up and down);
 Data we need :
 	window size;
 	starting position
-	char *cmd_line
+	char *txt;
 	current_malloc_size;
 	current_data_size;
 	line_pointer;

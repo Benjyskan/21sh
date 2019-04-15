@@ -1,27 +1,16 @@
 #include "reader.h"
 
-void	move_arrow_left(t_cmd_line *cmd_struct)
+void	move_arrow_left(t_cmd_struct *cmd_struct)
 {
-	int i;
-
-	if (cmd_struct->position > 0)
+	if (cmd_struct->tracker > 0)
 	{
-		if (cmd_struct->cmd_line[cmd_struct->position] == '\t')
-		{
-			i = 0;
-			while (i < 4)
-			{
-				ft_putstr_tty(LEFTARROW);
-				i++;
-			}
-		}
-		else
-			ft_putstr_tty(LEFTARROW);
-		cmd_struct->position--;
+		cmd_struct->tracker--;
+		reposition_cursor(cmd_struct);
 	}
+	//else: error
 }
 
-void	move_vertically(t_cmd_line *cmd_struct, char *direction)
+void	move_vertically(t_cmd_struct *cmd_struct, char *direction)
 {
 	(void)cmd_struct;
 	if (ft_strncmp(direction, "up", 3) == 0)
