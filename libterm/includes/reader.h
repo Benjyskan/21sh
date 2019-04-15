@@ -4,7 +4,8 @@
 # include "libterm.h"
 # include <sys/ioctl.h>
 # define BUF_SIZE 4
-# define INIt_cmd_struct_SIZE 32
+# define PROMPT_SIZE
+# define INIT_TXT_SIZE 32
 # define CTRL_Z "\x1a"
 # define CTRL_D "\x04"
 # define CTRL_C "\x03"

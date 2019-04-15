@@ -1,5 +1,25 @@
 #include "reader.h"
 
+void	magic_print(char *buf)
+{
+	int	i;
+
+	i = 0;
+	execute_str(SAVE_CURSOR);
+	move_cursor(0, 0);
+	while (i < BUF_SIZE + 1)
+	{
+		ft_dprintf(2, "%-3d ", buf[i]);
+		i++;
+	}
+	execute_str(RESTORE_CURSOR);
+}
+
+void		update_pos(t_cmd_struct *cmd_struct)
+{
+	cmd_struct->start_pos.row--;
+}
+
 void		reposition_cursor(t_cmd_struct *cmd_struct)
 {
 	int	row;
@@ -7,6 +27,13 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 
 	row = cmd_struct->start_pos.row + (2 + cmd_struct->tracker) / cmd_struct->window.ws_col;
 	col = cmd_struct->start_pos.col + (2 + cmd_struct->tracker) % cmd_struct->window.ws_col;
+	while (row > cmd_struct->window.ws_row)
+	{
+		execute_str(SCROLL_DOWN);
+		update_pos(cmd_struct);
+		row = cmd_struct->start_pos.row + (2 + cmd_struct->tracker) / cmd_struct->window.ws_col;
+		col = cmd_struct->start_pos.col + (2 + cmd_struct->tracker) % cmd_struct->window.ws_col;
+	}
 	move_cursor(col, row);
 }
 
@@ -23,21 +50,6 @@ void	insert_str(t_cmd_struct *cmd_struct, char *buf, int ret)
 	free(tmp);
 }
 
-void	magic_print(char *buf)
-{
-	int	i;
-
-	i = 0;
-	execute_str(SAVE_CURSOR);
-	move_cursor(0, 0);
-	while (i < 5)
-	{
-		ft_dprintf(2, "%-3d ", buf[i]);
-		i++;
-	}
-	execute_str(RESTORE_CURSOR);
-}
-
 void		print_prompt(void)
 {
 	ft_putstr_tty("$>");
@@ -50,11 +62,11 @@ char	*input_loop(void)
 	int		ret;
 
 	// need initalization for cmd_struct;
-	if (!(cmd_struct.txt = ft_strnew(INIt_cmd_struct_SIZE)))
+	if (!(cmd_struct.txt = ft_strnew(INIT_TXT_SIZE)))
 		return (NULL); //error
 	cmd_struct.current_data_size = 0;
 	retrieve_pos(&cmd_struct.start_pos);
-	cmd_struct.current_malloc_size = INIt_cmd_struct_SIZE;
+	cmd_struct.current_malloc_size = INIT_TXT_SIZE;
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct.window) == -1)
 	{
 		ft_dprintf(2, "Error ioctl");//TODO
@@ -67,6 +79,7 @@ char	*input_loop(void)
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
+		//magic_print(buf);
 		cmd_struct.txt = ft_realloc(cmd_struct.txt, cmd_struct.current_data_size, &cmd_struct.current_malloc_size, ret);
 		if (check_for_arrows(&cmd_struct, buf) || check_for_signal(buf)
 		|| check_for_quit(buf) || check_for_delete(&cmd_struct, buf))

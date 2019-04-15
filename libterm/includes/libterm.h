@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/11 14:12:28 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/15 20:05:42 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@
 # define BACKSPACE_LEN 1
 # define DEL "\x1b\x5b\x33\x7e"
 # define DEL_LEN 4
+# define HOME "\x1b\x5b\x48"
+# define HOME_LEN 3
+
+# define END "\x1b\x5b\x46"
+# define END_LEN 3
+
+
 
 /*
 ** Previous terminal settings are saved in a global, and restored on exit.

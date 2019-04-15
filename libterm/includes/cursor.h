@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/11 19:37:16 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/15 19:41:00 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # define NO_HIGHLIGHT "se"
 # define UNDERLINE "us"
 # define NO_UNDERLINE "ue"
-# define NUM_CAPS 15
+# define SCROLL_DOWN "sf"
+# define NUM_CAPS 16
 
 typedef struct	s_pos {
 	int	row;
