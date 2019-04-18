@@ -9,6 +9,7 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 	if (!(new_token = (t_token*)malloc(sizeof(t_token))))
 	{
 		ft_putendl_fd("malloc failed in create_token", STDERR_FILENO);
+		//ERROR_MEM;
 		return (NULL);
 	}
 	new_token->size = size;
@@ -18,9 +19,9 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 	{
 		ft_memdel((void*)&new_token);
 		ft_putendl_fd("malloc failed in create_token", STDERR_FILENO);
+		//ERROR_MEM;
 		return (NULL);
 	}
-	//print_token(new_token);//debug
 	return (new_token);
 }
 
@@ -36,6 +37,7 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 			&& current_token->type != TK_EAT)
 	{
 		printf("HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
+		system("read -p \"press ENTER to continue\"");
 		//bash:syntax error near unexpected token `newline'; should i tokenise '\n' ??
 	}
 	if (!(*token_head))
@@ -50,6 +52,11 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 	return (1);
 }
 
+/*
+** init_lexer
+** set the variables the lexer needs
+*/
+
 static void	init_lexer(t_operation **op_chart, t_token **token_head
 			, t_token **prev_token)
 {
@@ -58,40 +65,40 @@ static void	init_lexer(t_operation **op_chart, t_token **token_head
 	*prev_token = NULL;
 }
 
-t_token	*lexer(char *cmdline, char **env)
+/*
+** lexer
+** run through the cmdline and tokenize it
+*/
+
+int		lexer(char *cmdline, t_token **token_head, char **env)
 {
-	t_token		*token_head;
 	t_token		*current_token;
 	t_operation	*op_chart;
 	t_token		*prev_token;
 
-	init_lexer(&op_chart, &token_head, &prev_token);
+	init_lexer(&op_chart, token_head, &prev_token);
 	while (cmdline && *cmdline)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
-		{
-			ERROR_MEM;//check with a correct reader//check what happen on 'unquoted'
-			return (NULL);
-		}
-		if (!(add_token_to_list(current_token, prev_token, &token_head)))
-			return (NULL);//free token list
+			return (LEX_CONT_READ);
+		if (!(add_token_to_list(current_token, prev_token, token_head)))
+			return (LEX_FAIL);//free token list
 		if (current_token->type != TK_EAT)
 			prev_token = current_token;
 	}
-	printf("prev: {%s}, curr: {%s}\n", prev_token->content, current_token->content);//debug
 	if (is_logic_or_pipe(current_token)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
 		ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
-		return (NULL);//TMP
+		return (LEX_CONT_READ);//TMP
 	}
 	//bash tokenise 'newline', it make easier to check "cat << <ENTER>"
 	else if (prev_token && is_redir_token(prev_token)
 			&& (!current_token->type || is_redir_token(current_token)))
 	{
-		ft_putstr("222");
-		syntax_error_near(current_token);
-		return (NULL);
+		ft_putstr("222 ");
+		syntax_error_near(current_token);//tokenise newline ??
+		return (LEX_FAIL);
 	}
-	return (token_head);
+	return (LEX_SUCCESS);
 }

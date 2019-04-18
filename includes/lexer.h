@@ -58,6 +58,13 @@ typedef struct		s_operation
 	t_token_type	type;
 }					t_operation;
 
+typedef enum		s_lexer_state
+{
+	LEX_FAIL,
+	LEX_SUCCESS,
+	LEX_CONT_READ
+}					t_lexer_state;
+
 //DEBUG TEJME
 void	print_token(t_token *token);
 void	print_token_list(t_token *token_head);

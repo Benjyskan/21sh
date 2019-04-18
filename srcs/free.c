@@ -1,23 +1,28 @@
 #include "tosh.h"
+#include "lexer.h"
+#include "ast.h"
 
-/*
-void	free_cmdlst(t_cmdlst *cmdlst_head)
+void	free_token_list(t_token *token_head)
 {
-	t_cmdlst	*probe;
-	t_cmdlst	*prev;
+	t_token	*probe;
 
-	if (!cmdlst_head)
-		return ;
-	probe = cmdlst_head;
-	prev = cmdlst_head;
-	while (probe->next)
+	probe = token_head;
+	while (probe)
 	{
-		ft_memdel((void*)&probe->cmdline);
 		probe = probe->next;
-		ft_memdel((void*)&prev);
-		prev = probe;
+		free(token_head->content);
+		ft_memdel((void*)&token_head);
+		token_head = probe;
 	}
-	ft_memdel((void*)&probe->cmdline);
-	ft_memdel((void*)&prev);
+	ft_putendl("end of free_token_list");
 }
-*/
+
+void	free_ast(t_ast *ast_root)
+{
+	if (ast_root->left)
+		free_ast(ast_root->left);
+	//do stuff
+	free_token_list(ast_root->token);
+	if (ast_root->right)
+		free_ast(ast_root->right);
+}

@@ -15,7 +15,7 @@ VAL_FLAGS	:=	--leak-check=full --track-origins=yes --show-leak-kinds=all \
 INCL_DIR	:=	includes libft #libft needed ?
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h #needed ? lexer.h ast.h
+INCL_FILES	:=	tosh.h lexer.h ast.h
 
 LIB_INCL	:=	-Llibft -lft
 LIBFT_A		:=	libft/libft.a
