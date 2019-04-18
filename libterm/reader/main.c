@@ -1,5 +1,21 @@
 #include "reader.h"
 
+size_t	ft_print_len(const char *s1)
+{
+	size_t	i;
+	size_t	res;
+
+	i = 0;
+	res = 0;
+	while (s1[i])
+	{
+		if (ft_isprint(s1[i]))
+			res++;
+		i++;
+	}
+	return (res);
+}
+
 void	magic_print(char *buf)
 {
 	int	i;
@@ -37,18 +53,41 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 	move_cursor(col, row);
 }
 
-void	insert_str(t_cmd_struct *cmd_struct, char *buf, int ret)
+char	*ft_strdup_print(const char *s1)
 {
-	char *tmp;
+	char	*res;
+	size_t	len;
+	size_t	i;
+	
+	i = 0;
+	if (!(res = ft_strnew(ft_print_len(s1))))
+		return (NULL);
+	i = 0;
+	len = 0;
+	while (s1[i])
+	{
+		if (ft_isprint(s1[i]))
+		{
+			res[len] = s1[i];
+			len++;
+		}
+		i++;
+	}
+	return (res);
+}
 
+void	insert_str(t_cmd_struct *cmd_struct, char *buf, size_t print_len)
+{
+	char	*tmp;
 
-	if (!(tmp = ft_strdup(&cmd_struct->txt[cmd_struct->tracker])))
+	if (!(tmp = ft_strdup_print(&cmd_struct->txt[cmd_struct->tracker])))
 		return ; //ERROR_MEM;
-	ft_strcpy(&cmd_struct->txt[cmd_struct->tracker + ret],
+	ft_strcpy(&cmd_struct->txt[cmd_struct->tracker + print_len],
 			tmp);
-	ft_strncpy(&cmd_struct->txt[cmd_struct->tracker], buf, ret);
+	ft_strncpy(&cmd_struct->txt[cmd_struct->tracker], buf, print_len);
 	free(tmp);
 }
+
 
 void		print_prompt(void)
 {
@@ -60,6 +99,7 @@ char	*input_loop(void)
 	char	buf[BUF_SIZE + 1];
 	t_cmd_struct cmd_struct;
 	int		ret;
+	size_t	print_len;
 
 	// need initalization for cmd_struct;
 	if (!(cmd_struct.txt = ft_strnew(INIT_TXT_SIZE)))
@@ -79,12 +119,11 @@ char	*input_loop(void)
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
-		//magic_print(buf);
-		cmd_struct.txt = ft_realloc(cmd_struct.txt, cmd_struct.current_data_size, &cmd_struct.current_malloc_size, ret);
+		magic_print(buf);
 		if (check_for_arrows(&cmd_struct, buf) || check_for_signal(buf)
 		|| check_for_quit(buf) || check_for_delete(&cmd_struct, buf))
 			continue ;
-		else if ((ft_strncmp(buf, "\r", 2) == 0) || ft_strncmp(buf, "\t", 2) == 0)
+		else if ((ft_strncmp(buf, "\r", 2) == 0) || ft_strncmp(buf, "\t", 2) == 0 || ft_strncmp(buf, "\x0b", 2) == 0)
 			break ;
 		else if (ft_strncmp(buf, CTRL_C, 2) == 0)
 		{
@@ -92,15 +131,19 @@ char	*input_loop(void)
 			cmd_struct.txt = NULL;
 			break ;
 		}
-		else if (buf[0] < 0)
+		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
 		else
 		{
-			insert_str(&cmd_struct, buf, ret);
+			print_len = ft_print_len(buf);
+			cmd_struct.txt = ft_realloc(cmd_struct.txt,
+					cmd_struct.current_data_size,
+					&cmd_struct.current_malloc_size, ret);
+			insert_str(&cmd_struct, buf, print_len);
 			execute_str(ERASE_ENDLINE);// should not be necessary if done right
 			ft_putstr_tty(&cmd_struct.txt[cmd_struct.tracker]);
-			cmd_struct.current_data_size += ret;
-			cmd_struct.tracker += ret;
+			cmd_struct.current_data_size += print_len;
+			cmd_struct.tracker += print_len;
 		}
 		reposition_cursor(&cmd_struct);
 	}

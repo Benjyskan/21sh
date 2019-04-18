@@ -7,7 +7,8 @@ void	move_arrow_left(t_cmd_struct *cmd_struct)
 		cmd_struct->tracker--;
 		reposition_cursor(cmd_struct);
 	}
-	//else: error
+	else
+		ft_putstr_tty(BELL);
 }
 
 void	move_vertically(t_cmd_struct *cmd_struct, char *direction)
