@@ -38,19 +38,23 @@ void		update_pos(t_cmd_struct *cmd_struct)
 
 void		reposition_cursor(t_cmd_struct *cmd_struct)
 {
-	int	row;
-	int	col;
+	int	max_row;
+	int	max_col;
+	int	current_row;
+	int	current_col;
 
-	row = cmd_struct->start_pos.row + (2 + cmd_struct->tracker) / cmd_struct->window.ws_col;
-	col = cmd_struct->start_pos.col + (2 + cmd_struct->tracker) % cmd_struct->window.ws_col;
-	while (row > cmd_struct->window.ws_row)
+	max_row = cmd_struct->start_pos.row + (2 + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
+	max_col = cmd_struct->start_pos.col + (2 + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
+	while (max_row > cmd_struct->window.ws_row)
 	{
 		execute_str(SCROLL_DOWN);
 		update_pos(cmd_struct);
-		row = cmd_struct->start_pos.row + (2 + cmd_struct->tracker) / cmd_struct->window.ws_col;
-		col = cmd_struct->start_pos.col + (2 + cmd_struct->tracker) % cmd_struct->window.ws_col;
+		max_row = cmd_struct->start_pos.row + (2 + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
+		max_col = cmd_struct->start_pos.col + (2 + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
 	}
-	move_cursor(col, row);
+	current_row = cmd_struct->start_pos.row + (2 + cmd_struct->tracker) / cmd_struct->window.ws_col;
+	current_col = cmd_struct->start_pos.col + (2 + cmd_struct->tracker) % cmd_struct->window.ws_col;
+	move_cursor(current_col, current_row);
 }
 
 char	*ft_strdup_print(const char *s1)
