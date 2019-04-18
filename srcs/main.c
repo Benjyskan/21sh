@@ -31,17 +31,18 @@ int		main(int argc, char **argv, char **env)
 	while (42)
 	{
 		if (!(input = input_loop()))
-			break ; // free env, free char *
+			break ; // free env
 		//store input in history here
 		if (is_full_of_whitespaces(input))
 		{
 			ft_memdel((void*)&input);
-			continue; //TODO: free char *
+			continue ;
 		}
-		if (!(handle_input(input, env_cpy)))
+		if (!handle_input(input, env_cpy))
 			ft_memdel((void*)&input);
 	}
 	ft_free_ntab(env_cpy);
+	print_line();
 	if (reset_terminal_settings())
 		return (EXIT_FAILURE);
 	else

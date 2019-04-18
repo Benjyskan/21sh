@@ -124,8 +124,11 @@ char	*input_loop(void)
 		if (check_for_arrows(&cmd_struct, buf) || check_for_signal(buf)
 		|| check_for_quit(buf) || check_for_delete(&cmd_struct, buf))
 			continue ;
-		else if ((ft_strncmp(buf, "\r", 2) == 0) || ft_strncmp(buf, "\t", 2) == 0 || ft_strncmp(buf, "\x0b", 2) == 0)
+		else if ((ft_strncmp(buf, "\r", 2) == 0))
+		{
+			print_line();
 			break ;
+		}
 		else if (ft_strncmp(buf, CTRL_C, 2) == 0)
 		{
 			free(cmd_struct.txt);
