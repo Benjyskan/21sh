@@ -37,7 +37,7 @@ void	read_more(char **input)
 ** handle_input
 ** should pass the inputed cmdline through the lexer to get a token list;
 ** then create the ast with the token list
-** then execute the ast ?
+** then execute the ast
 */
 
 t_bool	handle_input(char *input, char **env)
@@ -48,6 +48,7 @@ t_bool	handle_input(char *input, char **env)
 
 	while ((lexer_ret = lexer(input, &token_head, env)) == LEX_CONT_READ)
 	{
+		//free token list ?
 		read_more(&input);
 		printf("NEW_INPUT: {%s}\n", input);
 	}

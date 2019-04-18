@@ -76,7 +76,6 @@ t_bool			parse_dollars(t_token *token_head, char** env)
 	t_bool	res;
 
 	res = 0;
-	//ft_putendl("####in parse_dollars########");
 	while (token_head && token_head->type < TK_PIPE)
 	{
 		if (token_head->type == TK_WORD || token_head->type == TK_DQ_STR)
@@ -86,6 +85,5 @@ t_bool			parse_dollars(t_token *token_head, char** env)
 		}
 		token_head = token_head->next;
 	}
-	//ft_putendl("###end parse_dollars########");
 	return (res);
 }

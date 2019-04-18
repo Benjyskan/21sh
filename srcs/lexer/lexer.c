@@ -80,10 +80,7 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	while (cmdline && *cmdline)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
-		{
-			ft_putendl("READ unquoted");
 			return (LEX_CONT_READ);
-		}
 		if (!(add_token_to_list(current_token, prev_token, token_head)))
 			return (LEX_FAIL);//free token list
 		if (current_token->type != TK_EAT)

@@ -14,7 +14,7 @@ t_bool		is_argv_token(t_token *probe)
 {
 	if (!probe)
 		return (0);
-	if (probe->type == TK_WORD || is_quote_token(probe))
+	if (probe->type > TK_EAT &&  probe->type < TK_PIPE)
 		return (1);
 	return (0);
 }
