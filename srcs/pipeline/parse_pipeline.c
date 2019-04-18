@@ -72,6 +72,8 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 	{
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
 			;
+		if (setup_terminal_settings() == 0)
+			exit(1); // ? 
 		return (WEXITSTATUS(status));
 	}
 }
