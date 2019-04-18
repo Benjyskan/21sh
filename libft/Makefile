@@ -3,7 +3,7 @@
 NAME	:=	libft.a
 OPT		:=	
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra
+CFLAGS	:=	-Wall -Wextra -Werror
 
 DEBUG_FLAG	:=	-g
 FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
@@ -69,7 +69,8 @@ SRC_FILES	:=	ft_printf.c getters.c isprint_special.c parse_struct.c			\
 							ft_strncmp.c ft_strncpy.c ft_strnequ.c ft_strnew.c	\
 							ft_strrchr.c ft_strrev.c ft_strsplit.c ft_strstr.c	\
 							ft_strtrim.c ft_tolower.c ft_toupper.c ft_itoa.c	\
-							ft_putchar_err.c ft_free_null_tab.c ft_realloc.c
+							ft_putchar_err.c ft_free_ntab.c ft_realloc.c		\
+							ft_dup_ntab.c ft_ntab_len.c ft_strndup.c
 	CONVERSION_FILES	:=	conv_helper.c converters.c
 	FORMATS_FILES		:=	format_int.c format_char.c format_unsigned.c		\
 							format_string.c format_conv.c format_p.c			\

@@ -8,8 +8,10 @@
 # include <limits.h>
 # include <sys/syslimits.h>
 # include "libft.h"
+# include "libterm.h"
 
 # define ERROR_MEM error_mem();
+# define OP_CHART_SIZE 22
 
 typedef unsigned char	t_bool;
 
@@ -37,7 +39,6 @@ typedef struct		s_token
 	struct s_token	*next;
 }					t_token;
 
-# define OP_CHART_SIZE 22
 
 typedef struct		s_operation
 {

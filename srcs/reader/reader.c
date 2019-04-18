@@ -38,22 +38,24 @@ void		update_pos(t_cmd_struct *cmd_struct)
 
 void		reposition_cursor(t_cmd_struct *cmd_struct)
 {
-	int	max_row;
-	int	max_col;
-	int	current_row;
-	int	current_col;
+	int		max_row;
+	int		max_col;
+	int		current_row;
+	int		current_col;
+	size_t	prompt_size;
 
-	max_row = cmd_struct->start_pos.row + (2 + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
-	max_col = cmd_struct->start_pos.col + (2 + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
+	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) + 2 : 2;
+	max_row = cmd_struct->start_pos.row + (prompt_size + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
+	max_col = cmd_struct->start_pos.col + (prompt_size + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
 	while (max_row > cmd_struct->window.ws_row)
 	{
 		execute_str(SCROLL_DOWN);
 		update_pos(cmd_struct);
-		max_row = cmd_struct->start_pos.row + (2 + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
-		max_col = cmd_struct->start_pos.col + (2 + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
+		max_row = cmd_struct->start_pos.row + (prompt_size + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
+		max_col = cmd_struct->start_pos.col + (prompt_size + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
 	}
-	current_row = cmd_struct->start_pos.row + (2 + cmd_struct->tracker) / cmd_struct->window.ws_col;
-	current_col = cmd_struct->start_pos.col + (2 + cmd_struct->tracker) % cmd_struct->window.ws_col;
+	current_row = cmd_struct->start_pos.row + (prompt_size + cmd_struct->tracker) / cmd_struct->window.ws_col;
+	current_col = cmd_struct->start_pos.col + (prompt_size + cmd_struct->tracker) % cmd_struct->window.ws_col;
 	move_cursor(current_col, current_row);
 }
 
@@ -92,12 +94,6 @@ void	insert_str(t_cmd_struct *cmd_struct, char *buf, size_t print_len)
 	free(tmp);
 }
 
-
-void		print_prompt(void)
-{
-	ft_putstr_tty("$>");
-}
-
 char	*input_loop(void)
 {
 	char	buf[BUF_SIZE + 1];
@@ -111,13 +107,14 @@ char	*input_loop(void)
 	cmd_struct.current_data_size = 0;
 	retrieve_pos(&cmd_struct.start_pos);
 	cmd_struct.current_malloc_size = INIT_TXT_SIZE;
+	cmd_struct.prompt = ft_strdup("psh");
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct.window) == -1)
 	{
 		ft_dprintf(2, "Error ioctl");//TODO
 		return (0);
 	}
 	cmd_struct.tracker = 0;
-	print_prompt();
+	print_prompt(cmd_struct.prompt);
 
 	ft_bzero(buf, BUF_SIZE + 1);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
@@ -132,8 +129,7 @@ char	*input_loop(void)
 		else if (ft_strncmp(buf, CTRL_C, 2) == 0)
 		{
 			free(cmd_struct.txt);
-			cmd_struct.txt = NULL;
-			break ;
+			return (NULL);
 		}
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
@@ -152,24 +148,5 @@ char	*input_loop(void)
 		reposition_cursor(&cmd_struct);
 	}
 	// ret == 0 ? -1 ?
-	return (cmd_struct.txt); // need a speical function that concatenates everything and free everyting here;
-}
-
-
-int	main(void)
-{
-	char	*txt;
-
-	if (setup_terminal_settings() == -1)
-		return (0);
-	while (42)
-	{
-		if (!(txt = input_loop()))
-			break ; //error
-		print_line();
-	}
-	if (reset_terminal_settings())
-		return (0);
-	else
-		return (1);
+	return (ft_strdup(cmd_struct.txt)); // need a speical function that concatenates everything and free everyting here;
 }

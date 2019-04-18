@@ -3,7 +3,7 @@
 NAME	:=	libterm.a
 OPT		:=	
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra
+CFLAGS	:=	-Wall -Wextra -Werror
 
 DEBUG_FLAG	:=	-g
 FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
@@ -25,7 +25,7 @@ LIBS		:= $(LIBFT_A)
 INCL_DIR	:=	includes $(LIBFT_DIR)/includes
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	libterm.h cursor.h reader.h
+INCL_FILES	:=	libterm.h cursor.h
 
 INCLS		:=	$(addprefix includes/,$(INCL_FILES))
 
@@ -68,7 +68,6 @@ OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 .PHONY: all fsa val rmh adh tag clean fclean re d norm test ask_libft ask_libs
 
 all: ask_libs $(NAME) Makefile libterm.a
-	$(CC) $(CFLAGS) $(INCL_CMD) $(LIB_INCL) $(SRCS) reader/*.c
 
 ask_libs: ask_libft
 
@@ -80,7 +79,7 @@ ask_libft:
 		fi
 
 fsa: $(SRCS) $(LIBS)
-	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB_INCL) $(SRCS) reader/*.c -o $(NAME)
+	$(CC) $(CFLAGS) $(FSA_FLAGS) $(INCL_CMD) $(LIB_INCL) $(SRCS) -o $(NAME)
 	$(OPT) ./$(NAME)
 
 val: $(SRCS) $(LIBS)

@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/15 19:40:51 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/18 17:07:45 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	**create_cap_array(void)
 			|| !(res[14] = ft_strdup(NO_UNDERLINE))
 			|| !(res[15] = ft_strdup(SCROLL_DOWN)))
 	{
-		ft_free_null_tab(res);
+		ft_free_ntab(res);
 		return (NULL);
 	}
 	return (res);
@@ -82,12 +82,12 @@ static int	check_caps(void)
 	{
 		if (tgetstr(caps[i], NULL) == NULL)
 		{
-			ft_free_null_tab(caps);
+			ft_free_ntab(caps);
 			return (0);
 		}
 		i++;
 	}
-	ft_free_null_tab(caps);
+	ft_free_ntab(caps);
 	return (1);
 }
 

@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_dup_nultab.c                                    :+:      :+:    :+:   */
+/*   ft_dup_ntab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: penzo <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/18 15:38:35 by penzo             #+#    #+#             */
-/*   Updated: 2019/03/22 15:31:07 by penzo            ###   ########.fr       */
+/*   Created: 2019/04/18 16:52:01 by pscott            #+#    #+#             */
+/*   Updated: 2019/04/18 17:00:39 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-char	**ft_dup_nultab(char **tab)
+char	**ft_dup_ntab(char **tab)
 {
 	char	**new_tab;
 	int		tab_len;
@@ -21,7 +21,7 @@ char	**ft_dup_nultab(char **tab)
 
 	if (!tab || !*tab)
 		return (NULL);
-	tab_len = get_ntab_len(tab);
+	tab_len = ft_ntab_len(tab);
 	if (!(new_tab = (char**)malloc((sizeof(char*) * (tab_len + 1)))))
 		return (NULL);
 	i = -1;
@@ -29,7 +29,7 @@ char	**ft_dup_nultab(char **tab)
 	{
 		if (!(new_tab[i] = ft_strdup(tab[i])))
 		{
-			ft_free_nultab(new_tab);
+			ft_free_ntab(new_tab);
 			return (NULL);
 		}
 	}

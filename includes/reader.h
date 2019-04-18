@@ -18,6 +18,7 @@ typedef struct	s_cmd_struct {
 	struct winsize		window;
 	size_t				tracker;
 	size_t				nb_lines;
+	char				*prompt;
 	struct s_cmd_struct	*next;
 }				t_cmd_struct;
 
@@ -38,4 +39,17 @@ void	move_arrow_left(t_cmd_struct *cmd_struct);
 void	reposition_cursor(t_cmd_struct *cmd_struct);
 
 void	clean_exit(int exitno);
+
+/*
+** reader
+*/
+
+char	*input_loop(void);
+void	reposition_cursor(t_cmd_struct *cmd_struct);
+
+/*
+** prompt.c
+*/
+
+void				print_prompt(char *prompt_str);
 #endif

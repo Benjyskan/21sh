@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:53:24 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/11 13:50:28 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/18 17:07:05 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strncpy(char *dst, const char *src, size_t len);
 char			*ft_strdup(const char *s1);
+char			*ft_strndup(const char *s1, size_t n);
 char			*ft_strcat(char *restrict s1, const char *restrict s2);
 char			*ft_strncat(char *restrict s1, const char *restrict s2,
 		size_t n);
@@ -95,5 +96,7 @@ void			ft_lstrmdup(t_list *lst);
 char			*ft_itoa(int n);
 char			*ft_realloc(char *data, size_t current_data_size,
 		size_t *current_malloc_size, size_t append_size);
-void			ft_free_null_tab(char **tabs);
+void			ft_free_ntab(char **tabs);
+char			**ft_dup_ntab(char **tabs);
+int				ft_ntab_len(char **tabs);
 #endif

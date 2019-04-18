@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:59:20 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/11 14:05:41 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/18 17:33:54 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,10 @@ int		ft_putstr_tty(char *str)
 	}
 	else
 		return (1);
+}
+
+void	ft_endl_tty(char *str)
+{
+	ft_putstr_tty(str);
+	print_line();
 }

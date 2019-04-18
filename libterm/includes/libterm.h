@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/18 14:23:38 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/18 17:43:28 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int				execute_str(char *cap);
 int				print_line(void);
 int				ft_putchar_tty(int c);
 int				ft_putstr_tty(char *c);
+void			ft_endl_tty(char *str);
 void			term_putstr_endline(char *str, int fd);
 
 /*

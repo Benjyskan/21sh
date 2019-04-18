@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   ft_free_ntab.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: penzo <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/09 13:58:08 by penzo             #+#    #+#             */
-/*   Updated: 2018/11/09 13:59:12 by penzo            ###   ########.fr       */
+/*   Created: 2019/03/18 15:47:00 by penzo             #+#    #+#             */
+/*   Updated: 2019/04/18 16:56:19 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_toupper(int c)
+#include "libft.h"
+
+void	ft_free_ntab(char **tab)
 {
-	if (c >= 97 && c <= 122)
-		return (c - 32);
-	return (c);
+	int		i;
+
+	if (!tab)
+		return ;
+	i = -1;
+	while (tab[++i])
+		ft_memdel((void*)&(tab[i]));
+	ft_memdel((void*)&tab);
 }
