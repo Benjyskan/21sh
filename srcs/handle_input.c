@@ -40,34 +40,36 @@ void	read_more(char **input)
 ** then execute the ast
 */
 
-t_bool	handle_input(char *input, char **env)
+t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 {
 	t_ast			*ast_root;
 	t_token			*token_head;
 	int				lexer_ret;
 
-	while ((lexer_ret = lexer(input, &token_head, env)) == LEX_CONT_READ)
+	while ((lexer_ret = lexer(cmd_struct->txt, &token_head, env)) == LEX_CONT_READ)
 	{
 		//free token list ?
-		read_more(&input);
-		printf("NEW_INPUT: {%s}\n", input);
+
+		//read_more(&input);
+		cmd_struct = input_loop(cmd_struct);
+		printf("NEW_INPUT: {%s}\n", cmd_struct->txt);
 	}
 	if (lexer_ret == LEX_FAIL)
 	{
-		printf("\x1B[31m""### Lexer FAILED""\x1B[0m""\n");
+		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");
 		return (0);
 	}
 	else
-		printf("\x1B[32m""### lexer SUCCESS""\x1B[0m""\n");
-	printf("POST LEXER: input: {%s}\n", input);
-	ft_memdel((void*)&input);
+		ft_endl_tty("\x1B[32m""### lexer SUCCESS""\x1B[0m");
+	//printf("POST LEXER: input: {%s}\n", input);
+	//ft_memdel((void*)&input);//free cmd_struct
 	//print_token_list(token_head);
 	if (!(ast_root = create_ast(token_head)))
 	{
-		printf("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
+		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
 		return (0);
 	}
-	printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
+	ft_endl_tty("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	//print_ast(ast_root);
 	exec_ast(ast_root, env);
 	ft_putendl("THE END");

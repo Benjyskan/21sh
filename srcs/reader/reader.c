@@ -1,3 +1,4 @@
+#include "tosh.h"
 #include "reader.h"
 
 size_t	ft_print_len(const char *s1)
@@ -94,41 +95,43 @@ void	insert_str(t_cmd_struct *cmd_struct, char *buf, size_t print_len)
 	free(tmp);
 }
 
-char	*input_loop(void)
+t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 {
 	char	buf[BUF_SIZE + 1];
-	t_cmd_struct cmd_struct;
 	int		ret;
 	size_t	print_len;
 
 	// need initalization for cmd_struct;
-	if (!(cmd_struct.txt = ft_strnew(INIT_TXT_SIZE)))
+	//need check the arg cmd_struct
+	if (!(cmd_struct = (t_cmd_struct*)malloc(sizeof(*cmd_struct))))
+		ERROR_MEM;
+	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
 		return (NULL); //error
-	cmd_struct.current_data_size = 0;
-	retrieve_pos(&cmd_struct.start_pos);
-	cmd_struct.current_malloc_size = INIT_TXT_SIZE;
-	cmd_struct.prompt = ft_strdup("psh");
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct.window) == -1)
+	cmd_struct->current_data_size = 0;
+	retrieve_pos(&cmd_struct->start_pos);
+	cmd_struct->current_malloc_size = INIT_TXT_SIZE;
+	cmd_struct->prompt = ft_strdup("psh");
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{
 		ft_dprintf(2, "Error ioctl");//TODO
-		return (0);
+		return (NULL);
 	}
-	cmd_struct.tracker = 0;
-	print_prompt(cmd_struct.prompt);
+	cmd_struct->tracker = 0;
+	print_prompt(cmd_struct->prompt);
 
 	ft_bzero(buf, BUF_SIZE + 1);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
 		buf[ret] = 0;
 		magic_print(buf);
-		if (check_for_arrows(&cmd_struct, buf) || check_for_signal(buf)
-		|| check_for_quit(buf) || check_for_delete(&cmd_struct, buf))
+		if (check_for_arrows(cmd_struct, buf) || check_for_signal(buf)
+		|| check_for_quit(buf) || check_for_delete(cmd_struct, buf))
 			continue ;
 		else if ((ft_strncmp(buf, "\r", 2) == 0) || ft_strncmp(buf, "\t", 2) == 0 || ft_strncmp(buf, "\x0b", 2) == 0)
 			break ;
 		else if (ft_strncmp(buf, CTRL_C, 2) == 0)
 		{
-			free(cmd_struct.txt);
+			free(cmd_struct->txt);
 			return (NULL);
 		}
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
@@ -136,17 +139,18 @@ char	*input_loop(void)
 		else
 		{
 			print_len = ft_print_len(buf);
-			cmd_struct.txt = ft_realloc(cmd_struct.txt,
-					cmd_struct.current_data_size,
-					&cmd_struct.current_malloc_size, ret);
-			insert_str(&cmd_struct, buf, print_len);
+			cmd_struct->txt = ft_realloc(cmd_struct->txt,
+					cmd_struct->current_data_size,
+					&cmd_struct->current_malloc_size, ret);
+			insert_str(cmd_struct, buf, print_len);
 			execute_str(ERASE_ENDLINE);// should not be necessary if done right
-			ft_putstr_tty(&cmd_struct.txt[cmd_struct.tracker]);
-			cmd_struct.current_data_size += print_len;
-			cmd_struct.tracker += print_len;
+			ft_putstr_tty(&cmd_struct->txt[cmd_struct->tracker]);
+			cmd_struct->current_data_size += print_len;
+			cmd_struct->tracker += print_len;
 		}
-		reposition_cursor(&cmd_struct);
+		reposition_cursor(cmd_struct);
 	}
 	// ret == 0 ? -1 ?
-	return (ft_strdup(cmd_struct.txt)); // need a speical function that concatenates everything and free everyting here;
+	//return (ft_strdup(cmd_struct.txt)); // need a speical function that concatenates everything and free everyting here;
+	return (cmd_struct);
 }

@@ -58,7 +58,12 @@ static t_token	*get_regular_token(char **cmdline)
 
 	i = 0;
 	while ((*cmdline)[i] && !is_metachar((*cmdline)[i]))
+	{
+		//printf("c={%c}\n", (*cmdline)[i]);
+		ft_dprintf(g_dev_tty, "c={%c}\n", (*cmdline)[i]);
+		print_line();
 		i++;
+	}
 	if (!(token = create_token(*cmdline, i, TK_WORD)))
 		ERROR_MEM;
 	*cmdline = *cmdline + i;

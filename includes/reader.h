@@ -44,8 +44,8 @@ void	clean_exit(int exitno);
 ** reader
 */
 
-char	*input_loop(void);
-void	reposition_cursor(t_cmd_struct *cmd_struct);
+t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
+void			reposition_cursor(t_cmd_struct *cmd_struct);
 
 /*
 ** prompt.c

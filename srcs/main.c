@@ -19,27 +19,32 @@ static t_bool	is_full_of_whitespaces(char *input)
 int		main(int argc, char **argv, char **env)
 {
 	char	**env_cpy;
-	char	*input;
+	//char	*input;
 	//should declare cmd_struct here
+	t_cmd_struct	*cmd_struct;
 
 	(void)argc;
 	(void)argv;
+	cmd_struct = NULL;
 	if (setup_terminal_settings() == -1)
 		return (EXIT_FAILURE);
 	if (!(env_cpy = init_env(env)))
 		return (EXIT_FAILURE);
 	while (42)
 	{
-		if (!(input = input_loop()))
+		if (!(cmd_struct = input_loop(cmd_struct)))
 			break ; // free env, free char *
 		//store input in history here
-		if (is_full_of_whitespaces(input))
+		//if (is_full_of_whitespaces(input))
+		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
-			ft_memdel((void*)&input);
+			//free cmd_struct
 			continue; //TODO: free char *
 		}
-		if (!(handle_input(input, env_cpy)))
-			ft_memdel((void*)&input);
+		if (!(handle_input(cmd_struct, env_cpy)))
+			;
+			//free cmd_struct
+			//ft_memdel((void*)&input);
 	}
 	ft_free_ntab(env_cpy);
 	if (reset_terminal_settings())

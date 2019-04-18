@@ -6,6 +6,8 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 {
 	t_token	*new_token;
 
+	dprintf(g_dev_tty, "SIZE:{%lu}", size);
+	print_line();
 	if (!(new_token = (t_token*)malloc(sizeof(t_token))))
 	{
 		ft_putendl_fd("malloc failed in create_token", STDERR_FILENO);
@@ -22,6 +24,7 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 		//ERROR_MEM;
 		return (NULL);
 	}
+	new_token->content[size] = 0;//test since lib swap//seems to work
 	return (new_token);
 }
 
@@ -76,11 +79,13 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	t_operation	*op_chart;
 	t_token		*prev_token;
 
+	(void)env;
 	init_lexer(&op_chart, token_head, &prev_token);
 	while (cmdline && *cmdline)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
 			return (LEX_CONT_READ);
+		print_token(current_token);
 		if (!(add_token_to_list(current_token, prev_token, token_head)))
 			return (LEX_FAIL);//free token list
 		if (current_token->type != TK_EAT)
@@ -89,7 +94,8 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	if (is_logic_or_pipe(current_token)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
-		ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
+		//ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
+		ft_endl_tty("tmp, tklst end with '&&','||' or '|': READ_MODE");
 		return (LEX_CONT_READ);//TMP
 	}
 	//bash tokenise 'newline', it make easier to check "cat << <ENTER>"

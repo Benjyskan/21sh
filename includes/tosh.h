@@ -9,6 +9,7 @@
 # include <sys/syslimits.h>
 # include "lexer.h"
 # include "ast.h"
+# include "reader.h"
 # define SHELL_NAME "my_sh"
 # define FD_LIMITS 10
 # define ERROR_MEM error_mem();
@@ -59,7 +60,7 @@ void				set_env_var(char *var_name, char *var_value, char ***env);
 ** handle_input.c
 */
 
-t_bool				handle_input(char *input, char **env);
+t_bool				handle_input(t_cmd_struct *cmd_struct, char **env);
 
 /*
 ** lexer.c
