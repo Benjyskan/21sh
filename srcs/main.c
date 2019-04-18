@@ -47,6 +47,7 @@ int		main(int argc, char **argv, char **env)
 			//ft_memdel((void*)&input);
 	}
 	ft_free_ntab(env_cpy);
+	print_line();
 	if (reset_terminal_settings())
 		return (EXIT_FAILURE);
 	else
