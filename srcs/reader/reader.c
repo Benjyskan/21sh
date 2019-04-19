@@ -1,5 +1,6 @@
 #include "tosh.h"
 #include "reader.h"
+#include "history.h"
 
 size_t	ft_print_len(const char *s1)
 {
@@ -45,7 +46,7 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 	int		current_col;
 	size_t	prompt_size;
 
-	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) + 2 : 2;
+	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) : 2;
 	max_row = cmd_struct->start_pos.row + (prompt_size + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
 	max_col = cmd_struct->start_pos.col + (prompt_size + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
 	while (max_row > cmd_struct->window.ws_row)
@@ -111,15 +112,16 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	cmd_struct->current_data_size = 0;
 	retrieve_pos(&cmd_struct->start_pos);
 	cmd_struct->current_malloc_size = INIT_TXT_SIZE;
-	cmd_struct->prompt = ft_strdup("psh");
+	cmd_struct->prompt = ft_strdup("psh $ ");
+	cmd_struct->fd = open_history();
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{
 		ft_dprintf(2, "Error ioctl");//TODO
 		return (NULL);
 	}
 	cmd_struct->tracker = 0;
-	print_prompt(cmd_struct->prompt);
 
+	print_prompt(cmd_struct);
 	ft_bzero(buf, BUF_SIZE + 1);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{

@@ -25,7 +25,7 @@ LIBS			:= $(LIBFT_A) $(LIBTERM_A)
 INCL_DIR	:=	includes libft/includes libterm/includes
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h lexer.h ast.h reader.h
+INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h
 
 INCLS		:=	$(addprefix includes/,$(INCL_FILES))
 
@@ -38,9 +38,10 @@ SRC_DIR	:=	srcs
 	PARSER_DIR		:=	token_parser
 	PIPELINE_DIR	:=	pipeline
 	READER_DIR		:=	reader
+	HISTORY_DIR		:=	history
 	#list of all srcs subdirectories
 	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR) \
-					$(PIPELINE_DIR) $(READER_DIR)
+					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR)
 
 
 #VPATH specifies a list of directories that 'make' should search
@@ -59,11 +60,12 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						parse_tildes.c parse_quotes.c \
 						redir_great.c redir_dgreat.c redir_less.c redir_dless.c \
 						check_token_type.c
-	READER_FILES	:=	arrows.c check_commands.c clean_exit.c reader.c prompt.c\
+	READER_FILES	:=	arrows.c check_commands.c clean_exit.c reader.c prompt.c
+	HISTORY_FILES	:=	hist_file.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
-			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES)
+			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES)
 
 
 # Complete path of each .c files ###############################################
@@ -74,6 +76,7 @@ LEXER_PATH			:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
 PARSER_PATH			:=	$(addprefix $(PARSER_DIR)/,$(PARSER_FILES))
 PIPELINE_PATH		:=	$(addprefix $(PIPELINE_DIR)/,$(PIPELINE_FILES))
 READER_PATH			:=	$(addprefix $(READER_DIR)/,$(READER_FILES))
+HISTORY_PATH		:=	$(addprefix $(HISTORY_DIR)/,$(HISTORY_FILES))
 
 #list of all "path/*.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
@@ -82,6 +85,7 @@ SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(PARSER_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(PIPELINE_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(READER_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(HISTORY_PATH)) \
 			$(SRC_PATH)
 
 #Object ########################################################################
