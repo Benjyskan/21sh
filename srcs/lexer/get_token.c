@@ -13,7 +13,8 @@ static t_token	*get_dquot_token(char **cmdline)
 			i++;
 		if ((*cmdline)[i] == 0)
 		{
-			ft_putendl("end with '\\', READ_MODE");
+			//ft_putendl("end with '\\', READ_MODE");
+			ft_endl_tty("end with '\\', READ_MODE");
 			(*cmdline)[i - 1] = 0;
 			return (NULL);
 		}
@@ -21,7 +22,8 @@ static t_token	*get_dquot_token(char **cmdline)
 	}
 	if ((*cmdline)[i] == 0)
 	{
-		ft_putendl_fd("Unmatched \". READ_MODE PLZ", 2);
+		//ft_putendl_fd("Unmatched \". READ_MODE PLZ", 2);
+		ft_endl_tty("Unmatched \". READ_MODE PLZ");
 		(*cmdline)[i] = '\n';//test: seems good
 		return (NULL);
 	}
@@ -41,7 +43,8 @@ static t_token	*get_squot_token(char **cmdline)
 		i++;
 	if ((*cmdline)[i] == 0)
 	{
-		ft_putendl_fd("Unmatched '. READ_MODE PLZ", 2);
+		//ft_putendl_fd("Unmatched '. READ_MODE PLZ", 2);
+		ft_endl_tty("Unmatched '. READ_MODE PLZ");
 		(*cmdline)[i] = '\n';//test: seems good
 		return (NULL);
 	}
@@ -58,12 +61,7 @@ static t_token	*get_regular_token(char **cmdline)
 
 	i = 0;
 	while ((*cmdline)[i] && !is_metachar((*cmdline)[i]))
-	{
-		//printf("c={%c}\n", (*cmdline)[i]);
-		ft_dprintf(g_dev_tty, "c={%c}\n", (*cmdline)[i]);
-		print_line();
 		i++;
-	}
 	if (!(token = create_token(*cmdline, i, TK_WORD)))
 		ERROR_MEM;
 	*cmdline = *cmdline + i;
@@ -75,15 +73,18 @@ static t_token	*get_monochar(char **cmdline)
 	t_token	*token;
 
 	(*cmdline)++;
-	if (!(token = create_token(*cmdline, 1, TK_MONOC)))
-		ERROR_MEM;
 	if (**cmdline == 0)
 	{
-		ft_putendl("end with '\\', READ_MODE");
+		//ft_putendl("end with '\\', READ_MODE");
+		ft_endl_tty("end with '\\', READ_MODE");
 		(*cmdline)--;
 		**cmdline = 0;//test: seems good
+		dprintf(g_dev_tty, "after MONOCHAR: {%s}", *cmdline);
+		print_line();
 		return (NULL);
 	}
+	if (!(token = create_token(*cmdline, 1, TK_MONOC)))
+		ERROR_MEM;
 	(*cmdline)++;
 	return (token);
 }
