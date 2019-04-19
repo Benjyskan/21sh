@@ -2,37 +2,6 @@
 #include "lexer.h"
 #include "ast.h"
 
-void	read_more(char **input)
-{
-	size_t	i;
-	int		read_ret;
-	char	c;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while ((*input)[i])
-		i++;
-	ft_putstr("> ");
-	while ((read_ret = read(STDIN_FILENO, &c, 1) > 0))
-	{
-		if (read_ret == -1)
-			printf("READ_ERROR -1\n");
-		else if (read_ret == 0)
-			printf("read return 0\n");
-		(*input)[i++] = c;
-		if (c == '\n')
-		{
-			if (i > 0)//useless line ?
-				(*input)[i - 1] = 0;
-			else
-				printf("BUG\n");
-			printf("--break\n");
-			break ;
-		}
-	}
-}
-
 /*
 ** handle_input
 ** should pass the inputed cmdline through the lexer to get a token list;
@@ -51,8 +20,13 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		//free token list ?
 
 		//read_more(&input);
+		ft_memdel((void*)&cmd_struct->prompt);
+		cmd_struct->prompt = ft_strdup("cont");
+		dprintf(g_dev_tty, "OLD_INPUT: {%s}\n", cmd_struct->txt);
+		print_line();
 		cmd_struct = input_loop(cmd_struct);
-		printf("NEW_INPUT: {%s}\n", cmd_struct->txt);
+		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);
+		print_line();
 	}
 	if (lexer_ret == LEX_FAIL)
 	{
@@ -72,7 +46,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	ft_endl_tty("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	//print_ast(ast_root);
 	exec_ast(ast_root, env);
-	ft_putendl("THE END");
+	ft_endl_tty("THE END");
 	free_ast(ast_root);
 	//print_ast(ast_root);
 	return (1);

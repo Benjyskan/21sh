@@ -45,6 +45,8 @@ int		main(int argc, char **argv, char **env)
 			;
 			//free cmd_struct
 			//ft_memdel((void*)&input);
+		//free (cmd_struct or some elem of cmd_struct)
+		cmd_struct = NULL;
 	}
 	ft_free_ntab(env_cpy);
 	print_line();

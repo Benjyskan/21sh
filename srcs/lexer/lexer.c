@@ -6,8 +6,6 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 {
 	t_token	*new_token;
 
-	dprintf(g_dev_tty, "SIZE:{%lu}", size);
-	print_line();
 	if (!(new_token = (t_token*)malloc(sizeof(t_token))))
 	{
 		ft_putendl_fd("malloc failed in create_token", STDERR_FILENO);
@@ -24,7 +22,7 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 		//ERROR_MEM;
 		return (NULL);
 	}
-	new_token->content[size] = 0;//test since lib swap//seems to work
+	//new_token->content[size] = 0;//test since lib swap//seems to work
 	return (new_token);
 }
 
@@ -85,7 +83,7 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
 			return (LEX_CONT_READ);
-		print_token(current_token);
+		//print_token(current_token);
 		if (!(add_token_to_list(current_token, prev_token, token_head)))
 			return (LEX_FAIL);//free token list
 		if (current_token->type != TK_EAT)
