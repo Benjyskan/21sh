@@ -49,14 +49,14 @@ int		check_for_signal(char *buf)
 		return (0);
 }
 
-void	shift_chars(char *str)
+void	shift_chars(char *str, unsigned int shift)
 {
 	size_t i;
 
 	i = 0;
-	while (str[i] && str[i + 1])
+	while (str[i] && str[i + shift])
 	{
-		str[i] = str[i + 1];
+		str[i] = str[i + shift];
 		i++;
 	}
 	str[i] = str[i + 1];
@@ -67,13 +67,16 @@ int		check_for_delete(t_cmd_struct *cmd_struct, char *buf)
 	if (ft_strncmp(buf, BACKSPACE, BACKSPACE_LEN + 1) == 0)
 	{
 		if (cmd_struct->tracker == 0)
+		{
+			ft_putstr_tty(BELL);
 			return (1); //bell;
+		}
 		cmd_struct->tracker--;
+		cmd_struct->current_data_size -= 1;
 		reposition_cursor(cmd_struct);
 		execute_str(ERASE_ENDLINE);
-		shift_chars(&cmd_struct->txt[cmd_struct->tracker]);
+		shift_chars(&cmd_struct->txt[cmd_struct->tracker], 1);
 		ft_putstr_tty(&cmd_struct->txt[cmd_struct->tracker]);
-		cmd_struct->current_data_size -= 1;
 		reposition_cursor(cmd_struct);
 		return (1);
 	}
