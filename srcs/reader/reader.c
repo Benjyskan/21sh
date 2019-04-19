@@ -168,6 +168,5 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	}
 	// ret == 0 ? -1 ?
 	//return (ft_strdup(cmd_struct.txt)); // need a speical function that concatenates everything and free everyting here;
-	write_to_history(cmd_struct);
 	return (cmd_struct);
 }
