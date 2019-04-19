@@ -31,7 +31,8 @@ int		check_for_quit(char *buf)
 	{
 		print_line();
 		reset_terminal_settings();
-		exit(0);
+		clean_exit(0);
+		return (1);
 	}
 	else
 		return (0);
@@ -69,7 +70,7 @@ int		check_for_delete(t_cmd_struct *cmd_struct, char *buf)
 		if (cmd_struct->tracker == 0)
 		{
 			ft_putstr_tty(BELL);
-			return (1); //bell;
+			return (1);
 		}
 		cmd_struct->tracker--;
 		cmd_struct->current_data_size -= 1;
