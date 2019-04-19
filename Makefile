@@ -60,7 +60,8 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						parse_tildes.c parse_quotes.c \
 						redir_great.c redir_dgreat.c redir_less.c redir_dless.c \
 						check_token_type.c
-	READER_FILES	:=	arrows.c check_commands.c clean_exit.c reader.c prompt.c
+	READER_FILES	:=	arrows.c check_commands.c clean_exit.c prompt.c \
+						input_loop.c cursor_position.c input_utils.c
 	HISTORY_FILES	:=	hist_file.c
 
 #list of all .c files

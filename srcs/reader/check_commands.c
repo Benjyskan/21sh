@@ -20,7 +20,7 @@ int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
 	return (1);
 }
 
-int		check_for_quit(char *buf)
+int		check_for_quit(const char *buf)
 {
 	if (ft_strncmp(buf, CTRL_D, 2) == 0)
 	{
@@ -33,7 +33,7 @@ int		check_for_quit(char *buf)
 		return (0);
 }
 
-int		check_for_signal(char *buf)
+int		check_for_signal(const char *buf)
 {
 	if (ft_strncmp(buf, CTRL_Z, 2) == 0)
 	{
@@ -41,8 +41,12 @@ int		check_for_signal(char *buf)
 		print_line();
 		return (1);
 	}
-	else
-		return (0);
+	else if (ft_strncmp(buf, CTRL_C, CTRL_C_LEN) == 0)
+	{
+		ioctl(STDIN, TIOCSTI, CTRL_C);
+		return (1);
+	}
+	return (0);
 }
 
 void	shift_chars(char *str, unsigned int shift)
@@ -56,6 +60,14 @@ void	shift_chars(char *str, unsigned int shift)
 		i++;
 	}
 	str[i] = str[i + 1];
+}
+
+int		check_for_enter(const char *buf)
+{
+	if (ft_strncmp(buf, "\r", 2) == 0)
+		return (1);
+	else
+		return (0);
 }
 
 int		check_for_delete(t_cmd_struct *cmd_struct, char *buf)

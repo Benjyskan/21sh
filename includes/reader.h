@@ -24,8 +24,9 @@ typedef struct	s_cmd_struct {
 */
 
 int				check_for_arrows(t_cmd_struct *cmd_struct, char *buf);
-int				check_for_quit(char *buf);
-int				check_for_signal(char *buf);
+int				check_for_quit(const char *buf);
+int				check_for_enter(const char *buf);
+int				check_for_signal(const char *buf);
 int				check_for_delete(t_cmd_struct *cmd_struct, char *buf);
 
 /*
@@ -50,6 +51,15 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
 
 void			reposition_cursor(t_cmd_struct *cmd_struct);
 void			print_prompt(t_cmd_struct *cmd_struct);
+
+/*
+**	Input string manipulation
+*/
+
+size_t			ft_printable_len(const char *str);
+void			insert_str(t_cmd_struct *cmd_struct, const char *buf,
+		size_t printable_len);
+
 
 void			clean_exit(int exitno);
 #endif

@@ -75,7 +75,7 @@ t_bool		execute_argv(char	**argv)
 		dprintf(g_dev_tty, "line%d:{%s}", i, argv[i]);
 		print_line();
 	}
-	ft_dprintf(g_dev_tty, "---------------------");
+	ft_dprintf(g_dev_tty, "--------------------- %s --------------------- ", argv[0]);
 	print_line();
 	if (execvp(argv[0], (char * const*)argv)) //need to use execve;
 	{
