@@ -3,18 +3,13 @@
 int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
 {
 	if (ft_strncmp(buf, RIGHTARROW, ARROW_LEN + 1) == 0)
-	{
-		if (cmd_struct->tracker < cmd_struct->current_data_size)
-			cmd_struct->tracker++;
-		else
-			ft_putstr_tty(BELL);
-	}
+		move_arrow_right(cmd_struct);
 	else if (ft_strncmp(buf, LEFTARROW, ARROW_LEN + 1) == 0)
 		move_arrow_left(cmd_struct);
 	else if (ft_strncmp(buf, UPARROW, ARROW_LEN + 1) == 0)
-		ft_putstr_tty(UPARROW); //
+		get_previous_history(cmd_struct);
 	else if (ft_strncmp(buf, DOWNARROW, ARROW_LEN + 1) == 0)
-		ft_putstr_tty(DOWNARROW);
+		get_previous_history(cmd_struct);
 	else if (ft_strncmp(buf, HOME, HOME_LEN + 1) == 0)
 		cmd_struct->tracker = 0;
 	else if (ft_strncmp(buf, END, END_LEN + 1) == 0)
@@ -25,7 +20,7 @@ int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
 	return (1);
 }
 
-int		check_for_quit(char *buf)
+int		check_for_quit(const char *buf)
 {
 	if (ft_strncmp(buf, CTRL_D, 2) == 0)
 	{
@@ -38,7 +33,7 @@ int		check_for_quit(char *buf)
 		return (0);
 }
 
-int		check_for_signal(char *buf)
+int		check_for_signal(const char *buf)
 {
 	if (ft_strncmp(buf, CTRL_Z, 2) == 0)
 	{
@@ -46,8 +41,12 @@ int		check_for_signal(char *buf)
 		print_line();
 		return (1);
 	}
-	else
-		return (0);
+	else if (ft_strncmp(buf, CTRL_C, CTRL_C_LEN) == 0)
+	{
+		ioctl(STDIN, TIOCSTI, CTRL_C);
+		return (1);
+	}
+	return (0);
 }
 
 void	shift_chars(char *str, unsigned int shift)
@@ -61,6 +60,14 @@ void	shift_chars(char *str, unsigned int shift)
 		i++;
 	}
 	str[i] = str[i + 1];
+}
+
+int		check_for_enter(const char *buf)
+{
+	if (ft_strncmp(buf, "\r", 2) == 0)
+		return (1);
+	else
+		return (0);
 }
 
 int		check_for_delete(t_cmd_struct *cmd_struct, char *buf)
