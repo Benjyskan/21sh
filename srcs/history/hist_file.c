@@ -1,4 +1,5 @@
 #include "history.h"
+#include "tosh.h"
 #include "reader.h"
 #include "ast.h"
 
@@ -18,6 +19,8 @@ int		write_to_history(t_cmd_struct *cmd_struct)
 {
 	int fd;
 
+	if (is_full_of_whitespaces(cmd_struct->txt))
+		return (0);
 	fd = cmd_struct->fd;
 	if (fd < 0)
 		return (0);

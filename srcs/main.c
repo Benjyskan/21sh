@@ -4,7 +4,7 @@
 #include "ast.h"
 #include "history.h"
 
-static t_bool	is_full_of_whitespaces(char *input)
+t_bool	is_full_of_whitespaces(char *input)
 {
 	int		i;//TODO protect
 
@@ -35,8 +35,6 @@ int		main(int argc, char **argv, char **env)
 	{
 		if (!(cmd_struct = input_loop(cmd_struct)))
 			break ; // free env, free char *
-		ft_dprintf(g_dev_tty, "BEFORE");
-		write_to_history(cmd_struct);
 		//store input in history here
 		//if (is_full_of_whitespaces(input))
 		if (is_full_of_whitespaces(cmd_struct->txt))

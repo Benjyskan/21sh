@@ -117,9 +117,10 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 		if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
 			return (NULL); //error
 		cmd_struct->current_data_size = 0;
+		cmd_struct->fd = open_history();
 		retrieve_pos(&cmd_struct->start_pos);
 		cmd_struct->current_malloc_size = INIT_TXT_SIZE;
-		cmd_struct->prompt = ft_strdup("psh");
+		cmd_struct->prompt = ft_strdup("psh $ ");
 		if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 		{
 			ft_dprintf(2, "Error ioctl");//TODO
@@ -129,7 +130,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	}
 	else
 	{
-		print_prompt(cmd_struct->prompt);
+		print_prompt(cmd_struct);
 		ft_bzero(buf, BUF_SIZE + 1);
 		while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 		{
@@ -167,5 +168,6 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	}
 	// ret == 0 ? -1 ?
 	//return (ft_strdup(cmd_struct.txt)); // need a speical function that concatenates everything and free everyting here;
+	write_to_history(cmd_struct);
 	return (cmd_struct);
 }
