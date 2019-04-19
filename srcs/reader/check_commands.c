@@ -65,7 +65,10 @@ void	shift_chars(char *str, unsigned int shift)
 int		check_for_enter(const char *buf)
 {
 	if (ft_strncmp(buf, "\r", 2) == 0)
+	{
+		print_line();
 		return (1);
+	}
 	else
 		return (0);
 }
