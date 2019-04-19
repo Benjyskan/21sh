@@ -83,9 +83,11 @@ static t_token	*get_monochar(t_cmd_struct *cmd_struct)
 		cmd_struct->current_data_size--;
 		return (NULL);
 	}
-	if (!(token = create_token(cmd_struct->txt, 1, TK_MONOC)))
+	(*cmdline)++;
+	if (!(token = create_token(*cmdline, 1, TK_MONOC)))
 		ERROR_MEM;
-	(cmd_struct->txt)++;
+	dprintf(g_dev_tty, "get_monochar returned: {%s}\n", token->content);print_line();
+	(*cmdline)++;
 	return (token);
 }
 
