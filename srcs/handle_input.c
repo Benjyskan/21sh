@@ -16,16 +16,17 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	t_token			*token_head;
 	int				lexer_ret;
 
-	while ((lexer_ret = lexer(cmd_struct->txt, &token_head, env)) == LEX_CONT_READ)
+	while ((lexer_ret = lexer(cmd_struct, &token_head, env)) == LEX_CONT_READ)
 	{
 		//free token list ?
 
 		//read_more(&input);
 		ft_memdel((void*)&cmd_struct->prompt);
-		cmd_struct->prompt = ft_strdup("cont");
-		dprintf(g_dev_tty, "OLD_INPUT: {%s}\n", cmd_struct->txt);print_line();
+		cmd_struct->prompt = ft_strdup("cont> ");
+		cmd_struct->txt -= cmd_struct->tracker;
+		dprintf(g_dev_tty, "OLD_INPUT: {%s}", cmd_struct->txt);print_line();
 		cmd_struct = input_loop(cmd_struct);
-		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
+		dprintf(g_dev_tty, "NEW_INPUT: {%s}", cmd_struct->txt);print_line();
 	}
 	write_to_history(cmd_struct);
 	if (lexer_ret == LEX_FAIL)

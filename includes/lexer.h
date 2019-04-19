@@ -8,6 +8,7 @@
 # include <limits.h>
 # include <sys/syslimits.h>
 # include "libft.h"
+# include "reader.h"
 # include "libterm.h"
 
 # define ERROR_MEM error_mem();
@@ -75,14 +76,14 @@ void	print_token_list(t_token *token_head);
 ** get_token.c
 */
 
-t_token	*get_token(char **cmdline, t_operation *op_chart);
+t_token	*get_token(t_cmd_struct *cmd_struct, t_operation *op_chart);
 t_token	*create_token(char *cmdline, size_t size, t_token_type type);
 
 /*
 ** lexer_op_chart.c
 */
 
-t_token		*get_op_chart_token(char **cmdline, t_operation *op_chart);
+t_token		*get_op_chart_token(t_cmd_struct *cmd_struct, t_operation *op_chart);
 t_operation	*get_op_chart(void);
 void		print_op_table(t_operation *op_chart);//debug
 
