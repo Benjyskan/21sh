@@ -23,30 +23,33 @@ typedef struct	s_cmd_struct {
 **	Input checking
 */
 
-int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf);
-int		check_for_quit(char *buf);
-int		check_for_signal(char *buf);
-int		check_for_delete(t_cmd_struct *cmd_struct, char *buf);
+int				check_for_arrows(t_cmd_struct *cmd_struct, char *buf);
+int				check_for_quit(char *buf);
+int				check_for_signal(char *buf);
+int				check_for_delete(t_cmd_struct *cmd_struct, char *buf);
 
 /*
 **	Arrow movement
 */
 
-void	move_arrow_left(t_cmd_struct *cmd_struct);
-void	reposition_cursor(t_cmd_struct *cmd_struct);
+void			move_arrow_left(t_cmd_struct *cmd_struct);
+void			move_arrow_right(t_cmd_struct *cmd_struct);
+void			get_previous_history(t_cmd_struct *cmd_struct);
+void			get_next_history(t_cmd_struct *cmd_struct);
 
-void	clean_exit(int exitno);
 
 /*
-** reader
+** Read input
 */
 
 t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
-void			reposition_cursor(t_cmd_struct *cmd_struct);
 
 /*
-** prompt.c
+** General display
 */
 
-void				print_prompt(t_cmd_struct *cmd_struct);
+void			reposition_cursor(t_cmd_struct *cmd_struct);
+void			print_prompt(t_cmd_struct *cmd_struct);
+
+void			clean_exit(int exitno);
 #endif
