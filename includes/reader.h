@@ -6,9 +6,6 @@
 # define BUF_SIZE 4
 # define PROMPT_SIZE
 # define INIT_TXT_SIZE 32
-# define CTRL_Z "\x1a"
-# define CTRL_D "\x04"
-# define CTRL_C "\x03"
 
 typedef struct	s_cmd_struct {
 	char				*txt;
@@ -19,7 +16,7 @@ typedef struct	s_cmd_struct {
 	size_t				tracker;
 	size_t				nb_lines;
 	char				*prompt;
-	struct s_cmd_struct	*next;
+	int					fd;
 }				t_cmd_struct;
 
 /*
@@ -51,5 +48,5 @@ void			reposition_cursor(t_cmd_struct *cmd_struct);
 ** prompt.c
 */
 
-void				print_prompt(char *prompt_str);
+void				print_prompt(t_cmd_struct *cmd_struct);
 #endif

@@ -1,5 +1,6 @@
 #include "tosh.h"
 #include "reader.h"
+#include "history.h"
 
 size_t	ft_print_len(const char *s1)
 {
@@ -10,7 +11,7 @@ size_t	ft_print_len(const char *s1)
 	res = 0;
 	while (s1[i])
 	{
-		if (ft_isprint(s1[i]))
+		if (ft_isprint(s1[i]) || s1[i] == '\n')
 			res++;
 		i++;
 	}
@@ -45,7 +46,7 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 	int		current_col;
 	size_t	prompt_size;
 
-	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) + 2 : 2;
+	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) : 2;
 	max_row = cmd_struct->start_pos.row + (prompt_size + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
 	max_col = cmd_struct->start_pos.col + (prompt_size + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
 	while (max_row > cmd_struct->window.ws_row)
@@ -80,6 +81,7 @@ char	*ft_strdup_print(const char *s1)
 		}
 		i++;
 	}
+	res[i] = 0;
 	return (res);
 }
 
@@ -102,7 +104,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	size_t	print_len;
 
 	// need initalization for cmd_struct;
-	//need check the arg cmd_struct
+	// need check the arg cmd_struct
 	if (!(cmd_struct = (t_cmd_struct*)malloc(sizeof(*cmd_struct))))
 		ERROR_MEM;
 	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
@@ -110,15 +112,16 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	cmd_struct->current_data_size = 0;
 	retrieve_pos(&cmd_struct->start_pos);
 	cmd_struct->current_malloc_size = INIT_TXT_SIZE;
-	cmd_struct->prompt = ft_strdup("psh");
+	cmd_struct->prompt = ft_strdup("psh $ ");
+	cmd_struct->fd = open_history();
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{
 		ft_dprintf(2, "Error ioctl");//TODO
 		return (NULL);
 	}
 	cmd_struct->tracker = 0;
-	print_prompt(cmd_struct->prompt);
 
+	print_prompt(cmd_struct);
 	ft_bzero(buf, BUF_SIZE + 1);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
@@ -130,7 +133,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 		else if ((ft_strncmp(buf, "\r", 2) == 0))
 		{
 			print_line();
-			break ;
+			break;
 		}
 		else if (ft_strncmp(buf, CTRL_C, 2) == 0)
 		{

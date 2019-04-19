@@ -1,7 +1,13 @@
 #include "libterm.h"
+#include "reader.h"
 
-void	print_prompt(char *prompt_str)
+void	print_prompt(t_cmd_struct *cmd_struct)
 {
-	ft_putstr_tty(prompt_str ? prompt_str : "NULL");
-	ft_putstr_tty("> ");
+	if (cmd_struct->prompt)
+		ft_putstr_tty(cmd_struct->prompt);
+	else
+	{
+		cmd_struct->prompt = ft_strndup("$>", 2);
+		ft_putstr_tty(cmd_struct->prompt);
+	}
 }

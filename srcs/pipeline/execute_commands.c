@@ -68,7 +68,7 @@ t_bool		execute_argv(char	**argv)
 		return (0);
 	dprintf(2, "\n\n");
 	if (reset_terminal_settings() == 0)
-		exit(1); // ?
+		clean_exit(1); // ?
 	//print nultab
 	int		i = -1;
 	while (argv[++i])
@@ -80,7 +80,7 @@ t_bool		execute_argv(char	**argv)
 	if (execvp(argv[0], (char * const*)argv)) //need to use execve;
 	{
 		dprintf(2, "----- Failed to execute ! -----\n");
-		exit(1);
+		clean_exit(1);
 	}
 	return (1);
 }
