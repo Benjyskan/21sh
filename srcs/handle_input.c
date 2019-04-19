@@ -1,4 +1,5 @@
 #include "tosh.h"
+#include "history.h"
 #include "lexer.h"
 #include "ast.h"
 
@@ -64,6 +65,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	//printf("POST LEXER: input: {%s}\n", input);
 	//ft_memdel((void*)&input);//free cmd_struct
 	//print_token_list(token_head);
+	write_to_history(cmd_struct);
 	if (!(ast_root = create_ast(token_head)))
 	{
 		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
