@@ -48,7 +48,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	ft_endl_tty("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	//print_ast(ast_root);
 	exec_ast(ast_root, env);
-	ft_endl_tty("THE END");
+	//ft_endl_tty("THE END");
 	free_ast(ast_root);
 	//print_ast(ast_root);
 	return (1);
