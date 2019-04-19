@@ -10,7 +10,7 @@ size_t	ft_print_len(const char *s1)
 	res = 0;
 	while (s1[i])
 	{
-		if (ft_isprint(s1[i]))
+		if (ft_isprint(s1[i]) || s1[i] == '\n')
 			res++;
 		i++;
 	}
@@ -103,7 +103,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	size_t	print_len;
 
 	// need initalization for cmd_struct;
-	//need check the arg cmd_struct
+	// need check the arg cmd_struct
 	if (!(cmd_struct = (t_cmd_struct*)malloc(sizeof(*cmd_struct))))
 		ERROR_MEM;
 	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
@@ -131,7 +131,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 		else if ((ft_strncmp(buf, "\r", 2) == 0))
 		{
 			print_line();
-			break ;
+			break;
 		}
 		else if (ft_strncmp(buf, CTRL_C, 2) == 0)
 		{
