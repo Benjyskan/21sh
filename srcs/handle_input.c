@@ -24,6 +24,8 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		ft_memdel((void*)&cmd_struct->prompt);
 		cmd_struct->prompt = ft_strdup("cont");
 		dprintf(g_dev_tty, "OLD_INPUT: {%s}\n", cmd_struct->txt);print_line();
+		cmd_struct->tracker = ft_strlen(cmd_struct->txt);
+		cmd_struct->current_data_size = cmd_struct->tracker;
 		cmd_struct = input_loop(cmd_struct);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}

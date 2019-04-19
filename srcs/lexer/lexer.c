@@ -76,9 +76,12 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	t_token		*current_token;
 	t_operation	*op_chart;
 	t_token		*prev_token;
+	//char		*dup_cmdline;
 
 	(void)env;
 	init_lexer(&op_chart, token_head, &prev_token);
+	//if (!(dup_cmdline = ft_strdup(cmdline)))
+	//	ERROR_MEM;
 	while (cmdline && *cmdline)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
