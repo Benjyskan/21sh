@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/18 17:07:45 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/19 18:39:06 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int			reset_terminal_settings(void)
 {
 	if (isatty(STDIN) == 0)
-		return (0);
+		return (1);
 	execute_str(VISIBLE);
 	if ((tcsetattr(STDIN, TCSANOW, &g_saved_attr) == -1))
 		return (err_resetattr());
