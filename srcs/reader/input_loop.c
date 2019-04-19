@@ -53,7 +53,7 @@ void			write_buf(t_cmd_struct *cmd_struct, char *buf)
 	printable_len = ft_printable_len(buf);
 	cmd_struct->txt = ft_realloc(cmd_struct->txt,
 			cmd_struct->current_data_size,
-			&cmd_struct->current_malloc_size, printable_len);
+			&cmd_struct->current_malloc_size, printable_len + 1);
 	insert_str(cmd_struct, buf, printable_len);
 	execute_str(ERASE_ENDLINE);// should not be necessary if done right
 	ft_putstr_tty(&cmd_struct->txt[cmd_struct->tracker]);
