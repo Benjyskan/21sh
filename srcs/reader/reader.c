@@ -1,5 +1,6 @@
 #include "tosh.h"
 #include "reader.h"
+#include "history.h"
 
 size_t	ft_print_len(const char *s1)
 {
@@ -10,7 +11,7 @@ size_t	ft_print_len(const char *s1)
 	res = 0;
 	while (s1[i])
 	{
-		if (ft_isprint(s1[i]))
+		if (ft_isprint(s1[i]) || s1[i] == '\n')
 			res++;
 		i++;
 	}
@@ -45,7 +46,7 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 	int		current_col;
 	size_t	prompt_size;
 
-	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) + 2 : 2;
+	prompt_size = cmd_struct->prompt ? ft_strlen(cmd_struct->prompt) : 2;
 	max_row = cmd_struct->start_pos.row + (prompt_size + cmd_struct->current_data_size) / cmd_struct->window.ws_col;
 	max_col = cmd_struct->start_pos.col + (prompt_size + cmd_struct->current_data_size) % cmd_struct->window.ws_col;
 	while (max_row > cmd_struct->window.ws_row)
@@ -80,6 +81,7 @@ char	*ft_strdup_print(const char *s1)
 		}
 		i++;
 	}
+	res[i] = 0;
 	return (res);
 }
 

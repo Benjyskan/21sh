@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:59:20 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/18 17:33:54 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/19 14:45:37 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,18 @@ int		ft_putchar_tty(int c)
 
 int		ft_putstr_tty(char *str)
 {
-	if (write(g_dev_tty, str, ft_strlen(str)) == -1)
+	size_t i;
+
+	i = 0;
+	while (str[i])
 	{
-		ft_putstr_fd("write error: bad file descriptor\n", 2);
-		return (0);
+		if (str[i] == '\n')
+			print_line();
+		else
+			ft_putchar_tty(str[i]);
+		i++;
 	}
-	else
-		return (1);
+	return (1);
 }
 
 void	ft_endl_tty(char *str)

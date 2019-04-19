@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/18 17:43:28 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/19 14:11:41 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,13 @@
 # define END_LEN 3
 
 # define BELL "\x07"
-
-
+# define BELL_LEN 1
+# define CTRL_Z "\x1a"
+# define CTRL_Z_LEN 1
+# define CTRL_D "\x04"
+# define CTRL_Z_LEN 1
+# define CTRL_C "\x03"
+# define CTRL_C_LEN 1
 
 /*
 ** Previous terminal settings are saved in a global, and restored on exit.

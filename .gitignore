@@ -8,3 +8,4 @@
 *.bak
 tags
 sandbox
+*.21sh_history
