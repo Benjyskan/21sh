@@ -27,7 +27,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		cmd_struct = input_loop(cmd_struct);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}
-	dprintf(g_dev_tty, "for hist: {%s}\n", cmd_struct->txt);print_line();
+	write_to_history(cmd_struct);
 	if (lexer_ret == LEX_FAIL)
 	{
 		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");
@@ -38,7 +38,6 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	//printf("POST LEXER: input: {%s}\n", input);
 	//ft_memdel((void*)&input);//free cmd_struct
 	//print_token_list(token_head);
-	write_to_history(cmd_struct);
 	if (!(ast_root = create_ast(token_head)))
 	{
 		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
