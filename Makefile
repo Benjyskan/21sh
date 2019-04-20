@@ -40,9 +40,10 @@ SRC_DIR	:=	srcs
 	READER_DIR		:=	reader
 	EXPANDS_DIR		:=	expands
 	HISTORY_DIR		:=	history
+	SIGNALS_DIR		:=	signals
 	#list of all srcs subdirectories
 	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR) \
-					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR)
+					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR) $(SIGNALS_DIR)
 
 
 #VPATH specifies a list of directories that 'make' should search
@@ -61,14 +62,15 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						redir_great.c redir_dgreat.c redir_less.c redir_dless.c \
 						check_token_type.c
 	READER_FILES	:=	arrows.c check_commands.c clean_exit.c prompt.c \
-						input_loop.c cursor_position.c input_utils.c
+						input_loop.c cursor_position.c input_utils.c cmd_struct.c
 	EXPANDS_FILES	:=	parse_expands.c parse_dollars.c parse_tildes.c \
 						parse_quotes.c 
 	HISTORY_FILES	:=	hist_file.c
+	SIGNALS_FILES	:=	signals.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
-			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) $(EXPANDS_FILES)
+			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) $(EXPANDS_FILES) $(SIGNALS_FILES)
 
 
 # Complete path of each .c files ###############################################
@@ -80,6 +82,7 @@ PARSER_PATH			:=	$(addprefix $(PARSER_DIR)/,$(PARSER_FILES))
 PIPELINE_PATH		:=	$(addprefix $(PIPELINE_DIR)/,$(PIPELINE_FILES))
 READER_PATH			:=	$(addprefix $(READER_DIR)/,$(READER_FILES))
 HISTORY_PATH		:=	$(addprefix $(HISTORY_DIR)/,$(HISTORY_FILES))
+SIGNALS_PATH		:=	$(addprefix $(SIGNALS_DIR)/,$(SIGNALS_FILES))
 EXPANDS_PATH		:=	$(addprefix $(EXPANDS_DIR)/,$(EXPANDS_FILES))
 
 #list of all "path/*.c"
@@ -91,6 +94,7 @@ SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(READER_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(EXPANDS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(HISTORY_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(SIGNALS_PATH)) \
 			$(SRC_PATH)
 
 #Object ########################################################################

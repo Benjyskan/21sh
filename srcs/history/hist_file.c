@@ -4,7 +4,7 @@
 #include "ast.h"
 #include "errno.h"
 
-int		open_history(char **env)
+static int		open_history(char **env)
 {
 	int		fd;
 	char	*hist_file;
@@ -20,18 +20,18 @@ int		open_history(char **env)
 	return (fd);
 }
 
-int		write_to_history(t_cmd_struct *cmd_struct)
+int		write_to_history(t_cmd_struct *cmd_struct, char **env)
 {
-	int fd;
+	static int fd = -2;
 
 	if (is_full_of_whitespaces(cmd_struct->txt))
 		return (0);
-	fd = cmd_struct->fd;
+	if (fd == -2)
+		fd = open_history(env);
 	if (fd < 0)
 		return (0);
 	else
 	{
-
 		//get_cmd_number ? (not line number!)
 		ft_dprintf(fd, "\"%s\"\n", cmd_struct->txt);
 		return (1);

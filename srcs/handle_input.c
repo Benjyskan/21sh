@@ -25,11 +25,11 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		cmd_struct->prompt = ft_strdup("cont> ");
 		cmd_struct->txt -= cmd_struct->tracker;
 		dprintf(g_dev_tty, "OLD_INPUT: {%s}", cmd_struct->txt);print_line();
-		cmd_struct = input_loop(cmd_struct, env);
+		cmd_struct = input_loop(cmd_struct);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}", cmd_struct->txt);print_line();
 	}
 	cmd_struct->txt -= cmd_struct->current_data_size; //fix to print in history
-	write_to_history(cmd_struct);
+	write_to_history(cmd_struct, env);
 	if (lexer_ret == LEX_FAIL)
 	{
 		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");

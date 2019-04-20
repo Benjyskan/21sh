@@ -16,7 +16,6 @@ typedef struct	s_cmd_struct {
 	size_t				tracker;
 	size_t				nb_lines;
 	char				*prompt;
-	int					fd;
 }				t_cmd_struct;
 
 /*
@@ -43,7 +42,8 @@ void			get_next_history(t_cmd_struct *cmd_struct);
 ** Read input
 */
 
-t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct, char **env);
+t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
+t_cmd_struct	*init_cmd_struct(void);
 
 /*
 ** General display
@@ -51,6 +51,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct, char **env);
 
 void			reposition_cursor(t_cmd_struct *cmd_struct);
 void			print_prompt(t_cmd_struct *cmd_struct);
+void			signal_setup(void);
 
 /*
 **	Input string manipulation
@@ -62,4 +63,5 @@ void			insert_str(t_cmd_struct *cmd_struct, const char *buf,
 
 
 void			clean_exit(int exitno);
+t_cmd_struct	*get_cmd_struct(t_cmd_struct **new_struct);
 #endif

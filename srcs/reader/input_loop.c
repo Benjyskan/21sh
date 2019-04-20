@@ -17,7 +17,7 @@ void	magic_print(char *buf)
 	execute_str(RESTORE_CURSOR);
 }
 
-t_cmd_struct	*init_cmd_struct(char **env)
+t_cmd_struct	*init_cmd_struct(void)
 {
 	t_cmd_struct *cmd_struct;
 
@@ -26,7 +26,6 @@ t_cmd_struct	*init_cmd_struct(char **env)
 	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
 		return (NULL); //error
 	cmd_struct->current_data_size = 0;
-	cmd_struct->fd = open_history(env);
 	retrieve_pos(&cmd_struct->start_pos);
 	cmd_struct->current_malloc_size = INIT_TXT_SIZE;
 	cmd_struct->prompt = ft_strdup("psh $ ");
@@ -36,6 +35,7 @@ t_cmd_struct	*init_cmd_struct(char **env)
 		clean_exit(1);
 	}
 	cmd_struct->tracker = 0;
+	get_cmd_struct(&cmd_struct);
 	return (cmd_struct);
 }
 
@@ -61,13 +61,13 @@ void			write_buf(t_cmd_struct *cmd_struct, char *buf)
 	cmd_struct->tracker += printable_len;
 }
 
-t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct, char **env)
+t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 {
 	char	buf[BUF_SIZE + 1];
 	int		ret;
 
 	if (cmd_struct == NULL)
-		cmd_struct = init_cmd_struct(env);
+		cmd_struct = init_cmd_struct();
 	retrieve_pos(&cmd_struct->start_pos);
 	print_prompt(cmd_struct);
 	ft_bzero(buf, BUF_SIZE + 1);

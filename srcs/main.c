@@ -29,11 +29,12 @@ int		main(int argc, char **argv, char **env)
 	cmd_struct = NULL;
 	if (setup_terminal_settings() == -1)
 		return (EXIT_FAILURE);
+	signal_setup();
 	if (!(env_cpy = init_env(env)))
 		return (EXIT_FAILURE);
 	while (42)
 	{
-		if (!(cmd_struct = input_loop(cmd_struct, env)))
+		if (!(cmd_struct = input_loop(cmd_struct)))
 			break ; // free env, free char *
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
