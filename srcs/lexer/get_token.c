@@ -85,6 +85,7 @@ static t_token	*get_monochar(char **cmdline)
 		print_line();
 		return (NULL);
 	}
+	(*cmdline)++;
 	if (!(token = create_token(*cmdline, 1, TK_MONOC)))
 		ERROR_MEM;
 	(*cmdline)++;
