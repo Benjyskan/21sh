@@ -62,12 +62,17 @@ static t_bool	expand_dollars(t_token *token_head, char **env)
 				continue ;
 			}
 			if (!(var_value = get_envline_value(var_name, env)))
+			{
 				var_value = &var_name[ft_strlen(var_name)];//on peut difficilement faire pire, la degueulasserie a son paroxysme !
+			}
 			token_head->content = substitute_env_var(token_head->content, &i
 					, var_value, var_name);
 		}
 		i++;
 	}
+	//dprintf(g_dev_tty, "CONTENT:{%s}, len=%zu", token_head->content, ft_strlen(token_head->content));print_line();//debug
+	if (ft_strlen(token_head->content) == 0)
+		token_head->type = TK_EAT;
 	return (0);
 }
 

@@ -39,7 +39,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		ft_endl_tty("\x1B[32m""### lexer SUCCESS""\x1B[0m");
 	//printf("POST LEXER: input: {%s}\n", input);
 	//ft_memdel((void*)&input);//free cmd_struct
-	//print_token_list(token_head);
+	print_token_list(token_head);
 	if (!(ast_root = create_ast(token_head)))
 	{
 		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
