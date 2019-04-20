@@ -33,7 +33,7 @@ int		main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 	while (42)
 	{
-		if (!(cmd_struct = input_loop(cmd_struct)))
+		if (!(cmd_struct = input_loop(cmd_struct, env)))
 			break ; // free env, free char *
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{

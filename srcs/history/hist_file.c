@@ -2,16 +2,21 @@
 #include "tosh.h"
 #include "reader.h"
 #include "ast.h"
+#include "errno.h"
 
-int		open_history(void)
+int		open_history(char **env)
 {
-	int fd;
+	int		fd;
+	char	*hist_file;
 
-	if ((fd = open(HIST_FILE, O_RDWR | O_APPEND | O_CREAT, 0640)) == -1)
+	hist_file = ft_strdup(HIST_FILE);
+	replace_tilde(&hist_file, env);
+	if ((fd = open(hist_file, O_RDWR | O_APPEND | O_CREAT, 0640)) == -1)
 	{
 		ft_dprintf(2, "error: failed to open history file");
 		return (-1);
 	}
+	ft_memdel((void*)&hist_file);
 	return (fd);
 }
 
@@ -26,6 +31,7 @@ int		write_to_history(t_cmd_struct *cmd_struct)
 		return (0);
 	else
 	{
+
 		//get_cmd_number ? (not line number!)
 		ft_dprintf(fd, "\"%s\"\n", cmd_struct->txt);
 		return (1);

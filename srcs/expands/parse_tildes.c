@@ -13,7 +13,7 @@ static t_bool	is_valid_tilde(t_token *curr_token, t_token *prev_token)
 	return (0);
 }
 
-static t_bool	replace_tilde(char **str, char **env)
+t_bool	replace_tilde(char **str, char **env)
 {
 	char	*new_str;
 	char	*home_str;

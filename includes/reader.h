@@ -43,7 +43,7 @@ void			get_next_history(t_cmd_struct *cmd_struct);
 ** Read input
 */
 
-t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
+t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct, char **env);
 
 /*
 ** General display

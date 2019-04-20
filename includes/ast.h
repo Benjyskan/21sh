@@ -69,6 +69,7 @@ void				free_token_list(t_token *token_head);
 t_bool			parse_redirections(t_token *token_head);
 t_bool			is_quote_token(t_token *probe);
 t_bool			parse_tildes(t_token *token_head, char **env);
+t_bool			replace_tilde(char **str, char **env);
 t_bool			parse_expands(t_token *token_head, int in, int out, char **env);
 t_bool			parse_dollars(t_token *token_head, char **env);
 t_bool			parse_quotes(t_token *token_head);
