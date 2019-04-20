@@ -29,7 +29,6 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		cmd_struct = input_loop(cmd_struct, env);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}
-	cmd_struct->txt -= cmd_struct->current_data_size; //fix to print in history
 	write_to_history(cmd_struct);
 	if (lexer_ret == LEX_FAIL)
 	{
