@@ -22,6 +22,7 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 		//ERROR_MEM;
 		return (NULL);
 	}
+	//new_token->content[size] = 0;//test since lib swap//seems to work
 	return (new_token);
 }
 
@@ -70,8 +71,7 @@ static void	init_lexer(t_operation **op_chart, t_token **token_head
 ** run through the cmdline and tokenize it
 */
 
-//int		lexer(char *cmdline, t_token **token_head, char **env)
-int		lexer(t_cmd_struct *cmd_struct, t_token **token_head, char **env)
+int		lexer(char *cmdline, t_token **token_head, char **env)
 {
 	t_token		*current_token;
 	t_operation	*op_chart;
@@ -79,10 +79,9 @@ int		lexer(t_cmd_struct *cmd_struct, t_token **token_head, char **env)
 
 	(void)env;
 	init_lexer(&op_chart, token_head, &prev_token);
-	//while (cmdline && *cmdline)
-	while (cmd_struct->txt && *cmd_struct->txt)
+	while (cmdline && *cmdline)
 	{
-		if (!(current_token = get_token(cmd_struct, op_chart)))
+		if (!(current_token = get_token(&cmdline, op_chart)))
 			return (LEX_CONT_READ);
 		//print_token(current_token);
 		if (!(add_token_to_list(current_token, prev_token, token_head)))
@@ -93,6 +92,7 @@ int		lexer(t_cmd_struct *cmd_struct, t_token **token_head, char **env)
 	if (is_logic_or_pipe(current_token)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
+		//ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
 		ft_endl_tty("tmp, tklst end with '&&','||' or '|': READ_MODE");
 		return (LEX_CONT_READ);//TMP
 	}

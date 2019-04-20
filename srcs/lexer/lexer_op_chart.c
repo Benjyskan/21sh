@@ -42,7 +42,7 @@ t_operation	*get_op_chart(void)
 	return (op_chart);
 }
 
-t_token		*get_op_chart_token(t_cmd_struct *cmd_struct, t_operation *op_chart)
+t_token		*get_op_chart_token(char **cmdline, t_operation *op_chart)
 {
 	int		i;
 	t_token	*token;
@@ -50,12 +50,12 @@ t_token		*get_op_chart_token(t_cmd_struct *cmd_struct, t_operation *op_chart)
 	i = -1;
 	while (op_chart[++i].size > 0)
 	{
-		if (!ft_strncmp(cmd_struct->txt, op_chart[i].str, op_chart[i].size))
+		if (!ft_strncmp(*cmdline, op_chart[i].str, op_chart[i].size))
 		{
-			if (!(token = create_token(cmd_struct->txt, op_chart[i].size,
+			if (!(token = create_token(*cmdline, op_chart[i].size,
 							op_chart[i].type)))
 				return (NULL);
-			cmd_struct->txt = cmd_struct->txt + op_chart[i].size;
+			*cmdline = *cmdline + op_chart[i].size;
 			return (token);
 		}
 	}

@@ -16,7 +16,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	t_token			*token_head;
 	int				lexer_ret;
 
-	while ((lexer_ret = lexer(cmd_struct, &token_head, env)) == LEX_CONT_READ)
+	while ((lexer_ret = lexer(cmd_struct->txt, &token_head, env)) == LEX_CONT_READ)
 	{
 		//free token list ?
 

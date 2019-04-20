@@ -35,6 +35,8 @@ int		main(int argc, char **argv, char **env)
 	{
 		if (!(cmd_struct = input_loop(cmd_struct, env)))
 			break ; // free env, free char *
+		//store input in history here
+		//if (is_full_of_whitespaces(input))
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
 			//free cmd_struct
