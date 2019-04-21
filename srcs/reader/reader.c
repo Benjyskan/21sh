@@ -118,6 +118,7 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 			return (NULL); //error
 		cmd_struct->current_data_size = 0;
 		cmd_struct->fd = open_history();
+		retrieve_pos(&cmd_struct->start_pos);
 		cmd_struct->current_malloc_size = INIT_TXT_SIZE;
 		cmd_struct->prompt = ft_strdup("psh $ ");
 		if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
@@ -131,7 +132,6 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	{
 		print_prompt(cmd_struct);
 		ft_bzero(buf, BUF_SIZE + 1);
-		retrieve_pos(&cmd_struct->start_pos);
 		while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 		{
 			buf[ret] = 0;
