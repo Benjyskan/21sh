@@ -66,4 +66,5 @@ void			insert_str(t_cmd_struct *cmd_struct, const char *buf,
 
 void			clean_exit(int exitno);
 t_cmd_struct	*get_cmd_struct(t_cmd_struct **new_struct);
+void			sigint_handler(int signo);
 #endif

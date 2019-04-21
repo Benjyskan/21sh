@@ -28,7 +28,7 @@ t_cmd_struct	*init_cmd_struct(void)
 	cmd_struct->total_data_size = 0;
 	retrieve_pos(&cmd_struct->start_pos);
 	cmd_struct->total_malloc_size = INIT_TXT_SIZE;
-	cmd_struct->prompt = ft_strdup("psh $ ");
+	cmd_struct->prompt = ft_strdup("psh $ ");// protect
 	cmd_struct->append_txt = cmd_struct->txt;
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{

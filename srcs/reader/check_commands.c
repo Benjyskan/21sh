@@ -43,7 +43,8 @@ int		check_for_signal(const char *buf)
 	}
 	else if (ft_strncmp(buf, CTRL_C, CTRL_C_LEN) == 0)
 	{
-		ioctl(STDIN, TIOCSTI, CTRL_C);
+		sigint_handler(2);
+		//ioctl(STDIN, TIOCSTI, CTRL_C);
 		return (1);
 	}
 	return (0);
