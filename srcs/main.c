@@ -41,6 +41,7 @@ int		main(int argc, char **argv, char **env)
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
 			//free cmd_struct
+			cmd_struct = NULL;
 			continue; //TODO: free char *
 		}
 		if (!(handle_input(cmd_struct, env_cpy)))

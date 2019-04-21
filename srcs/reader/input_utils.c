@@ -46,10 +46,10 @@ void	insert_str(t_cmd_struct *cmd_struct, const char *buf,
 {
 	char	*tmp;
 
-	if (!(tmp = ft_strdup_print(&cmd_struct->txt[cmd_struct->tracker])))
+	if (!(tmp = ft_strdup_print(&cmd_struct->append_txt[cmd_struct->tracker])))
 		ERROR_MEM;
-	ft_strcpy(&cmd_struct->txt[cmd_struct->tracker + printable_len],
+	ft_strcpy(&cmd_struct->append_txt[cmd_struct->tracker + printable_len],
 			tmp);
-	ft_strncpy(&cmd_struct->txt[cmd_struct->tracker], buf, printable_len);
+	ft_strncpy(&cmd_struct->append_txt[cmd_struct->tracker], buf, printable_len);
 	free(tmp);
 }

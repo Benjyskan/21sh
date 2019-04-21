@@ -5,17 +5,19 @@
 # include <sys/ioctl.h>
 # define BUF_SIZE 4
 # define PROMPT_SIZE
-# define INIT_TXT_SIZE 32
+# define INIT_TXT_SIZE 2 // change to 32(?) later but for debug purpose it's 2
 
 typedef struct	s_cmd_struct {
 	char				*txt;
+	size_t				total_data_size;
+	size_t				total_malloc_size;
 	size_t				current_data_size;
-	size_t				current_malloc_size;
 	t_pos				start_pos;
 	struct winsize		window;
 	size_t				tracker;
 	size_t				nb_lines;
 	char				*prompt;
+	char				*append_txt;
 }				t_cmd_struct;
 
 /*

@@ -25,16 +25,16 @@ t_cmd_struct	*init_cmd_struct(void)
 		ERROR_MEM;
 	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
 		return (NULL); //error
-	cmd_struct->current_data_size = 0;
+	cmd_struct->total_data_size = 0;
 	retrieve_pos(&cmd_struct->start_pos);
-	cmd_struct->current_malloc_size = INIT_TXT_SIZE;
+	cmd_struct->total_malloc_size = INIT_TXT_SIZE;
 	cmd_struct->prompt = ft_strdup("psh $ ");
+	cmd_struct->append_txt = cmd_struct->txt;
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{
 		ft_dprintf(2, "error ioctl : exiting!");//TODO
 		clean_exit(1);
 	}
-	cmd_struct->tracker = 0;
 	get_cmd_struct(&cmd_struct);
 	return (cmd_struct);
 }
@@ -49,15 +49,18 @@ void			error_read(void)
 void			write_buf(t_cmd_struct *cmd_struct, char *buf)
 {
 	size_t printable_len;
+	size_t diff_size;
 
 	printable_len = ft_printable_len(buf);
+	diff_size = cmd_struct->append_txt - cmd_struct->txt;
 	cmd_struct->txt = ft_realloc(cmd_struct->txt,
-			cmd_struct->current_data_size,
-			&cmd_struct->current_malloc_size, printable_len + 1);
+			cmd_struct->total_data_size,
+			&cmd_struct->total_malloc_size, printable_len + 1);
+	cmd_struct->append_txt = cmd_struct->txt + diff_size;
 	insert_str(cmd_struct, buf, printable_len);
-	execute_str(ERASE_ENDLINE);// should not be necessary if done right
-	ft_putstr_tty(&cmd_struct->txt[cmd_struct->tracker]);
+	ft_putstr_tty(&cmd_struct->append_txt[cmd_struct->tracker]);
 	cmd_struct->current_data_size += printable_len;
+	cmd_struct->total_data_size += printable_len;
 	cmd_struct->tracker += printable_len;
 }
 
@@ -68,6 +71,8 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 
 	if (cmd_struct == NULL)
 		cmd_struct = init_cmd_struct();
+	cmd_struct->current_data_size = 0;
+	cmd_struct->tracker = 0;
 	retrieve_pos(&cmd_struct->start_pos);
 	print_prompt(cmd_struct);
 	ft_bzero(buf, BUF_SIZE + 1);
