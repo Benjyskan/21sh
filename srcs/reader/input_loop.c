@@ -61,7 +61,12 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 				|| check_for_quit(buf) || check_for_delete(cmd_struct, buf))
 			continue ;
 		else if (check_for_enter(buf))
+		{
+			buf[0] = '\n';
+			buf[1] = 0;
+			write_buf(cmd_struct, buf);
 			break ;
+		}
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
 		else
