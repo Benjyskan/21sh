@@ -28,10 +28,12 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 //		cmd_struct->current_data_size = cmd_struct->tracker; I think it's useless now with total_data_size
 		cmd_struct->append_txt = &cmd_struct->txt[cmd_struct->total_data_size];
 		cmd_struct->tracker = 0;
-		cmd_struct = input_loop(cmd_struct);
+		input_loop(cmd_struct);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}
-	write_to_history(cmd_struct, env);
+	cmd_struct->hist_lst = append_hist_lst(cmd_struct->hist_lst, cmd_struct->txt);
+	ft_printf("NEW LST: %p", cmd_struct->hist_lst);
+	//write_to_history(cmd_struct, env); deprecated
 	if (lexer_ret == LEX_FAIL)
 	{
 		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");

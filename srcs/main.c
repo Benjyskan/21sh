@@ -34,25 +34,26 @@ int		main(int argc, char **argv, char **env)
 	cmd_struct = init_cmd_struct(env);
 	while (42)
 	{
-		if (!(cmd_struct = input_loop(cmd_struct)))
+		if (!input_loop(cmd_struct))
 			break ; // free env, free char *
 		//store input in history here
-		//if (is_full_of_whitespaces(input))
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
 			reset_cmd_struct(cmd_struct);
-			continue; //TODO: free char *
+			continue;
 		}
 		if (!(handle_input(cmd_struct, env_cpy)))
 			;
-			//free cmd_struct
-			//ft_memdel((void*)&input);
 		reset_cmd_struct(cmd_struct);
 	}
+	write_to_history(cmd_struct, env);
+	//free cmd_struct
 	ft_free_ntab(env_cpy);
 	print_line();
-	if (reset_terminal_settings())
+	if (reset_terminal_settings() == 0)
 		return (EXIT_FAILURE);
 	else
+	{
 		return (EXIT_SUCCESS);
+	}
 }

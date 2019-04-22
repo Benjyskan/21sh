@@ -53,7 +53,7 @@ t_cmd_struct	*init_cmd_struct(char **env)
 	cmd_struct->total_malloc_size = INIT_TXT_SIZE;
 	cmd_struct->prompt = ft_strdup("psh $ ");// protect
 	cmd_struct->append_txt = cmd_struct->txt;
-	cmd_struct->history = get_history(env);
+	cmd_struct->hist_lst = get_history(env);
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{
 		ft_dprintf(2, "error ioctl : exiting!");//TODO

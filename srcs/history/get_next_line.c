@@ -35,6 +35,8 @@ static int		return_val(char **line, t_fdlist *save)
 	char			*e;
 	char			*tmp;
 
+	if (!(save->c))
+		return (0);
 	e = ft_strchr(save->c, ENDL);
 	if (e != NULL)
 	{
@@ -85,7 +87,7 @@ static t_fdlist	*getfd(t_fdlist *save, int fd)
 
 int				get_next_line(const int fd, char **line)
 {
-	static t_fdlist	*save;
+	static t_fdlist	*save = NULL;
 	char			*buf;
 	int				check;
 
