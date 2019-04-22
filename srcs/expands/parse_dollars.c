@@ -8,6 +8,13 @@ static t_bool	is_env_var_name_char(char c)
 	return (0);
 }
 
+/*
+** get_var_name
+** parse the string while(is_env_var_name_char)
+** return (NULL) if name length == 0;
+** return the allocated var_name otherwise
+*/
+
 static char		*get_var_name(char *str)
 {
 	size_t		i;
@@ -24,6 +31,13 @@ static char		*get_var_name(char *str)
 	return (var_name);
 }
 
+/*
+** substitute_env_var
+** realloc and return a new string with expanded variable
+** set the index 'i' accordingly
+** free (old_str && var_name)
+*/
+
 static char		*substitute_env_var(char *old_str, size_t *i
 		, char *var_value, char *var_name)
 {
@@ -37,46 +51,52 @@ static char		*substitute_env_var(char *old_str, size_t *i
 	*i += ft_strlen(var_value);
 	ft_strcpy(new_str + *i
 			, old_str + *i - ft_strlen(var_value) + (ft_strlen(var_name) + 1));
-	--(*i);
+	(*i)--;
 	ft_memdel((void*)&old_str);
 	ft_memdel((void*)&var_name);
-	old_str = new_str;
 	return (new_str);
 }
 
-static t_bool	expand_dollars(t_token *token_head, char **env)
+/*
+** expand_dollars
+** parse token->content until an unescaped '$' is found,
+** then try to replace the env_var:
+** - if the env_var doesn't exist, replace with nothing
+** - if the env_var does exist, substitute by it value
+**
+** if the token->content is empty after this, token->type = TK_EAT
+*/
+
+static t_bool	expand_dollars(t_token *token, char **env)
 {
 	size_t	i;
 	char 	*var_name;
 	char	*var_value;
 
 	i = 0;
-	while (token_head->content[i])
+	while (token->content[i])
 	{
-		//if (token_head->content[i] == '$')
-		if ((token_head->content[0] == '$') || (i > 0 && token_head->content[i] == '$' && token_head->content[i - 1] != '\\'))
+		if ((token->content[0] == '$') || (i > 0 && token->content[i] == '$'
+					&& token->content[i - 1] != '\\'))
 		{
-			if (!(var_name = get_var_name(token_head->content + i)))
+			if (!(var_name = get_var_name(token->content + i)))
 			{
-				ft_putendl("get_var_name returned NULL, ignoring this '$'");
 				i++;
 				continue ;
 			}
 			if (!(var_value = get_envline_value(var_name, env)))
-			{
-				var_value = &var_name[ft_strlen(var_name)];//on peut difficilement faire pire, la degueulasserie a son paroxysme !
-			}
-			token_head->content = substitute_env_var(token_head->content, &i
+				var_value = &var_name[ft_strlen(var_name)];
+			token->content = substitute_env_var(token->content, &i
 					, var_value, var_name);
 		}
 		i++;
 	}
-	//dprintf(g_dev_tty, "CONTENT:{%s}, len=%zu", token_head->content, ft_strlen(token_head->content));print_line();//debug
-	if (ft_strlen(token_head->content) == 0)
-		token_head->type = TK_EAT;
+	if (ft_strlen(token->content) == 0)
+		token->type = TK_EAT;
 	return (0);
 }
 
+//check return type
 t_bool			parse_dollars(t_token *token_head, char** env)
 {
 	t_bool	res;
