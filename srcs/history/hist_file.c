@@ -23,10 +23,9 @@ static int		open_history(char **env)
 
 t_hist_lst	*get_history(char **env)
 {
-//	t_hist_lst	*hist_lst;
+	t_hist_lst	*hist_lst;
 	char		*line;
 	int fd;
-
 
 	if ((fd = open_history(env)) < 0)
 		return (NULL); //error_msg ?
@@ -53,7 +52,7 @@ int		write_to_history(t_cmd_struct *cmd_struct, char **env)
 	else
 	{
 		//get_cmd_number ? (not line number!)
-		ft_dprintf(fd, "\"%s\"\n", cmd_struct->txt);
+		ft_dprintf(fd, "%s", cmd_struct->txt);
 		return (1);
 	}
 }

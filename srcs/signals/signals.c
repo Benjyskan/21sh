@@ -26,6 +26,7 @@ void	sigint_handler(int signo)
 //	free_cmd(cmd_struct);
 	print_line();
 	reset_cmd_struct(cmd_struct);
+	//execute_str(CLEAR_BELOW); not clear below but go to end of str and clear below
 	print_prompt(cmd_struct);
 }
 
