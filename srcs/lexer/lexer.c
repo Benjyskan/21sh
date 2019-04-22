@@ -33,7 +33,10 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 
 	if (token_list_start_with_ctrl_op(prev_token, current_token)
 			|| is_two_ctrlop_or_redir_following(prev_token, current_token))
+	{
+		free_token_list(*token_head);
 		return (0);
+	}
 	if (prev_token && prev_token->type == TK_HEREDOC
 			&& current_token->type != TK_EAT)
 	{
@@ -77,7 +80,7 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	t_operation	*op_chart;
 	t_token		*prev_token;
 
-	(void)env;
+	(void)env;//no need for env in lexer ?
 	init_lexer(&op_chart, token_head, &prev_token);
 	while (cmdline && *cmdline)
 	{
@@ -85,7 +88,10 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 			return (LEX_CONT_READ);
 		//print_token(current_token);
 		if (!(add_token_to_list(current_token, prev_token, token_head)))
+		{
+			//print_token_list(*token_head);
 			return (LEX_FAIL);//free token list
+		}
 		if (current_token->type != TK_EAT)
 			prev_token = current_token;
 	}

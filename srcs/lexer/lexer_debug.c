@@ -2,14 +2,10 @@
 
 void	print_token(t_token *token)//debug
 {
-/*	ft_dprintf(g_dev_tty, "TOKEN{\n\tcontent: {%s}\n\tsize: %lu\n\ttype: %d\n}\n", 
-			token->content,
-			token->size,
-			token->type);*/
-
-	ft_endl_tty("TOKEN");
-	ft_putstr_tty("content: ");
-	ft_endl_tty(token->content);
+	ft_endl_tty("_TOKEN_");
+	ft_putstr_tty("content: {");
+	ft_putstr_tty(token->content);
+	ft_endl_tty("}");
 }
 
 void	print_token_list(t_token *token_head)//debug
