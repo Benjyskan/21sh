@@ -71,7 +71,13 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 	else
 	{
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
-			;
+		{
+			if (WIFSIGNALED(status))
+			{
+				ft_printf("process terminated, received signal : %d", WTERMSIG(status));
+				print_line();
+			}
+		}
 		if (setup_terminal_settings() == 0)
 			clean_exit(1); // ? 
 		return (WEXITSTATUS(status));
