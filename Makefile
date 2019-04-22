@@ -25,7 +25,7 @@ LIBS			:= $(LIBFT_A) $(LIBTERM_A)
 INCL_DIR	:=	includes libft/includes libterm/includes
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h
+INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h
 
 INCLS		:=	$(addprefix includes/,$(INCL_FILES))
 
@@ -65,7 +65,7 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						input_loop.c cursor_position.c input_utils.c cmd_struct.c
 	EXPANDS_FILES	:=	parse_expands.c parse_dollars.c parse_tildes.c \
 						parse_quotes.c 
-	HISTORY_FILES	:=	hist_file.c
+	HISTORY_FILES	:=	hist_file.c get_next_line.c
 	SIGNALS_FILES	:=	signals.c
 
 #list of all .c files

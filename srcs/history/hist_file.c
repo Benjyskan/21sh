@@ -3,6 +3,7 @@
 #include "reader.h"
 #include "ast.h"
 #include "errno.h"
+#include "get_next_line.h"
 
 static int		open_history(char **env)
 {
@@ -18,6 +19,25 @@ static int		open_history(char **env)
 	}
 	ft_memdel((void*)&hist_file);
 	return (fd);
+}
+
+t_hist_lst	*get_history(char **env)
+{
+//	t_hist_lst	*hist_lst;
+	char		*line;
+	int fd;
+
+
+	if ((fd = open_history(env)) < 0)
+		return (NULL); //error_msg ?
+	line = NULL;
+	while (get_next_line(fd, &line) > 0)
+	{
+		// fill history
+		ft_memdel((void*)&line);
+	}
+	close(fd);
+	return (NULL);
 }
 
 int		write_to_history(t_cmd_struct *cmd_struct, char **env)

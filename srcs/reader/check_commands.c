@@ -78,17 +78,19 @@ int		check_for_delete(t_cmd_struct *cmd_struct, char *buf)
 {
 	if (ft_strncmp(buf, BACKSPACE, BACKSPACE_LEN + 1) == 0)
 	{
-		if (cmd_struct->tracker == 0)
+		if (cmd_struct->tracker <= 0)
 		{
+			cmd_struct->tracker = 0;
 			ft_putstr_tty(BELL);
 			return (1);
 		}
 		cmd_struct->tracker--;
+		cmd_struct->total_data_size -= 1;
 		cmd_struct->current_data_size -= 1;
 		reposition_cursor(cmd_struct);
 		execute_str(ERASE_ENDLINE);
-		shift_chars(&cmd_struct->txt[cmd_struct->tracker], 1);
-		ft_putstr_tty(&cmd_struct->txt[cmd_struct->tracker]);
+		shift_chars(&cmd_struct->append_txt[cmd_struct->tracker], 1);
+		ft_putstr_tty(&cmd_struct->append_txt[cmd_struct->tracker]);
 		reposition_cursor(cmd_struct);
 		return (1);
 	}

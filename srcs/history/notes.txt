@@ -11,9 +11,10 @@ when pressing down arrow, same as up but with get linked_list->next
 
 each time we call handle_input, append the cmd_struct.
 
-if  we get to HIST_SIZE + MAX_SIZE, free the first MAX_SIZE - HIST_SIZE nodes;
+if  we get to HIST_SIZE + HIST_MAX, free the first HIST_MAX - HIST_SIZE nodes;
 on exit:
 open hist_file in O_CREATE, RD_ONLY, O_TRUNC and write the history_linked_list, up until HIST_SIZE.
+when writing, if \n or '\0', go newline and increm_counter
 
 on crash, do not write history (?)
 

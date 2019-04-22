@@ -4,8 +4,8 @@
 # include "libterm.h"
 # include <sys/ioctl.h>
 # define BUF_SIZE 4
-# define PROMPT_SIZE
 # define INIT_TXT_SIZE 2 // change to 32(?) later but for debug purpose it's 2
+
 
 typedef struct	s_cmd_struct {
 	char				*txt;
@@ -18,7 +18,11 @@ typedef struct	s_cmd_struct {
 	size_t				nb_lines;
 	char				*prompt;
 	char				*append_txt;
+	struct s_hist_lst	*history;
 }				t_cmd_struct;
+
+# include "history.h"
+
 
 /*
 **	Input checking
@@ -45,7 +49,6 @@ void			get_next_history(t_cmd_struct *cmd_struct);
 */
 
 t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
-t_cmd_struct	*init_cmd_struct(void);
 
 /*
 ** General display
@@ -65,6 +68,13 @@ void			insert_str(t_cmd_struct *cmd_struct, const char *buf,
 
 
 void			clean_exit(int exitno);
+/*
+**	Functions that have to do with setting up cmd_struct
+*/
+
 t_cmd_struct	*get_cmd_struct(t_cmd_struct **new_struct);
+void			reset_cmd_struct(t_cmd_struct *cmd_struct);
+t_cmd_struct	*init_cmd_struct(char **env);
+
 void			sigint_handler(int signo);
 #endif

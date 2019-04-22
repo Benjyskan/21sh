@@ -17,28 +17,6 @@ void	magic_print(char *buf)
 	execute_str(RESTORE_CURSOR);
 }
 
-t_cmd_struct	*init_cmd_struct(void)
-{
-	t_cmd_struct *cmd_struct;
-
-	if (!(cmd_struct = (t_cmd_struct*)malloc(sizeof(*cmd_struct))))
-		ERROR_MEM;
-	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
-		return (NULL); //error
-	cmd_struct->total_data_size = 0;
-	retrieve_pos(&cmd_struct->start_pos);
-	cmd_struct->total_malloc_size = INIT_TXT_SIZE;
-	cmd_struct->prompt = ft_strdup("psh $ ");// protect
-	cmd_struct->append_txt = cmd_struct->txt;
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
-	{
-		ft_dprintf(2, "error ioctl : exiting!");//TODO
-		clean_exit(1);
-	}
-	get_cmd_struct(&cmd_struct);
-	return (cmd_struct);
-}
-
 void			error_read(void)
 {
 	ft_dprintf(2, "error: failed to read. Exiting");
@@ -70,8 +48,6 @@ t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct)
 	char	buf[BUF_SIZE + 1];
 	int		ret;
 
-	if (cmd_struct == NULL)
-		cmd_struct = init_cmd_struct();
 	cmd_struct->current_data_size = 0;
 	cmd_struct->tracker = 0;
 	retrieve_pos(&cmd_struct->start_pos);

@@ -26,12 +26,12 @@ int		main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	cmd_struct = NULL;
 	if (setup_terminal_settings() == -1)
 		return (EXIT_FAILURE);
 	signal_setup();
 	if (!(env_cpy = init_env(env)))
 		return (EXIT_FAILURE);
+	cmd_struct = init_cmd_struct(env);
 	while (42)
 	{
 		if (!(cmd_struct = input_loop(cmd_struct)))
@@ -40,16 +40,14 @@ int		main(int argc, char **argv, char **env)
 		//if (is_full_of_whitespaces(input))
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
-			//free cmd_struct
-			cmd_struct = NULL;
+			reset_cmd_struct(cmd_struct);
 			continue; //TODO: free char *
 		}
 		if (!(handle_input(cmd_struct, env_cpy)))
 			;
 			//free cmd_struct
 			//ft_memdel((void*)&input);
-		//free (cmd_struct or some elem of cmd_struct)
-		cmd_struct = NULL;
+		reset_cmd_struct(cmd_struct);
 	}
 	ft_free_ntab(env_cpy);
 	print_line();

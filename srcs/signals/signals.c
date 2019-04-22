@@ -17,18 +17,6 @@ static void	sig_handler(int signo)
 	exit(signo);
 }
 
-void		reset_cmd_struct(t_cmd_struct *cmd_struct) //only modifies loal copy ?
-{
-	ft_bzero(cmd_struct->txt, cmd_struct->total_data_size);
-	cmd_struct->total_data_size = 0;
-	cmd_struct->tracker = 0;
-	cmd_struct->current_data_size = 0;
-	retrieve_pos(&cmd_struct->start_pos);
-	ft_memdel((void*)&cmd_struct->prompt);
-	cmd_struct->prompt = ft_strdup("psh $ "); //protect
-	cmd_struct->append_txt = cmd_struct->txt;
-}
-
 void	sigint_handler(int signo)
 {
 	t_cmd_struct *cmd_struct;
@@ -38,7 +26,6 @@ void	sigint_handler(int signo)
 //	free_cmd(cmd_struct);
 	print_line();
 	reset_cmd_struct(cmd_struct);
-	init_cmd_struct();
 	print_prompt(cmd_struct);
 }
 
