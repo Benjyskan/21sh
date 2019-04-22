@@ -53,7 +53,8 @@ static t_bool	expand_dollars(t_token *token_head, char **env)
 	i = 0;
 	while (token_head->content[i])
 	{
-		if (token_head->content[i] == '$')
+		//if (token_head->content[i] == '$')
+		if ((token_head->content[0] == '$') || (i > 0 && token_head->content[i] == '$' && token_head->content[i - 1] != '\\'))
 		{
 			if (!(var_name = get_var_name(token_head->content + i)))
 			{

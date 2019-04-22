@@ -3,7 +3,7 @@
 NAME	:=	21sh
 OPT		:=	
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra #-Werror
 
 DEBUG_FLAG	:=	-g
 FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
