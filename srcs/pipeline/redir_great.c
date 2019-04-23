@@ -8,7 +8,7 @@ t_bool		redir_great(t_token *redir, t_token *prev)
 	int		new_fd;
 
 	if ((old_fd = check_fd_prev(prev)) < 0)
-		old_fd = 1;
+		old_fd = 1;//FILENO ??
 	next = redir->next;
 	while (next->type == TK_EAT) // need functions that does this
 		next = next->next;

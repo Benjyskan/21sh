@@ -25,6 +25,7 @@ void	redirect(int old_fd, int new_fd)
 int		check_fd_prev(t_token *prev) //should rename 
 {
 	int	i;
+
 	if (!prev)
 		return (-1);
 	if (prev->type == TK_WORD)
@@ -33,7 +34,6 @@ int		check_fd_prev(t_token *prev) //should rename
 		while (prev->content[i])
 		{
 			if (!ft_isdigit(prev->content[i]))
-				dprintf(2, "NOT ALNUM\n");
 				return (-1);
 			i++;
 		}
@@ -77,11 +77,12 @@ t_bool	parse_redirections(t_token *token_head)
 	current = token_head;
 	if (!current)
 		return (0);
-	if (current->type == TK_REDIRECTION)
-		if (apply_redirections(current, NULL) == 0)
-			return (0);
-	prev = current;
-	current = current->next;
+	//if (current->type == TK_REDIRECTION) //set prev to NULL to avoid repeatition
+	//	if (apply_redirections(current, NULL) == 0)
+	//		return (0);
+	//prev = current;
+	//current = current->next;
+	prev = NULL;
 	while (is_simple_cmd_token(current))
 	{
 		if (current->type == TK_REDIRECTION)
