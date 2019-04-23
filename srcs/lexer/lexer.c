@@ -33,15 +33,12 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 
 	if (token_list_start_with_ctrl_op(prev_token, current_token)
 			|| is_two_ctrlop_or_redir_following(prev_token, current_token))
-	{
-		free_token_list(*token_head);
 		return (0);
-	}
 	if (prev_token && prev_token->type == TK_HEREDOC
 			&& current_token->type != TK_EAT)
 	{
-		printf("HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
-		system("read -p \"press ENTER to continue\"");
+		dprintf(g_dev_tty, "HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
+		//system("read -p \"press ENTER to continue\"");
 		//bash:syntax error near unexpected token `newline'; should i tokenise '\n' ??
 	}
 	if (!(*token_head))
@@ -86,12 +83,8 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	{
 		if (!(current_token = get_token(&cmdline, op_chart)))
 			return (LEX_CONT_READ);
-		//print_token(current_token);
 		if (!(add_token_to_list(current_token, prev_token, token_head)))
-		{
-			//print_token_list(*token_head);
-			return (LEX_FAIL);//free token list
-		}
+			return (LEX_FAIL);
 		if (current_token->type != TK_EAT)
 			prev_token = current_token;
 	}

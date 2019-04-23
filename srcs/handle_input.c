@@ -33,13 +33,12 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	write_to_history(cmd_struct, env);
 	if (lexer_ret == LEX_FAIL)
 	{
-		//free_token_list(token_head);//not here ??
+		free_token_list(token_head);
 		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");
 		return (0);
 	}
 	else
 		ft_endl_tty("\x1B[32m""### lexer SUCCESS""\x1B[0m");
-	//print_token_list(token_head);
 	if (!(ast_root = create_ast(token_head)))
 	{
 		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
