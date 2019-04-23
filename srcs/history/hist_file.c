@@ -15,7 +15,7 @@ static int		open_history(char **env, int options)
 	replace_tilde(&hist_file, env);
 	if ((fd = open(hist_file, options, 0640)) == -1)
 	{
-//		ft_dprintf(2, "error: failed to open history file");
+		//		ft_dprintf(2, "error: failed to open history file");
 		return (-1);
 	}
 	ft_memdel((void*)&hist_file);
@@ -53,12 +53,12 @@ int		write_to_history(t_cmd_struct *cmd_struct, char **env)
 {
 	t_hist_lst	*hist_lst;
 	size_t		id;
+	size_t		i;
 	int			fd;
 
 	if (!(cmd_struct->hist_lst))
 		return (0);
-	fd = open_history(env, O_WRONLY | O_CREAT | O_TRUNC);
-	if (fd < 0)
+	if ((fd = open_history(env, O_WRONLY | O_CREAT | O_TRUNC)) < 0)
 		return (0);
 	else
 	{
@@ -66,8 +66,19 @@ int		write_to_history(t_cmd_struct *cmd_struct, char **env)
 		id = 0;
 		while (hist_lst)
 		{
-			ft_dprintf(g_dev_tty, "writing: %s", hist_lst->txt);
-			ft_dprintf(fd, "%4d  %s", id, hist_lst->txt);
+			i = 0;
+			ft_dprintf(fd, "%4d  ", id);
+			while (hist_lst->txt[i])
+			{
+
+				write(fd, &hist_lst->txt[i], 1);
+				if (hist_lst->txt[i] == '\n' && hist_lst->txt[i + 1] != 0)
+				{
+					id++;
+					ft_dprintf(fd, "%4d  ", id);
+				}
+				i++;
+			}
 			hist_lst = hist_lst->next;
 			id++;
 		}
