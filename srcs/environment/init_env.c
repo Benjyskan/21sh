@@ -24,7 +24,7 @@ static char	**create_minienv(void)
 		ERROR_MEM;
 	bzero_env(env, init_lines);
 	set_env_var("SHLVL", "1", &env);
-	if (!(cwd = getcwd(NULL, 0)))
+	if (!(cwd = getcwd(NULL, 0)))//getcwd can fail in other way than ERROR_MEM
 		ERROR_MEM;
 	set_env_var("PWD", cwd, &env);
 	env[init_lines - 0] = NULL;
@@ -45,7 +45,7 @@ char		**init_env(char **env)
 	if (env && *env)
 	{
 		if (!(new_env = ft_dup_ntab(env)))
-			return (NULL);
+			return (NULL);//ERROR_MEM;
 		set_shlvl(&new_env);
 		return (new_env);
 	}

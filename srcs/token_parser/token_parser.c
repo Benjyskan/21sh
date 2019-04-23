@@ -2,6 +2,11 @@
 #include "lexer.h"
 #include "ast.h"
 
+/*
+** create_ast_node
+** malloc a new ast_node
+*/
+
 static t_ast	*create_ast_node(t_token *new_token, t_ast *left, t_ast *right)
 {
 	t_ast	*new_node;
@@ -14,6 +19,12 @@ static t_ast	*create_ast_node(t_token *new_token, t_ast *left, t_ast *right)
 	return (new_node);
 }
 
+/*
+** reroot_ast
+** shift the current node to the left
+** and place the new_token as root
+*/
+
 static t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
 {
 	if (!(*ast_root = create_ast_node(new_token, *ast_root, NULL)))
@@ -21,12 +32,22 @@ static t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
 	return (1);
 }
 
+/*
+** insert_ast_node
+** recursively look for the correct spot to add node in ast
+** 1. check if current spot is empty, insert here
+** 2. check if new->type is >= current->type, if so:
+** 	reroot current to new
+** 3. if left is empty, insert left
+** 4. insert right
+*/
+
 static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 {
 	t_ast			*new_node;
 
 	if (!(new_node = create_ast_node(new_token, NULL, NULL)))
-		return (0);//bof
+		return (0);//bof//ERROR_MEM mais create_ast_node le fait deja
 	if (!*(ast_root))
 	{
 		*ast_root = new_node;
@@ -34,7 +55,7 @@ static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 	}
 	ft_memdel((void*)&new_node);//test
 	ft_putendl("freeing new node");//test
-	if (new_token->type  >= (*ast_root)->token->type)
+	if (new_token->type >= (*ast_root)->token->type)
 		return (reroot_ast(new_token, ast_root));
 	else
 	{
@@ -44,6 +65,11 @@ static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
 			return (insert_ast_node(new_token, &((*ast_root)->right)));
 	}
 }
+
+/*
+** null_terminate_properly
+** just parse EAT tokens and null terminated the token_list
+*/
 
 static void	null_terminate_properly(t_token *token)
 {
@@ -61,18 +87,17 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	t_token	*token_prev;
 	t_ast	*ast_probe;
 
-	token_probe = *token_head;
-	ast_probe = *ast_root;
-	token_prev = NULL;
-	while (token_probe && !(is_ctrl_op_token(token_probe)))
-	{
-		if (token_probe->type != TK_EAT)
-			token_prev = token_probe;
-		token_probe = token_probe->next;
-	}
+	token_probe = *token_head;//make init_add_node ??
+	ast_probe = *ast_root;    //
+	token_prev = NULL;        //
+	while (token_probe && !(is_ctrl_op_token(token_probe)))//make func ?
+	{                                                      //
+		if (token_probe->type != TK_EAT)                   //
+			token_prev = token_probe;                      //
+		token_probe = token_probe->next;                   //
+	}                                                      //
 	if (!token_probe)//end of token list
 	{
-		dprintf(g_dev_tty, "inserted token: {%s}", (*token_head)->content); print_line();
 		if (!(insert_ast_node(*token_head, ast_root)))
 			return (0);
 		*token_head = NULL;
@@ -81,7 +106,6 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	else//i'm on a CTRL_OP
 	{
 		null_terminate_properly(token_prev);
-		if (!(insert_ast_node(*token_head, ast_root)))
 			return (0);
 		*token_head = token_probe->next;
 		token_probe->next = NULL;
@@ -91,6 +115,14 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	return (1);
 }
 
+/*
+** create_ast
+** run through token_list and create ast from it
+** each add_node_to_ast:
+** - add 2 node to ast, 1 simple_cmd and 1 ctrl_op (except the last call)
+** - move the token_head accordingly
+*/
+
 t_ast	*create_ast(t_token *token_head)
 {
 	t_ast	*ast_root;
@@ -98,7 +130,6 @@ t_ast	*create_ast(t_token *token_head)
 	ast_root = NULL;
 	while (token_head)
 	{
-		//ft_putendl("***************");
 		if (!(add_node_to_ast(&token_head, &ast_root)))
 			return (NULL);//free ast
 	}

@@ -48,7 +48,7 @@ int		check_fd_prev(t_token *prev) //should rename
 **	Calls the appropriate function for the current redirection token.
 */
 
-t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?
+t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?//use redir_table ?
 {
 	if (!redir)
 		return (0);

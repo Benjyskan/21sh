@@ -32,7 +32,8 @@ void		reset_cmd_struct(t_cmd_struct *cmd_struct) //only modifies loal copy ?
 	cmd_struct->current_data_size = 0;
 	retrieve_pos(&cmd_struct->start_pos);
 	ft_memdel((void*)&cmd_struct->prompt);
-	cmd_struct->prompt = ft_strdup("psh $ "); //protect
+	if (!(cmd_struct->prompt = ft_strdup("psh $ "))) //protect //define PROMPT ?
+		ERROR_MEM;
 	cmd_struct->append_txt = cmd_struct->txt;
 }
 
@@ -47,11 +48,12 @@ t_cmd_struct	*init_cmd_struct(char **env)
 	if (!(cmd_struct = (t_cmd_struct*)malloc(sizeof(*cmd_struct))))
 		ERROR_MEM;
 	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
-		return (NULL); //error
+		return (NULL); //ERROR_MEM;
 	cmd_struct->total_data_size = 0;
 	retrieve_pos(&cmd_struct->start_pos);
 	cmd_struct->total_malloc_size = INIT_TXT_SIZE;
-	cmd_struct->prompt = ft_strdup("psh $ ");// protect
+	if (!(cmd_struct->prompt = ft_strdup("psh $ ")))// protect //define PROMPT ?
+		ERROR_MEM;
 	cmd_struct->append_txt = cmd_struct->txt;
 	cmd_struct->history = get_history(env);
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)

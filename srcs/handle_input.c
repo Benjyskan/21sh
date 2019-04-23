@@ -5,9 +5,11 @@
 
 /*
 ** handle_input
-** should pass the inputed cmdline through the lexer to get a token list;
-** then create the ast with the token list
-** then execute the ast
+** 1. get token_list from input
+** 2. store input to history
+** 3. get ast from token_list
+** 4. execute ast
+** 5. free ast
 */
 
 t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
@@ -16,19 +18,16 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	t_token			*token_head;
 	int				lexer_ret;
 
-	token_head = NULL;//test
+	token_head = NULL;
 	while ((lexer_ret = lexer(cmd_struct->txt, &token_head, env)) == LEX_CONT_READ)
 	{
-		//free token list ?
-
 		free_token_list(token_head);
 		ft_memdel((void*)&cmd_struct->prompt);
-		cmd_struct->prompt = ft_strdup("cont> ");
-		//dprintf(g_dev_tty, "OLD_INPUT: {%s}\n", cmd_struct->txt);print_line();
+		if (!(cmd_struct->prompt = ft_strdup("cont> ")))//define PROMPT_CONT ?
+			ERROR_MEM;
 		cmd_struct->append_txt = &cmd_struct->txt[cmd_struct->total_data_size];
 		cmd_struct->tracker = 0;
 		cmd_struct = input_loop(cmd_struct);
-		//dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}
 	write_to_history(cmd_struct, env);
 	if (lexer_ret == LEX_FAIL)

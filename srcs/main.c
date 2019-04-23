@@ -19,9 +19,7 @@ t_bool	is_full_of_whitespaces(char *input)
 
 int		main(int argc, char **argv, char **env)
 {
-	char	**env_cpy;
-	//char	*input;
-	//should declare cmd_struct here
+	char			**env_cpy;
 	t_cmd_struct	*cmd_struct;
 
 	(void)argc;
@@ -37,11 +35,10 @@ int		main(int argc, char **argv, char **env)
 		if (!(cmd_struct = input_loop(cmd_struct)))
 			break ; // free env, free char *
 		//store input in history here
-		//if (is_full_of_whitespaces(input))
 		if (is_full_of_whitespaces(cmd_struct->txt))
 		{
 			reset_cmd_struct(cmd_struct);
-			continue; //TODO: free char *
+			continue;
 		}
 		if (!(handle_input(cmd_struct, env_cpy)))
 			;

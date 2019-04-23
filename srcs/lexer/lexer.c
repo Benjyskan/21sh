@@ -1,6 +1,13 @@
 #include "tosh.h"
 #include "lexer.h"
-//#include "ast.h"
+
+/*
+** create_token
+** malloc the token,
+** ndup cmdline into ->content,
+** set ->size and ->type
+** then return the token
+*/
 
 t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 {
@@ -22,9 +29,15 @@ t_token	*create_token(char *cmdline, size_t size, t_token_type type)
 		//ERROR_MEM;
 		return (NULL);
 	}
-	//new_token->content[size] = 0;//test since lib swap//seems to work
 	return (new_token);
 }
+
+/*
+** add_token_to_list
+** 1. check syntax (if start with '&&', or 2 '&&' are following)
+** 2. check here_doc ???
+** 3. create a token_list or append it with the given token
+*/
 
 static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 				, t_token **token_head)
@@ -39,7 +52,6 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 	{
 		dprintf(g_dev_tty, "HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
 		//system("read -p \"press ENTER to continue\"");
-		//bash:syntax error near unexpected token `newline'; should i tokenise '\n' ??
 	}
 	if (!(*token_head))
 	{
@@ -68,7 +80,12 @@ static void	init_lexer(t_operation **op_chart, t_token **token_head
 
 /*
 ** lexer
-** run through the cmdline and tokenize it
+** - run through the cmdline and tokenize it
+** - return LEX_CONT_READ when the cmdline is not complete, so handle_input
+** continue reading and append to cmdline
+** - return LEX_FAIL and output the message accordignly if the cmdline isn't
+** valid
+** - return LEX_SUCCES otherwise, so handle_input can continue
 */
 
 int		lexer(char *cmdline, t_token **token_head, char **env)
@@ -91,16 +108,14 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	if (is_logic_or_pipe(current_token)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
-		//ft_putendl("tmp, tklst end with '&&','||' or '|': READ_MODE");
-		ft_endl_tty("tmp, tklst end with '&&','||' or '|': READ_MODE");
-		return (LEX_CONT_READ);//TMP
+		ft_endl_tty("tmp, tklst end with '&&', '||' or '|': READ_MODE");
+		return (LEX_CONT_READ);
 	}
-	//bash tokenise 'newline', it make easier to check "cat << <ENTER>"
 	else if (prev_token && is_redir_token(prev_token)
 			&& (!current_token->type || is_redir_token(current_token)))
 	{
 		ft_putstr("222 ");
-		syntax_error_near(current_token);//tokenise newline ??
+		syntax_error_near(current_token);
 		return (LEX_FAIL);
 	}
 	return (LEX_SUCCESS);

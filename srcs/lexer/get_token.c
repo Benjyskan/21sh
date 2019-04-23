@@ -12,16 +12,15 @@ static t_token	*get_dquot_token(char **cmdline)
 	{
 		if ((*cmdline)[i] == '\\')
 		{
-		   	if (((*cmdline)[i + 1] == '\'' || (*cmdline)[i + 1] == '\"'))
+		   	//if (((*cmdline)[i + 1] == '\'' || (*cmdline)[i + 1] == '\"'))//why check ' ?
+		   	if ((*cmdline)[i + 1] == '\"')
 				i++;
 			else if ((*cmdline)[i + 1] == '\n')
 			{
-				cmd_struct = get_cmd_struct(NULL);
+				cmd_struct = get_cmd_struct(NULL);//make func ?
 				ft_bzero(&cmd_struct->append_txt[cmd_struct->current_data_size - 2], 2);
 				cmd_struct->total_data_size -= 2;
-				//ft_putendl("end with '\\', READ_MODE");
 				ft_endl_tty("end with '\\', READ_MODE");
-//				(*cmdline)[i - 1] = 0;
 				return (NULL);
 			}
 		}
@@ -29,9 +28,7 @@ static t_token	*get_dquot_token(char **cmdline)
 	}
 	if ((*cmdline)[i] == 0)
 	{
-		//ft_putendl_fd("Unmatched \". READ_MODE PLZ", 2);
 		ft_endl_tty("Unmatched \". READ_MODE PLZ");
-//		(*cmdline)[i] = '\n';//test: seems good
 		return (NULL);
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_DQ_STR)))
@@ -50,9 +47,8 @@ static t_token	*get_squot_token(char **cmdline)
 		i++;
 	if ((*cmdline)[i] == 0)
 	{
-		//ft_putendl_fd("Unmatched '. READ_MODE PLZ", 2);
 		ft_endl_tty("Unmatched '. READ_MODE PLZ");
-		(*cmdline)[i] = '\n';//test: seems good
+		//(*cmdline)[i] = '\n';// this don't change anything ??
 		return (NULL);
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_SQ_STR)))
@@ -82,7 +78,7 @@ static t_token	*get_monochar(char **cmdline)
 
 	if (*(*cmdline + 1) == '\n')
 	{
-		cmd_struct = get_cmd_struct(NULL);
+		cmd_struct = get_cmd_struct(NULL);//make func ?
 		ft_bzero(&cmd_struct->append_txt[cmd_struct->current_data_size - 2], 2);
 		cmd_struct->total_data_size -= 2;
 		return (NULL);
@@ -90,7 +86,6 @@ static t_token	*get_monochar(char **cmdline)
 	(*cmdline)++;
 	if (!(token = create_token(*cmdline, 1, TK_MONOC)))
 		ERROR_MEM;
-	dprintf(g_dev_tty, "get_monochar returned: {%s}\n", token->content);print_line();
 	(*cmdline)++;
 	return (token);
 }
@@ -109,11 +104,19 @@ static t_token	*get_eat_token(char **cmdline)
 	return (token);
 }
 
+/*
+** get_token
+** return a malloced token accordingly to the character under the cmdline
+** pointer
+** all sub get_token functions move the cmdline pointer accordingly
+** and return NULL when they fail to get the token, so lexer send LEX_CONT_READ
+** to handle_input
+*/
+
 t_token			*get_token(char **cmdline, t_operation *op_chart)
 {
 	t_token	*token;
 
-	//system("read -p \"Press enter to continue\"");
 	if (**cmdline == '"')
 		return (get_dquot_token(cmdline));
 	else if (**cmdline == '\'')
@@ -124,6 +127,6 @@ t_token			*get_token(char **cmdline, t_operation *op_chart)
 		return (get_eat_token(cmdline));
 	else if ((token = get_op_chart_token(cmdline, op_chart)))
 		return (token);
-	else//bof, need other conditions
+	else
 		return (get_regular_token(cmdline));
 }

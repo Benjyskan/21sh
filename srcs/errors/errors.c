@@ -21,6 +21,9 @@ void	syntax_error_near(t_token *token)
 	ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
-	ft_putstr_fd(token->content, STDERR_FILENO);
+	if (ft_strcmp(token->content, "\n") == 0)
+		ft_putstr_fd("newline", STDERR_FILENO);
+	else
+		ft_putstr_fd(token->content, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
 }

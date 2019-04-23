@@ -44,7 +44,7 @@ static char	**create_argv(t_token *token_head, unsigned int argv_len)
 	unsigned int	i;
 
 	if (!(res = (char**)malloc(sizeof(*res) * (argv_len + 1))))
-		return (NULL);
+		return (NULL);//ERROR_MEM;
 	i = 0;
 	res[argv_len] = NULL;
 	ft_dprintf(2, "HEAD: %s, len: %u", token_head->content, argv_len);
