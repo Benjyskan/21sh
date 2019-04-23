@@ -4,11 +4,44 @@
 #include "ast.h"
 
 /*
-** handle_input
-** should pass the inputed cmdline through the lexer to get a token list;
-** then create the ast with the token list
-** then execute the ast
-*/
+ ** handle_input
+ ** should pass the inputed cmdline through the lexer to get a token list;
+ ** then create the ast with the token list
+ ** then execute the ast
+ */
+
+
+t_hist_lst	*get_keep(t_hist_lst *hist_lst)
+{
+	t_hist_lst *probe;
+
+	if (!(probe = hist_lst))
+		return (NULL);
+	while (probe->keep)
+		probe = probe->next;
+	return (probe);
+}
+
+t_hist_lst		*insert_left(t_hist_lst *hist_lst, char *line, char keep)
+{
+	t_hist_lst	*probe;
+	t_hist_lst	*insert;
+
+	insert = create_hist_lst(line, keep);
+	if (!(probe = hist_lst))
+		return (insert);
+	else
+	{
+		if (probe->prev)
+		{
+			probe->prev->next = insert;
+			insert->prev = probe->prev;
+		}
+		insert->next = probe;
+		probe->prev = insert;
+	}
+	return (insert);
+}
 
 t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 {
@@ -24,16 +57,15 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		ft_memdel((void*)&cmd_struct->prompt);
 		cmd_struct->prompt = ft_strdup("cont> ");
 		dprintf(g_dev_tty, "OLD_INPUT: {%s}\n", cmd_struct->txt);print_line();
-//		cmd_struct->tracker = ft_strlen(cmd_struct->txt); I think it's useless now with total_data_size
-//		cmd_struct->current_data_size = cmd_struct->tracker; I think it's useless now with total_data_size
+		//		cmd_struct->tracker = ft_strlen(cmd_struct->txt); I think it's useless now with total_data_size
+		//		cmd_struct->current_data_size = cmd_struct->tracker; I think it's useless now with total_data_size
 		cmd_struct->append_txt = &cmd_struct->txt[cmd_struct->total_data_size];
 		cmd_struct->tracker = 0;
 		input_loop(cmd_struct);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}
-	cmd_struct->hist_lst = append_hist_lst(cmd_struct->hist_lst, cmd_struct->txt, 1);
-	ft_printf("NEW LST: %p", cmd_struct->hist_lst);
-	//write_to_history(cmd_struct, env); deprecated
+	cmd_struct->hist_lst = get_end_lst(cmd_struct->hist_lst);
+	insert_left(cmd_struct->hist_lst, cmd_struct->txt, 1);
 	if (lexer_ret == LEX_FAIL)
 	{
 		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");

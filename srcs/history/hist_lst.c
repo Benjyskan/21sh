@@ -43,21 +43,26 @@ t_hist_lst	*get_end_lst(t_hist_lst *hist_lst)
 	return (probe);
 }
 
-t_hist_lst	*append_hist_lst(t_hist_lst *hist_lst, char *line, char keep)
+/* should be insert, not append*/
+t_hist_lst	*insert_right(t_hist_lst *hist_lst, char *line, char keep)
 {
-	t_hist_lst *probe;
+	t_hist_lst	*probe;
+	t_hist_lst	*insert;
 
+	insert = create_hist_lst(line, keep);
 	if (!(probe = hist_lst))
-	{
-		hist_lst = create_hist_lst(line, keep);
-		return (hist_lst);
-	}
+		return (insert);
 	else
 	{
-		probe->next = create_hist_lst(line, keep);
-		probe->next->prev = probe;
+		if (probe->next)
+		{
+			probe->next->prev = insert;
+			insert->next = probe->next;
+		}
+		probe->next = insert;
+		insert->prev = probe;
 	}
-	return (probe->next);
+	return (insert);
 }
 
 void		print_hist_lst(t_hist_lst *hist_lst)

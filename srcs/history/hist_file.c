@@ -40,7 +40,7 @@ t_hist_lst	*get_history(char **env)
 		ft_printf("---- NEWLINE: %s", &line[6]);
 		print_line();
 		append_with_newline = ft_strjoin(&line[6], "\n");
-		hist_lst = append_hist_lst(hist_lst, append_with_newline, 1);
+		hist_lst = insert_right(hist_lst, append_with_newline, 1);
 		ft_memdel((void*)&append_with_newline);
 		ft_memdel((void*)&line);
 		id++;

@@ -6,16 +6,18 @@ static void	switch_cmd_struct(t_cmd_struct *cmd_struct, char *newcmd)
 	size_t	len;
 	char	*tmp;
 
-	len = ft_strlen(newcmd);
-	if (newcmd[len - 1] == '\n')
-		len--;
+	if ((len = ft_strlen(newcmd)) > 0)
+	{
+		if (newcmd[len - 1] == '\n')
+			len--;
+	}
 	tmp = cmd_struct->txt;
 	if (!(cmd_struct->txt = ft_strndup(newcmd, len)))
 		ERROR_MEM;
 	ft_memdel((void*)&tmp);
 	cmd_struct->total_data_size = len;
 	cmd_struct->append_txt = cmd_struct->txt;
-	cmd_struct->total_malloc_size = len;
+	cmd_struct->total_malloc_size = len + 1;
 	cmd_struct->current_data_size = len;
 	cmd_struct->tracker = len;
 	move_cursor(cmd_struct->start_pos.col, cmd_struct->start_pos.row);
