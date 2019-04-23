@@ -15,10 +15,9 @@ typedef struct	s_cmd_struct {
 	t_pos				start_pos;
 	struct winsize		window;
 	size_t				tracker;
-	size_t				nb_lines;
 	char				*prompt;
 	char				*append_txt;
-	struct s_hist_lst	*history;
+	struct s_hist_lst	*hist_lst;
 }				t_cmd_struct;
 
 # include "history.h"
@@ -48,7 +47,7 @@ void			get_next_history(t_cmd_struct *cmd_struct);
 ** Read input
 */
 
-t_cmd_struct	*input_loop(t_cmd_struct *cmd_struct);
+int				input_loop(t_cmd_struct *cmd_struct);
 
 /*
 ** General display

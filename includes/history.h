@@ -7,12 +7,25 @@
 # define HIST_SIZE 500
 
 typedef struct		s_hist_lst {
-	size_t				id;
-	char*				txt;
+	char				*txt;
+	char				*cpy;
+	char				keep;
 	struct s_hist_lst *prev;
 	struct s_hist_lst *next;
 }					t_hist_lst;
 
 t_hist_lst	*get_history(char **env);
 int			write_to_history(t_cmd_struct *cmd_struct, char **env);
+
+/*
+**	Utils for hist_lst structure : appending, creating, inserting etc...
+*/
+
+t_hist_lst	*insert_left(t_hist_lst *hist_lst, char *line, char keep);
+t_hist_lst	*insert_right(t_hist_lst *hist_lst, char *line, char keep);
+t_hist_lst	*create_hist_lst(char *line, char keep);
+void		print_hist_lst(t_hist_lst *hist_lst);
+t_hist_lst	*get_end_lst(t_hist_lst *hist_lst);
+t_hist_lst	*get_begin_lst(t_hist_lst *hist_lst);
+
 #endif

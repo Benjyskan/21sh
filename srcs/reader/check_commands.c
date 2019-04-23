@@ -9,7 +9,7 @@ int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
 	else if (ft_strncmp(buf, UPARROW, ARROW_LEN + 1) == 0)
 		get_previous_history(cmd_struct);
 	else if (ft_strncmp(buf, DOWNARROW, ARROW_LEN + 1) == 0)
-		get_previous_history(cmd_struct);
+		get_next_history(cmd_struct);
 	else if (ft_strncmp(buf, HOME, HOME_LEN + 1) == 0)
 		cmd_struct->tracker = 0;
 	else if (ft_strncmp(buf, END, END_LEN + 1) == 0)
@@ -23,12 +23,7 @@ int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
 int		check_for_quit(const char *buf)
 {
 	if (ft_strncmp(buf, CTRL_D, 2) == 0)
-	{
-		print_line();
-		reset_terminal_settings();
-		clean_exit(0);
 		return (1);
-	}
 	else
 		return (0);
 }
@@ -43,8 +38,8 @@ int		check_for_signal(const char *buf)
 	}
 	else if (ft_strncmp(buf, CTRL_C, CTRL_C_LEN) == 0)
 	{
+		ioctl(g_dev_tty, TIOCSTI, CTRL_C);
 		sigint_handler(2);
-		//ioctl(STDIN, TIOCSTI, CTRL_C);
 		return (1);
 	}
 	return (0);

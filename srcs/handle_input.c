@@ -12,6 +12,38 @@
 ** 5. free ast
 */
 
+t_hist_lst	*get_keep(t_hist_lst *hist_lst)
+{
+	t_hist_lst *probe;
+
+	if (!(probe = hist_lst))
+		return (NULL);
+	while (probe->keep)
+		probe = probe->next;
+	return (probe);
+}
+
+t_hist_lst		*insert_left(t_hist_lst *hist_lst, char *line, char keep)
+{
+	t_hist_lst	*probe;
+	t_hist_lst	*insert;
+
+	insert = create_hist_lst(line, keep);
+	if (!(probe = hist_lst))
+		return (insert);
+	else
+	{
+		if (probe->prev)
+		{
+			probe->prev->next = insert;
+			insert->prev = probe->prev;
+		}
+		insert->next = probe;
+		probe->prev = insert;
+	}
+	return (insert);
+} // should no be in handle_input !
+
 t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 {
 	t_ast			*ast_root;
@@ -27,9 +59,10 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 			ERROR_MEM;
 		cmd_struct->append_txt = &cmd_struct->txt[cmd_struct->total_data_size];
 		cmd_struct->tracker = 0;
-		cmd_struct = input_loop(cmd_struct);
+		cmd_struct = input_loop(cmd_struct); // needless to assign ?
 	}
-	write_to_history(cmd_struct, env);
+	cmd_struct->hist_lst = get_end_lst(cmd_struct->hist_lst);
+	insert_left(cmd_struct->hist_lst, cmd_struct->txt, 1);
 	if (lexer_ret == LEX_FAIL)
 	{
 		free_token_list(token_head);
