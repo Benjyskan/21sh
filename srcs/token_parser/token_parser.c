@@ -42,27 +42,25 @@ static t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
 ** 4. insert right
 */
 
-static t_bool	insert_ast_node(t_token *new_token, t_ast **ast_root)
+static t_bool	insert_ast_node(t_ast *new_ast_node, t_ast **ast_root)
 {
-	t_ast			*new_node;
-
-	if (!(new_node = create_ast_node(new_token, NULL, NULL)))
-		return (0);//bof//ERROR_MEM mais create_ast_node le fait deja
 	if (!*(ast_root))
 	{
-		*ast_root = new_node;
+		*ast_root = new_ast_node;
 		return (1);
 	}
-	ft_memdel((void*)&new_node);//test
-	ft_putendl("freeing new node");//test
-	if (new_token->type >= (*ast_root)->token->type)
-		return (reroot_ast(new_token, ast_root));
+	if (new_ast_node->token->type >= (*ast_root)->token->type)//reroot
+	{
+		new_ast_node->left = *ast_root;
+		*ast_root = new_ast_node;
+		return (1);
+	}
 	else
 	{
 		if (!(*ast_root)->left)
-			return (insert_ast_node(new_token, &(*ast_root)->left));
+			return (insert_ast_node(new_ast_node, &(*ast_root)->left));
 		else
-			return (insert_ast_node(new_token, &((*ast_root)->right)));
+			return (insert_ast_node(new_ast_node, &((*ast_root)->right)));
 	}
 }
 
@@ -98,18 +96,20 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	}                                                      //
 	if (!token_probe)//end of token list
 	{
-		if (!(insert_ast_node(*token_head, ast_root)))
+		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
 			return (0);
 		*token_head = NULL;
 		return (1);
 	}
 	else//i'm on a CTRL_OP
 	{
+		print_token_list(token_prev);
 		null_terminate_properly(token_prev);
+		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
 			return (0);
 		*token_head = token_probe->next;
 		token_probe->next = NULL;
-		if (!(insert_ast_node(token_probe, ast_root)))
+		if (!(insert_ast_node(create_ast_node(token_probe, NULL, NULL), ast_root)))
 			return (0);
 	}
 	return (1);
