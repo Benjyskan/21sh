@@ -59,7 +59,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 			ERROR_MEM;
 		cmd_struct->append_txt = &cmd_struct->txt[cmd_struct->total_data_size];
 		cmd_struct->tracker = 0;
-		cmd_struct = input_loop(cmd_struct); // needless to assign ?
+	 	input_loop(cmd_struct);
 	}
 	cmd_struct->hist_lst = get_end_lst(cmd_struct->hist_lst);
 	insert_left(cmd_struct->hist_lst, cmd_struct->txt, 1);
