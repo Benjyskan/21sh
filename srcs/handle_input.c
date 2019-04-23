@@ -31,7 +31,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		input_loop(cmd_struct);
 		dprintf(g_dev_tty, "NEW_INPUT: {%s}\n", cmd_struct->txt);print_line();
 	}
-	cmd_struct->hist_lst = append_hist_lst(cmd_struct->hist_lst, cmd_struct->txt);
+	cmd_struct->hist_lst = append_hist_lst(cmd_struct->hist_lst, cmd_struct->txt, 1);
 	ft_printf("NEW LST: %p", cmd_struct->hist_lst);
 	//write_to_history(cmd_struct, env); deprecated
 	if (lexer_ret == LEX_FAIL)

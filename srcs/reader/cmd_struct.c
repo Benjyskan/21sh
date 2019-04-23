@@ -1,4 +1,5 @@
 #include "ast.h"
+#include "history.h"
 #include "reader.h"
 
 /*
@@ -54,7 +55,7 @@ t_cmd_struct	*init_cmd_struct(char **env)
 	cmd_struct->prompt = ft_strdup("psh $ ");// protect
 	cmd_struct->append_txt = cmd_struct->txt;
 	cmd_struct->hist_lst = get_history(env);
-	print_hist_lst(cmd_struct->hist_lst);
+	cmd_struct->hist_lst = append_hist_lst(cmd_struct->hist_lst, "s3", 0);
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
 	{
 		ft_dprintf(2, "error ioctl : exiting!");//TODO

@@ -9,7 +9,7 @@ int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
 	else if (ft_strncmp(buf, UPARROW, ARROW_LEN + 1) == 0)
 		get_previous_history(cmd_struct);
 	else if (ft_strncmp(buf, DOWNARROW, ARROW_LEN + 1) == 0)
-		get_previous_history(cmd_struct);
+		get_next_history(cmd_struct);
 	else if (ft_strncmp(buf, HOME, HOME_LEN + 1) == 0)
 		cmd_struct->tracker = 0;
 	else if (ft_strncmp(buf, END, END_LEN + 1) == 0)

@@ -1,7 +1,7 @@
 #include "ast.h"
 #include "history.h"
 
-t_hist_lst	*create_hist_lst(char *line)
+t_hist_lst	*create_hist_lst(char *line, char keep)
 {
 	t_hist_lst	 *res;
 
@@ -9,6 +9,9 @@ t_hist_lst	*create_hist_lst(char *line)
 		ERROR_MEM;
 	if (!(res->txt = ft_strdup(line)))
 		ERROR_MEM;
+	if (!(res->cpy = ft_strdup(line)))
+		ERROR_MEM;
+	res->keep = keep;
 	res->prev = NULL;
 	res->next = NULL;
 	return (res);
@@ -40,21 +43,18 @@ t_hist_lst	*get_end_lst(t_hist_lst *hist_lst)
 	return (probe);
 }
 
-t_hist_lst	*append_hist_lst(t_hist_lst *hist_lst, char *line)
+t_hist_lst	*append_hist_lst(t_hist_lst *hist_lst, char *line, char keep)
 {
 	t_hist_lst *probe;
 
-	if (!hist_lst)
+	if (!(probe = hist_lst))
 	{
-		hist_lst = create_hist_lst(line);
+		hist_lst = create_hist_lst(line, keep);
 		return (hist_lst);
 	}
 	else
 	{
-		probe = get_end_lst(hist_lst);
-		ft_printf("appending: %s", line);
-		print_line();
-		probe->next = create_hist_lst(line);
+		probe->next = create_hist_lst(line, keep);
 		probe->next->prev = probe;
 	}
 	return (probe->next);

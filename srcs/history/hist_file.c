@@ -40,7 +40,7 @@ t_hist_lst	*get_history(char **env)
 		ft_printf("---- NEWLINE: %s", &line[6]);
 		print_line();
 		append_with_newline = ft_strjoin(&line[6], "\n");
-		hist_lst = append_hist_lst(hist_lst, ft_strjoin(&line[6], "\n"));
+		hist_lst = append_hist_lst(hist_lst, append_with_newline, 1);
 		ft_memdel((void*)&append_with_newline);
 		ft_memdel((void*)&line);
 		id++;
@@ -66,21 +66,23 @@ int		write_to_history(t_cmd_struct *cmd_struct, char **env)
 		id = 0;
 		while (hist_lst)
 		{
-			i = 0;
-			ft_dprintf(fd, "%4d  ", id);
-			while (hist_lst->txt[i])
+			if (hist_lst->keep)
 			{
-
-				write(fd, &hist_lst->txt[i], 1);
-				if (hist_lst->txt[i] == '\n' && hist_lst->txt[i + 1] != 0)
+				i = 0;
+				ft_dprintf(fd, "%4d  ", id);
+				while (hist_lst->txt[i])
 				{
-					id++;
-					ft_dprintf(fd, "%4d  ", id);
+					write(fd, &hist_lst->txt[i], 1);
+					if (hist_lst->txt[i] == '\n' && hist_lst->txt[i + 1] != 0)
+					{
+						id++;
+						ft_dprintf(fd, "%4d  ", id);
+					}
+					i++;
 				}
-				i++;
+				id++;
 			}
 			hist_lst = hist_lst->next;
-			id++;
 		}
 		close(fd);
 		return (1);

@@ -15,7 +15,6 @@ typedef struct	s_cmd_struct {
 	t_pos				start_pos;
 	struct winsize		window;
 	size_t				tracker;
-	size_t				nb_lines;
 	char				*prompt;
 	char				*append_txt;
 	struct s_hist_lst	*hist_lst;
