@@ -21,6 +21,7 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 	{
 		//free token list ?
 
+		free_token_list(token_head);
 		ft_memdel((void*)&cmd_struct->prompt);
 		cmd_struct->prompt = ft_strdup("cont> ");
 		//dprintf(g_dev_tty, "OLD_INPUT: {%s}\n", cmd_struct->txt);print_line();

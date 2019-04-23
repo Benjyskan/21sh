@@ -72,6 +72,7 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	}
 	if (!token_probe)//end of token list
 	{
+		dprintf(g_dev_tty, "inserted token: {%s}", (*token_head)->content); print_line();
 		if (!(insert_ast_node(*token_head, ast_root)))
 			return (0);
 		*token_head = NULL;

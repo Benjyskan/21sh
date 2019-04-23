@@ -20,12 +20,17 @@ void	free_token_list(t_token *token_head)
 	//ft_putendl("end of free_token_list");
 }
 
+static void	free_ast_node(t_ast *node)
+{
+	free_token_list(node->token);
+	ft_memdel((void*)&node);
+}
+
 void	free_ast(t_ast *ast_root)
 {
 	if (ast_root->left)
 		free_ast(ast_root->left);
-	//do stuff
-	free_token_list(ast_root->token);
 	if (ast_root->right)
 		free_ast(ast_root->right);
+	free_ast_node(ast_root);
 }
