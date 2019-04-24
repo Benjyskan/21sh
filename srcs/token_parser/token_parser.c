@@ -3,36 +3,6 @@
 #include "ast.h"
 
 /*
-** create_ast_node
-** malloc a new ast_node
-*/
-
-static t_ast	*create_ast_node(t_token *new_token, t_ast *left, t_ast *right)
-{
-	t_ast	*new_node;
-
-	if (!(new_node = (t_ast*)malloc(sizeof(*new_node))))
-		ERROR_MEM;
-	new_node->token = new_token;
-	new_node->left = left;
-	new_node->right = right;
-	return (new_node);
-}
-
-/*
-** reroot_ast
-** shift the current node to the left
-** and place the new_token as root
-*/
-
-static t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
-{
-	if (!(*ast_root = create_ast_node(new_token, *ast_root, NULL)))
-		return (0);
-	return (1);
-}
-
-/*
 ** insert_ast_node
 ** recursively look for the correct spot to add node in ast
 ** 1. check if current spot is empty, insert here
@@ -67,54 +37,25 @@ static t_bool	insert_ast_node(t_ast *new_ast_node, t_ast **ast_root)
 }
 
 /*
-** null_terminate_properly
-** just parse EAT tokens and null terminated the token_list
-*/
-
-static void	null_terminate_properly(t_token *token)
-{
-	if (!token || !(token->next))
-		return ;
-	while (token->next->type == TK_EAT)
-		token = token->next;
-	token->next = NULL;
-	return ;
-}
-
-/*
-** is_tklst_full_eat
-** just check if the given token list is full of eat tokens
-*/
-
-static t_bool	is_tklst_full_eat(t_token *token_head)
-{
-	t_token	*probe;
-
-	probe = token_head;
-	while (probe)
-	{
-		if (probe->type > TK_EAT)
-			return (0);
-		probe = probe->next;
-	}
-	return (1);
-}
-
-/*
 ** find_next_ctrl_op
 ** move the given pointer:
 ** - token_probe to the next ctrl_op or NULL if it's the end of token list
 ** - token_prev to the last non-eat token encounter
+** return 0 if it reach the end of the token list
+** return 1 otherwise (token_probe is on an CTRL_OP token)
 */
 
-static void		find_next_ctrl_op(t_token **token_probe, t_token **token_prev)
+static t_bool	find_next_ctrl_op(t_token **token_probe, t_token **token_prev)
 {
-	while (*token_probe && !(is_ctrl_op_token(*token_probe)))//can do without is_ctrl_op_token, but i will be easier to tweak if i keep it
+	//can do without is_ctrl_op_token, but i will be easier to tweak if we keep it
+	while (*token_probe && !(is_ctrl_op_token(*token_probe)))
 	{
-		//if ((*token_probe)->type != TK_EAT)
 		*token_prev = *token_probe;
 		*token_probe = (*token_probe)->next;
 	}
+	if (*token_probe)
+		return (1);
+	return (0);
 }
 
 /*
@@ -127,7 +68,8 @@ static t_bool	add_last_node_to_ast(t_token **token_head, t_ast **ast_root)
 {
 	if (!is_tklst_full_eat(*token_head))
 	{
-		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
+		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL)
+						, ast_root)))
 			return (0);
 	}
 	else
@@ -135,6 +77,12 @@ static t_bool	add_last_node_to_ast(t_token **token_head, t_ast **ast_root)
 	*token_head = NULL;
 	return (1);
 }
+
+/*
+** add_node_to_ast
+** call find_next_ctrl_op() to place needed pointers
+** then create and add ast_node to ast accordingly
+*/
 
 static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 {
@@ -145,18 +93,18 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	token_probe = *token_head;
 	ast_probe = *ast_root;
 	token_prev = NULL;
-	find_next_ctrl_op(&token_probe, &token_prev);//make find_next.. return bool(is token_probe null or not)
-	if (!token_probe)//end of token list
+	if (!find_next_ctrl_op(&token_probe, &token_prev))
 		return (add_last_node_to_ast(token_head, ast_root));
-	else//i'm on a CTRL_OP
+	else
 	{
-		//null_terminate_properly(token_prev);
-		token_prev->next = NULL;//test
-		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
+		token_prev->next = NULL;
+		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL)
+						, ast_root)))
 			return (0);
 		*token_head = token_probe->next;
 		token_probe->next = NULL;
-		if (!(insert_ast_node(create_ast_node(token_probe, NULL, NULL), ast_root)))
+		if (!(insert_ast_node(create_ast_node(token_probe, NULL, NULL)
+						, ast_root)))
 			return (0);
 	}
 	return (1);
@@ -164,7 +112,7 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 
 /*
 ** create_ast
-** run through token_list and create ast from it
+** parse token_list and create ast from it
 ** each add_node_to_ast:
 ** - add 2 node to ast, 1 simple_cmd and 1 ctrl_op (except the last call)
 ** - move the token_head accordingly

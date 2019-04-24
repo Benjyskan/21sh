@@ -40,8 +40,10 @@ typedef struct		s_pipelst
 ** token_parser.c
 */
 
-//t_ast			*token_parser(t_token *token_head);
 t_ast			*create_ast(t_token *token_head);
+t_ast			*create_ast_node(t_token *new_token, t_ast *left
+				, t_ast *right);
+t_bool			is_tklst_full_eat(t_token *token_head);
 
 /*
 ** Pipeline parsing
