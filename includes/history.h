@@ -28,4 +28,7 @@ void		print_hist_lst(t_hist_lst *hist_lst);
 t_hist_lst	*get_end_lst(t_hist_lst *hist_lst);
 t_hist_lst	*get_begin_lst(t_hist_lst *hist_lst);
 
+void			write_remaining(char *str);
+void			write_current_line(t_cmd_struct *cmd_struct);
+
 #endif

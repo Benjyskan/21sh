@@ -23,7 +23,9 @@ static void	switch_cmd_struct(t_cmd_struct *cmd_struct, char *newcmd)
 	move_cursor(cmd_struct->start_pos.col, cmd_struct->start_pos.row);
 	execute_str(CLEAR_BELOW);
 	print_prompt(cmd_struct);
-	ft_dprintf(g_dev_tty, "%s", cmd_struct->append_txt);
+	write_remaining(cmd_struct->append_txt); //does not handle when at end of term screen
+//	termcaps_write(cmd_struct->append_txt);
+//	ft_dprintf(g_dev_tty, "%s", cmd_struct->append_txt);
 //	reposition_cursor(cmd_struct);
 }
 

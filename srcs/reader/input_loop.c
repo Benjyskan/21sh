@@ -17,6 +17,23 @@ void	magic_print(char *buf)
 	execute_str(RESTORE_CURSOR);
 }
 
+void	write_remaining(char *str)
+{
+	size_t	i;
+
+	if (!str)
+		return ;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '\n')
+			write(g_dev_tty, &str[i], 1);
+		else
+			print_line();
+		i++;
+	}
+}
+
 void	write_buf(t_cmd_struct *cmd_struct, char *buf)
 {
 	size_t printable_len;
@@ -30,7 +47,9 @@ void	write_buf(t_cmd_struct *cmd_struct, char *buf)
 	get_cmd_struct(&cmd_struct);
 	cmd_struct->append_txt = cmd_struct->txt + diff_size;
 	insert_str(cmd_struct, buf, printable_len);
-	ft_putstr_tty(&cmd_struct->append_txt[cmd_struct->tracker]);
+//	termcaps_write(&cmd_struct->append_txt[cmd_struct->tracker]);
+//	ft_putstr_tty(&cmd_struct->append_txt[cmd_struct->tracker]);
+	write_current_line(cmd_struct);
 	cmd_struct->current_data_size += printable_len;
 	cmd_struct->total_data_size += printable_len;
 	cmd_struct->tracker += printable_len;
@@ -48,7 +67,7 @@ int		input_loop(t_cmd_struct *cmd_struct)
 	ft_bzero(buf, BUF_SIZE + 1);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
-		magic_print(buf);
+		//magic_print(buf);
 		buf[ret] = 0;
 		if (check_for_arrows(cmd_struct, buf) || check_for_signal(buf)
 			|| check_for_delete(cmd_struct, buf))
@@ -56,6 +75,7 @@ int		input_loop(t_cmd_struct *cmd_struct)
 		else if (check_for_enter(buf))
 		{
 			ft_strncpy(buf, "\n", 1);
+			cmd_struct->tracker = cmd_struct->current_data_size;
 			write_buf(cmd_struct, buf);
 			break ;
 		}

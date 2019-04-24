@@ -65,6 +65,7 @@ t_hist_lst	*insert_right(t_hist_lst *hist_lst, char *line, char keep)
 	return (insert);
 }
 
+/* util function to print */
 void		print_hist_lst(t_hist_lst *hist_lst)
 {
 	t_hist_lst *probe;

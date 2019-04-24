@@ -1,0 +1,20 @@
+line1asdaslkdjasdasld
+-still line 1
+line2
+
+
+write_current_line;
+if line->cols > window cols -> print_line;
+if last_row == window.ws_row -> scroll down;
+on writing \n -> re-write everything afterwards
+
+
+start_pos at line1;
+tracker anywhere in between;
+get to specific line; (tracker, then get previous \n)
+if specific line is same as start_pos -> there is prompt
+
+when writing : determine if current line will overflow.
+if overflow : check if last_line of txt is on last row;
+if yes -> scroll down
+write char, clear line, write everything (should begin with print_line cuz \n afterwards or nothing)
