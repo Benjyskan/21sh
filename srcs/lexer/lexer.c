@@ -4,7 +4,7 @@
 /*
 ** create_token
 ** malloc the token,
-** ndup cmdline into ->content,
+** strndup(cmdline, size) into ->content,
 ** set ->size and ->type
 ** then return the token
 */
@@ -81,8 +81,8 @@ static void	init_lexer(t_operation **op_chart, t_token **token_head
 /*
 ** lexer
 ** - run through the cmdline and tokenize it
-** - return LEX_CONT_READ when the cmdline is not complete, so handle_input
-** continue reading and append to cmdline
+** - return LEX_CONT_READ when the cmdline is not complete, so handle_input()
+** continue reading and append the new input to cmdline
 ** - return LEX_FAIL and output the message accordignly if the cmdline isn't
 ** valid
 ** - return LEX_SUCCES otherwise, so handle_input can continue
