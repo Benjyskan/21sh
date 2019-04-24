@@ -6,8 +6,8 @@ static char	*ft_strjoin_free(char *s1, char *s2)
 	char			*res;
 	unsigned int	s1_len;
 
-	dprintf(2, "Joining: {%s} with {%s}", s1, s2);
-	print_line();
+	//dprintf(2, "Joining: {%s} with {%s}", s1, s2);
+	//print_line();
 	if (!s2)
 		return (s1);
 	if (!s1)
@@ -18,7 +18,7 @@ static char	*ft_strjoin_free(char *s1, char *s2)
 	ft_strcpy(res, s1);
 	ft_strcat(&res[s1_len], s2);
 	ft_strdel(&s1);
-	dprintf(2, "RESULT: {%s}\n", res);
+	//dprintf(2, "RESULT: {%s}\n", res);
 	return (res);
 }
 
@@ -47,8 +47,8 @@ static char	**create_argv(t_token *token_head, unsigned int argv_len)
 		return (NULL);//ERROR_MEM;
 	i = 0;
 	res[argv_len] = NULL;
-	ft_dprintf(2, "HEAD: %s, len: %u", token_head->content, argv_len);
-	print_line();
+	//ft_dprintf(2, "HEAD: %s, len: %u", token_head->content, argv_len);
+	//print_line();
 	while (i < argv_len)
 	{
 		if (is_argv_token(token_head))
