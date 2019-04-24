@@ -2,9 +2,7 @@
 
 void	print_token(t_token *token)//debug
 {
-	dprintf(g_dev_tty, "_TOKEN_ type:%d", token->type);
-	print_line();
-	dprintf(g_dev_tty, "content: {%s}", token->content);
+	dprintf(g_dev_tty, "_TOKEN_ type:%d {%s}", token->type, token->content);
 	print_line();
 }
 
