@@ -6,12 +6,12 @@ void	free_token_list(t_token *token_head)
 {
 	t_token	*probe;
 
-	ft_endl_tty("freeing token list !!!!!!!");
+	//ft_endl_tty("freeing token list !!!!!!!");
 	probe = token_head;
 	while (probe)
 	{
 		probe = probe->next;
-		print_token(token_head);
+		//print_token(token_head);
 		//free(token_head->content);
 		ft_memdel((void*)&token_head->content);
 		ft_memdel((void*)&token_head);
