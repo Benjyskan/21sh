@@ -79,6 +79,20 @@ static void	null_terminate_properly(t_token *token)
 	return ;
 }
 
+static t_bool	is_tklst_full_eat(t_token *token_head)
+{
+	t_token	*probe;
+
+	probe = token_head;
+	while (probe)
+	{
+		if (probe->type > TK_EAT)
+			return (0);
+		probe = probe->next;
+	}
+	return (1);
+}
+
 static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 {
 	t_token	*token_probe;
@@ -94,16 +108,20 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 			token_prev = token_probe;                      //
 		token_probe = token_probe->next;                   //
 	}                                                      //
-	if (!token_probe)//end of token list
+	if (!token_probe)//end of token list  //make func ?
 	{
-		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
-			return (0);
+		if (!is_tklst_full_eat(*token_head))
+		{
+			if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
+				return (0);
+		}
+		else
+			free_token_list(*token_head);
 		*token_head = NULL;
 		return (1);
 	}
 	else//i'm on a CTRL_OP
 	{
-		print_token_list(token_prev);
 		null_terminate_properly(token_prev);
 		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
 			return (0);
