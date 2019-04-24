@@ -28,7 +28,7 @@ static t_token	*get_dquot_token(char **cmdline)
 	}
 	if ((*cmdline)[i] == 0)
 	{
-		ft_endl_tty("Unmatched \". READ_MODE PLZ");
+//		ft_endl_tty("Unmatched \". READ_MODE PLZ");
 		return (NULL);
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_DQ_STR)))
@@ -47,7 +47,7 @@ static t_token	*get_squot_token(char **cmdline)
 		i++;
 	if ((*cmdline)[i] == 0)
 	{
-		ft_endl_tty("Unmatched '. READ_MODE PLZ");
+//		ft_endl_tty("Unmatched '. READ_MODE PLZ");
 		//(*cmdline)[i] = '\n';// this don't change anything ??
 		return (NULL);
 	}

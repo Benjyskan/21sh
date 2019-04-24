@@ -54,7 +54,7 @@ static t_bool	expand_dquotes(t_token	*token_head)
 	size_t	i;
 
 	old_len = ft_strlen(token_head->content);
-	printf("new_len will be: %zu\n", get_new_len(token_head->content, old_len));
+//	printf("new_len will be: %zu\n", get_new_len(token_head->content, old_len));
 	new_len = get_new_len(token_head->content, old_len);
 	if (!(new_str = ft_strnew(get_new_len(token_head->content, old_len))))
 		ERROR_MEM;

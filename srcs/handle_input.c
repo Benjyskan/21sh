@@ -70,13 +70,13 @@ t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
 		return (0);
 	}
 	else
-		ft_endl_tty("\x1B[32m""### lexer SUCCESS""\x1B[0m");
+//		ft_endl_tty("\x1B[32m""### lexer SUCCESS""\x1B[0m");
 	if (!(ast_root = create_ast(token_head)))
 	{
 		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
 		return (0);
 	}
-	ft_endl_tty("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
+	//ft_endl_tty("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	exec_ast(ast_root, env);
 	free_ast(ast_root);
 	return (1);
