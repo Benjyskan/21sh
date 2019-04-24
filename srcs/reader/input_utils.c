@@ -51,5 +51,5 @@ void	insert_str(t_cmd_struct *cmd_struct, const char *buf,
 	ft_strcpy(&cmd_struct->append_txt[cmd_struct->tracker + printable_len],
 			tmp);
 	ft_strncpy(&cmd_struct->append_txt[cmd_struct->tracker], buf, printable_len);
-	free(tmp);
+	ft_memdel((void*)&tmp);
 }

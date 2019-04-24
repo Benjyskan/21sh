@@ -50,8 +50,6 @@ void		insert_newline(t_cmd_struct *cmd_struct, size_t i)
 
 	if (need_to_scroll(cmd_struct))
 	{
-	//	ft_printf("SCROLLING");
-	//	sleep(1);
 		execute_str(SCROLL_DOWN);
 		update_pos(cmd_struct);
 	}
@@ -70,10 +68,10 @@ void		write_current_line(t_cmd_struct *cmd_struct)
 	i = cmd_struct->tracker;
 	while (cmd_struct->append_txt[i])
 	{
-		write(g_dev_tty, &cmd_struct->append_txt[i], 1);
  		if (cmd_struct->append_txt[i] == '\n')
 			break;
-		if ((i + ft_strlen(cmd_struct->prompt) + 1) % (cmd_struct->window.ws_col) == 0)
+		write(g_dev_tty, &cmd_struct->append_txt[i], 1);
+		if ((i + ft_strlen(cmd_struct->prompt)) % (cmd_struct->window.ws_col - 1) == 0)
 			insert_newline(cmd_struct, i);
 		i++;
 	}
@@ -87,9 +85,9 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 	int		col;
 
 	this_line = ft_reverse_strchr(cmd_struct->append_txt, cmd_struct->tracker, '\n');
-	line_tracker = ft_strlen(cmd_struct->prompt) + 1 + (&cmd_struct->append_txt[cmd_struct->tracker] - this_line);
-	row = cmd_struct->start_pos.row + line_tracker / (cmd_struct->window.ws_col + 1);
-	col = line_tracker % (cmd_struct->window.ws_col + 1);
+	line_tracker = ft_strlen(cmd_struct->prompt) + (&cmd_struct->append_txt[cmd_struct->tracker] - this_line);
+	row = cmd_struct->start_pos.row + line_tracker / (cmd_struct->window.ws_col);
+	col = line_tracker % (cmd_struct->window.ws_col);
 	execute_str(SAVE_CURSOR);
 	move_cursor(0, 8);
 	ft_printf("COL: %d, ROW: %d ; MAX : COL : %d, ROW: %d TRACKER: %lu\n", col, row, cmd_struct->window.ws_col, cmd_struct->window.ws_row, line_tracker);

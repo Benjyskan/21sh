@@ -87,6 +87,7 @@ int		input_loop(t_cmd_struct *cmd_struct)
 			write_buf(cmd_struct, buf);
 		reposition_cursor(cmd_struct);
 	}
+	print_line();
 	if (ret > 0)
 		return (1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/15 18:25:54 by pscott           ###   ########.fr       */
+/*   Updated: 2019/04/24 18:25:09 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	sanitize_pos_values(int *col, int *row)
 {
-	(*col)--;
-	(*row)--;
+	/*(*col)--; stupid
+	(*row)--;*/
 	if (*col < 0)
 		*col = 0;
 	if (*row < 0)
@@ -37,6 +37,8 @@ static void	parse_pos(char *pos_str, t_pos *curr_pos)
 		col_start = ft_strchr(pos_str + 3, ';');
 		curr_pos->col = col_start ? ft_atoi(col_start + 1) : 0;
 	}
+	curr_pos->row--;
+	curr_pos->col--;
 }
 
 static void	get_pos(char *pos_str)
