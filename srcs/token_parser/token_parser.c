@@ -79,6 +79,11 @@ static void	null_terminate_properly(t_token *token)
 	return ;
 }
 
+/*
+** is_tklst_full_eat
+** just check if the given token list is full of eat tokens
+*/
+
 static t_bool	is_tklst_full_eat(t_token *token_head)
 {
 	t_token	*probe;
