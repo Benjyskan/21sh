@@ -44,6 +44,8 @@ static t_bool	reroot_ast(t_token *new_token, t_ast **ast_root)
 
 static t_bool	insert_ast_node(t_ast *new_ast_node, t_ast **ast_root)
 {
+	if (!new_ast_node)
+		return (0);
 	if (!*(ast_root))
 	{
 		*ast_root = new_ast_node;
@@ -98,14 +100,40 @@ static t_bool	is_tklst_full_eat(t_token *token_head)
 	return (1);
 }
 
+/*
+** find_next_ctrl_op
+** move the given pointer:
+** - token_probe to the next ctrl_op or NULL if it's the end of token list
+** - token_prev to the last non-eat token encounter
+*/
+
 static void		find_next_ctrl_op(t_token **token_probe, t_token **token_prev)
 {
-	while (*token_probe && !(is_ctrl_op_token(*token_probe)))
+	while (*token_probe && !(is_ctrl_op_token(*token_probe)))//can do without is_ctrl_op_token, but i will be easier to tweak if i keep it
 	{
-		if ((*token_probe)->type != TK_EAT)
-			*token_prev = *token_probe;
+		//if ((*token_probe)->type != TK_EAT)
+		*token_prev = *token_probe;
 		*token_probe = (*token_probe)->next;
 	}
+}
+
+/*
+** add_last_node_to_ast
+** insert the last token list to ast, unless it is full of TK_EAT
+** set token_head to NULL, so create_ast() can return the ast to handle_input()
+*/
+
+static t_bool	add_last_node_to_ast(t_token **token_head, t_ast **ast_root)
+{
+	if (!is_tklst_full_eat(*token_head))
+	{
+		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
+			return (0);
+	}
+	else
+		free_token_list(*token_head);
+	*token_head = NULL;
+	return (1);
 }
 
 static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
@@ -114,31 +142,16 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	t_token	*token_prev;
 	t_ast	*ast_probe;
 
-	token_probe = *token_head;//make init_add_node ??
-	ast_probe = *ast_root;    //
-	token_prev = NULL;        //
-	find_next_ctrl_op(&token_probe, &token_prev);
-	//while (token_probe && !(is_ctrl_op_token(token_probe)))//make func ?
-	//{                                                      //
-	//	if (token_probe->type != TK_EAT)                   //
-	//		token_prev = token_probe;                      //
-	//	token_probe = token_probe->next;                   //
-	//}                                                      //
-	if (!token_probe)//end of token list  //make func ?
-	{
-		if (!is_tklst_full_eat(*token_head))
-		{
-			if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
-				return (0);
-		}
-		else
-			free_token_list(*token_head);
-		*token_head = NULL;
-		return (1);
-	}
+	token_probe = *token_head;
+	ast_probe = *ast_root;
+	token_prev = NULL;
+	find_next_ctrl_op(&token_probe, &token_prev);//make find_next.. return bool(is token_probe null or not)
+	if (!token_probe)//end of token list
+		return (add_last_node_to_ast(token_head, ast_root));
 	else//i'm on a CTRL_OP
 	{
-		null_terminate_properly(token_prev);
+		//null_terminate_properly(token_prev);
+		token_prev->next = NULL;//test
 		if (!(insert_ast_node(create_ast_node(*token_head, NULL, NULL), ast_root)))
 			return (0);
 		*token_head = token_probe->next;
@@ -167,6 +180,7 @@ t_ast	*create_ast(t_token *token_head)
 		if (!(add_node_to_ast(&token_head, &ast_root)))
 			return (NULL);//free ast
 	}
-
+	ft_endl_tty("PRINT AST:");
+	print_ast(ast_root);
 	return (ast_root);
 }
