@@ -18,7 +18,8 @@ t_bool	is_quotes(char c)
 
 t_bool	is_white_spaces(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n')
+	//dprintf(g_dev_tty, "IN WH_SP: {%c}", c);print_line();
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\r')//test \r
 		return (1);
 	return (0);
 }
