@@ -98,6 +98,16 @@ static t_bool	is_tklst_full_eat(t_token *token_head)
 	return (1);
 }
 
+static void		find_next_ctrl_op(t_token **token_probe, t_token **token_prev)
+{
+	while (*token_probe && !(is_ctrl_op_token(*token_probe)))
+	{
+		if ((*token_probe)->type != TK_EAT)
+			*token_prev = *token_probe;
+		*token_probe = (*token_probe)->next;
+	}
+}
+
 static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 {
 	t_token	*token_probe;
@@ -107,12 +117,13 @@ static t_bool	add_node_to_ast(t_token **token_head, t_ast **ast_root)
 	token_probe = *token_head;//make init_add_node ??
 	ast_probe = *ast_root;    //
 	token_prev = NULL;        //
-	while (token_probe && !(is_ctrl_op_token(token_probe)))//make func ?
-	{                                                      //
-		if (token_probe->type != TK_EAT)                   //
-			token_prev = token_probe;                      //
-		token_probe = token_probe->next;                   //
-	}                                                      //
+	find_next_ctrl_op(&token_probe, &token_prev);
+	//while (token_probe && !(is_ctrl_op_token(token_probe)))//make func ?
+	//{                                                      //
+	//	if (token_probe->type != TK_EAT)                   //
+	//		token_prev = token_probe;                      //
+	//	token_probe = token_probe->next;                   //
+	//}                                                      //
 	if (!token_probe)//end of token list  //make func ?
 	{
 		if (!is_tklst_full_eat(*token_head))
