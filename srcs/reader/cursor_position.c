@@ -53,10 +53,8 @@ void		insert_newline(t_cmd_struct *cmd_struct, size_t i)
 		execute_str(SCROLL_DOWN);
 		update_pos(cmd_struct);
 	}
-	ft_printf("NEWLINE");
-	sleep(1);
-	execute_str(ERASE_ENDLINE);
-	execute_str(CLEAR_BELOW);
+//	execute_str(ERASE_ENDLINE);
+//	execute_str(CLEAR_BELOW);
 	remaining = ft_strchr(&cmd_struct->append_txt[i], '\n');
 	write_remaining(remaining);
 }
@@ -71,7 +69,7 @@ void		write_current_line(t_cmd_struct *cmd_struct)
  		if (cmd_struct->append_txt[i] == '\n')
 			break;
 		write(g_dev_tty, &cmd_struct->append_txt[i], 1);
-		if ((i + ft_strlen(cmd_struct->prompt)) % (cmd_struct->window.ws_col - 1) == 0)
+		if ((i + ft_strlen(cmd_struct->prompt) + 1) % (cmd_struct->window.ws_col) == 0)
 			insert_newline(cmd_struct, i);
 		i++;
 	}
