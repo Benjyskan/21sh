@@ -24,6 +24,8 @@ void	sigint_handler(int signo)
 	(void)signo;
 	cmd_struct = get_cmd_struct(NULL); //only modifies local copy ?
 //	free_cmd(cmd_struct);
+	cmd_struct->tracker = cmd_struct->current_data_size;
+	reposition_cursor(cmd_struct);
 	print_line();
 	reset_cmd_struct(cmd_struct);
 	//execute_str(CLEAR_BELOW); not clear below but go to end of str and clear below

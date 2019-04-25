@@ -53,10 +53,9 @@ void		insert_newline(t_cmd_struct *cmd_struct, size_t i)
 		execute_str(SCROLL_DOWN);
 		update_pos(cmd_struct);
 	}
-//	execute_str(ERASE_ENDLINE);
-//	execute_str(CLEAR_BELOW);
 	remaining = ft_strchr(&cmd_struct->append_txt[i], '\n');
 	write_remaining(remaining);
+//	execute_str(CLEAR_BELOW);
 }
 
 void		write_current_line(t_cmd_struct *cmd_struct)
@@ -88,7 +87,7 @@ void		reposition_cursor(t_cmd_struct *cmd_struct)
 	col = line_tracker % (cmd_struct->window.ws_col);
 	execute_str(SAVE_CURSOR);
 	move_cursor(0, 8);
-	ft_printf("COL: %d, ROW: %d ; MAX : COL : %d, ROW: %d TRACKER: %lu\n", col, row, cmd_struct->window.ws_col, cmd_struct->window.ws_row, line_tracker);
+//	ft_printf("COL: %d, ROW: %d ; MAX : COL : %d, ROW: %d TRACKER: %lu\n", col, row, cmd_struct->window.ws_col, cmd_struct->window.ws_row, line_tracker);
 	execute_str(RESTORE_CURSOR);
 	move_cursor(col, row);
 }
