@@ -3,23 +3,7 @@
 
 # include "libterm.h"
 # include <sys/ioctl.h>
-# define BUF_SIZE 4
-# define INIT_TXT_SIZE 2 // change to 32(?) later but for debug purpose it's 2
-
-
-typedef struct	s_cmd_struct {
-	char				*txt;
-	size_t				total_data_size;
-	size_t				total_malloc_size;
-	size_t				current_data_size;
-	t_pos				start_pos;
-	struct winsize		window;
-	size_t				tracker;
-	char				*prompt;
-	char				*append_txt;
-	struct s_hist_lst	*hist_lst;
-}				t_cmd_struct;
-
+# include "line_editing.h"
 # include "history.h"
 
 

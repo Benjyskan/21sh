@@ -20,7 +20,7 @@ t_bool	is_full_of_whitespaces(char *input)
 int		main(int argc, char **argv, char **env)
 {
 	char			**env_cpy;
-	t_cmd_struct	*cmd_struct;
+	t_st_cmd		*st_cmd;
 
 	(void)argc;
 	(void)argv;

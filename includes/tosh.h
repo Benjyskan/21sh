@@ -12,7 +12,6 @@
 # include "reader.h"
 # define SHELL_NAME "my_sh"
 # define FD_LIMITS 10
-# define ERROR_MEM error_mem();
 # define ERROR_READ exit(1);//TODO
 
 typedef unsigned char	t_bool;

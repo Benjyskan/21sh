@@ -42,28 +42,17 @@ void		reset_cmd_struct(t_cmd_struct *cmd_struct) //only modifies loal copy ?
 **	Function to initialize cmd_struct
 */
 
-t_cmd_struct	*init_cmd_struct(char **env)
+t_st_cmd	*init_st_cmd(char **env)
 {
-	t_cmd_struct *cmd_struct;
+	t_st_cmd *st_cmd;
 
-	if (!(cmd_struct = (t_cmd_struct*)malloc(sizeof(*cmd_struct))))
+	if (!(st_cmd = (t_st_cmd*)malloc(sizeof(*st_cmd))))
 		ERROR_MEM;
-	if (!(cmd_struct->txt = ft_strnew(INIT_TXT_SIZE)))
-		return (NULL); //ERROR_MEM;
-	cmd_struct->total_data_size = 0;
-	retrieve_pos(&cmd_struct->start_pos);
-	cmd_struct->total_malloc_size = INIT_TXT_SIZE;
-	if (!(cmd_struct->prompt = ft_strdup("psh $ ")))// protect //define PROMPT ?
-		ERROR_MEM;
-	cmd_struct->append_txt = cmd_struct->txt;
-	cmd_struct->hist_lst = get_history(env);
-	cmd_struct->hist_lst = insert_right(cmd_struct->hist_lst, "", 0);
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &cmd_struct->window) == -1)
-	{
-		ft_dprintf(2, "error ioctl : exiting!");//TODO
-		clean_exit(1);
-	}
-	get_cmd_struct(&cmd_struct);
-	return (cmd_struct);
+	st_cmd->st_txt = init_st_txt(NULL);
+	st_cmd->prompt = init_st_prompt(NULL);
+	retrieve_pos(&st_cmd->start_pos);
+	st_cmd->hist_lst = get_history(env);
+	st_cmd->hist_lst = insert_right(st_cmd->hist_lst, "", 0); // ? need to malloc "" ?
+	get_st_cmd(&st_cmd);
+	return (st_cmd);
 }
-

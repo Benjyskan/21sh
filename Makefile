@@ -25,25 +25,27 @@ LIBS			:= $(LIBFT_A) $(LIBTERM_A)
 INCL_DIR	:=	includes libft/includes libterm/includes
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h
+INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h line_editing.h
 
 INCLS		:=	$(addprefix includes/,$(INCL_FILES))
 
 # Directories ##################################################################
 SRC_DIR	:=	srcs
 	#srcs subdirectories names
-	ENV_DIR			:=	environment
-	ERRORS_DIR		:=	errors
-	LEXER_DIR		:=	lexer
-	PARSER_DIR		:=	token_parser
-	PIPELINE_DIR	:=	pipeline
-	READER_DIR		:=	reader
-	EXPANDS_DIR		:=	expands
-	HISTORY_DIR		:=	history
-	SIGNALS_DIR		:=	signals
+	ENV_DIR				:=	environment
+	ERRORS_DIR			:=	errors
+	LEXER_DIR			:=	lexer
+	PARSER_DIR			:=	token_parser
+	PIPELINE_DIR		:=	pipeline
+	READER_DIR			:=	reader
+	EXPANDS_DIR			:=	expands
+	HISTORY_DIR			:=	history
+	SIGNALS_DIR			:=	signals
+	L_E_DIR				:=	line_editing
 	#list of all srcs subdirectories
 	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR) \
-					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR) $(SIGNALS_DIR)
+					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR) \
+				   	$(SIGNALS_DIR) $(L_E_DIR)
 
 
 #VPATH specifies a list of directories that 'make' should search
@@ -67,10 +69,12 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						parse_quotes.c 
 	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c
 	SIGNALS_FILES	:=	signals.c
+	L_E_FILES		:=	*.c #change
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
-			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) $(EXPANDS_FILES) $(SIGNALS_FILES)
+			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) \
+			$(EXPANDS_FILES) $(SIGNALS_FILES) $(L_E_FILES)
 
 
 # Complete path of each .c files ###############################################
@@ -81,9 +85,10 @@ LEXER_PATH			:=	$(addprefix $(LEXER_DIR)/,$(LEXER_FILES))
 PARSER_PATH			:=	$(addprefix $(PARSER_DIR)/,$(PARSER_FILES))
 PIPELINE_PATH		:=	$(addprefix $(PIPELINE_DIR)/,$(PIPELINE_FILES))
 READER_PATH			:=	$(addprefix $(READER_DIR)/,$(READER_FILES))
+EXPANDS_PATH		:=	$(addprefix $(EXPANDS_DIR)/,$(EXPANDS_FILES))
 HISTORY_PATH		:=	$(addprefix $(HISTORY_DIR)/,$(HISTORY_FILES))
 SIGNALS_PATH		:=	$(addprefix $(SIGNALS_DIR)/,$(SIGNALS_FILES))
-EXPANDS_PATH		:=	$(addprefix $(EXPANDS_DIR)/,$(EXPANDS_FILES))
+L_E_PATH			:=	$(addprefix $(L_E_DIR)/,$(L_E_FILES))
 
 #list of all "path/*.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
@@ -95,6 +100,7 @@ SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(EXPANDS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(HISTORY_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(SIGNALS_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(L_E_PATH)) \
 			$(SRC_PATH)
 
 #Object ########################################################################
