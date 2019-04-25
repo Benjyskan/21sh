@@ -82,6 +82,9 @@ t_bool		execute_argv(char	**argv)
 	if (execvp(argv[0], (char * const*)argv)) //need to use execve;
 	{
 		ft_dprintf(2, "----- Failed to execute ! -----\n");
+		close(0);//test
+		close(1);//
+		close(2);//
 		clean_exit(1);
 	}
 	return (1);

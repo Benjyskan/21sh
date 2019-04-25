@@ -25,7 +25,7 @@ LIBS			:= $(LIBFT_A) $(LIBTERM_A)
 INCL_DIR	:=	includes libft/includes libterm/includes
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h
+INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h hash_table.h
 
 INCLS		:=	$(addprefix includes/,$(INCL_FILES))
 
@@ -41,9 +41,10 @@ SRC_DIR	:=	srcs
 	EXPANDS_DIR		:=	expands
 	HISTORY_DIR		:=	history
 	SIGNALS_DIR		:=	signals
+	HASH_TABLE_DIR	:=	hash_table
 	#list of all srcs subdirectories
 	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR) \
-					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR) $(SIGNALS_DIR)
+					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR) $(SIGNALS_DIR) $(HASH_TABLE_DIR)
 
 
 #VPATH specifies a list of directories that 'make' should search
@@ -67,10 +68,11 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						parse_quotes.c 
 	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c
 	SIGNALS_FILES	:=	signals.c
+	HASH_TABLE_FILES:=	hash_table.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
-			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) $(EXPANDS_FILES) $(SIGNALS_FILES)
+			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) $(EXPANDS_FILES) $(SIGNALS_FILES) $(HASH_TABLE_FILES)
 
 
 # Complete path of each .c files ###############################################
@@ -84,6 +86,7 @@ READER_PATH			:=	$(addprefix $(READER_DIR)/,$(READER_FILES))
 HISTORY_PATH		:=	$(addprefix $(HISTORY_DIR)/,$(HISTORY_FILES))
 SIGNALS_PATH		:=	$(addprefix $(SIGNALS_DIR)/,$(SIGNALS_FILES))
 EXPANDS_PATH		:=	$(addprefix $(EXPANDS_DIR)/,$(EXPANDS_FILES))
+HASH_TABLE_PATH		:=	$(addprefix $(HASH_TABLE_DIR)/,$(HASH_TABLE_FILES))
 
 #list of all "path/*.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
@@ -95,6 +98,7 @@ SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(EXPANDS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(HISTORY_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(SIGNALS_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(HASH_TABLE_PATH)) \
 			$(SRC_PATH)
 
 #Object ########################################################################
