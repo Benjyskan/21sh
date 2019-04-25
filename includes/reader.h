@@ -23,8 +23,6 @@ int				check_for_delete(t_cmd_struct *cmd_struct, char *buf);
 
 void			move_arrow_left(t_cmd_struct *cmd_struct);
 void			move_arrow_right(t_cmd_struct *cmd_struct);
-void			get_previous_history(t_cmd_struct *cmd_struct);
-void			get_next_history(t_cmd_struct *cmd_struct);
 
 
 /*

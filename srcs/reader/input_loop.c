@@ -36,19 +36,20 @@ void	write_buf(t_cmd_struct *cmd_struct, char *buf)
 	cmd_struct->tracker += printable_len;
 }
 
-int		input_loop(t_cmd_struct *cmd_struct)
+/*
+**	Assumes we are at the beginning of a line, with a freshly initalized st_cmd.
+**	Reads stdin, breaks when \n is entered, returning the filled st_cmd.
+*/
+
+int		input_loop(t_st_cmd *st_cmd)
 {
 	char	buf[BUF_SIZE + 1];
 	int		ret;
 
-	cmd_struct->current_data_size = 0;
-	cmd_struct->tracker = 0;
-	retrieve_pos(&cmd_struct->start_pos);
-	print_prompt(cmd_struct);
 	ft_bzero(buf, BUF_SIZE + 1);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
-		magic_print(buf);
+//		magic_print(buf);
 		buf[ret] = 0;
 		if (check_for_arrows(cmd_struct, buf) || check_for_signal(buf)
 			|| check_for_delete(cmd_struct, buf))
@@ -56,7 +57,7 @@ int		input_loop(t_cmd_struct *cmd_struct)
 		else if (check_for_enter(buf))
 		{
 			ft_strncpy(buf, "\n", 1);
-			write_buf(cmd_struct, buf);
+			append_txt(buf);
 			break ;
 		}
 		else if (check_for_quit(buf))
@@ -64,7 +65,7 @@ int		input_loop(t_cmd_struct *cmd_struct)
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
 		else
-			write_buf(cmd_struct, buf);
+			write(imd_struct, buf);
 		reposition_cursor(cmd_struct);
 	}
 	if (ret > 0)

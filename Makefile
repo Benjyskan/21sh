@@ -67,7 +67,7 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						input_loop.c cursor_position.c input_utils.c cmd_struct.c
 	EXPANDS_FILES	:=	parse_expands.c parse_dollars.c parse_tildes.c \
 						parse_quotes.c 
-	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c
+	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c switch_history.c
 	SIGNALS_FILES	:=	signals.c
 	L_E_FILES		:=	*.c #change
 

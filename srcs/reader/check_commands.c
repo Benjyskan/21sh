@@ -1,22 +1,27 @@
 #include "reader.h"
 
-int		check_for_arrows(t_cmd_struct *cmd_struct, char *buf)
+/*
+**	Checks and calls the appropriated functions for UP, DOWN, LEFT, RIGHT, HOME
+**	and END keys.
+*/
+
+int		check_for_arrows(t_st_cmd *st_cmd, const char *buf)
 {
 	if (ft_strncmp(buf, RIGHTARROW, ARROW_LEN + 1) == 0)
-		move_arrow_right(cmd_struct);
+		move_arrow_right(st_cmd->st_txt);
 	else if (ft_strncmp(buf, LEFTARROW, ARROW_LEN + 1) == 0)
-		move_arrow_left(cmd_struct);
+		move_arrow_left(st_cmd->st_txt);
 	else if (ft_strncmp(buf, UPARROW, ARROW_LEN + 1) == 0)
-		get_previous_history(cmd_struct);
+		get_previous_history(st_cmd);
 	else if (ft_strncmp(buf, DOWNARROW, ARROW_LEN + 1) == 0)
-		get_next_history(cmd_struct);
+		get_next_history(st_cmd);
 	else if (ft_strncmp(buf, HOME, HOME_LEN + 1) == 0)
-		cmd_struct->tracker = 0;
+		go_to_start(st_cmd->st_txt);
 	else if (ft_strncmp(buf, END, END_LEN + 1) == 0)
-		cmd_struct->tracker = cmd_struct->current_data_size;
+		go_to_end(st_cmd->st_txt);
 	else
 		return (0);
-	reposition_cursor(cmd_struct);
+	reposition_cursor(st_cmd);
 	return (1);
 }
 
@@ -30,7 +35,7 @@ int		check_for_quit(const char *buf)
 
 int		check_for_signal(const char *buf)
 {
-	if (ft_strncmp(buf, CTRL_Z, 2) == 0)
+	if (ft_strncmp(buf, CTRL_Z, CTRL_Z_LEN) == 0)
 	{
 		ft_dprintf(2, "SHOULD BE BACKGROUND");
 		print_line();
@@ -45,19 +50,6 @@ int		check_for_signal(const char *buf)
 	return (0);
 }
 
-void	shift_chars(char *str, unsigned int shift)
-{
-	size_t i;
-
-	i = 0;
-	while (str[i] && str[i + shift])
-	{
-		str[i] = str[i + shift];
-		i++;
-	}
-	str[i] = str[i + 1];
-}
-
 int		check_for_enter(const char *buf)
 {
 	if (ft_strncmp(buf, "\r", 2) == 0)
@@ -66,24 +58,32 @@ int		check_for_enter(const char *buf)
 		return (0);
 }
 
-int		check_for_delete(t_cmd_struct *cmd_struct, char *buf)
+/*
+**	Checks for charactere deletion (backspace or delete keys)
+*/
+
+int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 {
 	if (ft_strncmp(buf, BACKSPACE, BACKSPACE_LEN + 1) == 0)
 	{
-		if (cmd_struct->tracker <= 0)
-		{
-			cmd_struct->tracker = 0;
+		if (st_cmd->st_txt->tracker = 0)
 			ft_putstr_tty(BELL);
-			return (1);
+		else
+		{
+			delete_left(st_cmd);
+			reposition_cursor(st_cmd);
 		}
-		cmd_struct->tracker--;
-		cmd_struct->total_data_size -= 1;
-		cmd_struct->current_data_size -= 1;
-		reposition_cursor(cmd_struct);
-		execute_str(ERASE_ENDLINE);
-		shift_chars(&cmd_struct->append_txt[cmd_struct->tracker], 1);
-		ft_putstr_tty(&cmd_struct->append_txt[cmd_struct->tracker]);
-		reposition_cursor(cmd_struct);
+		return (1);
+	}
+	else if (ft_strncmp(buf, DEL, DEL_LEN + 1) == 0)
+	{
+		if ((st_cmd->st_txt->tracker > st_cmd->st_txt->data_size - 1) == 0)
+			ft_putstr_tty(BELL);
+		else
+		{
+			delete_right(st_cmd);
+			reposition_cursor(st_cmd);
+		}
 		return (1);
 	}
 	else

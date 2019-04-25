@@ -29,29 +29,21 @@ int		main(int argc, char **argv, char **env)
 	signal_setup();
 	if (!(env_cpy = init_env(env)))
 		return (EXIT_FAILURE);
-	cmd_struct = init_cmd_struct(env);
 	while (42)
 	{
-		if (!input_loop(cmd_struct))
-			break ; // free env, free char *
-		//store input in history here
-		if (is_full_of_whitespaces(cmd_struct->txt))
-		{
-			reset_cmd_struct(cmd_struct);
-			continue;
-		}
-		if (!(handle_input(cmd_struct, env_cpy)))
-			;
-		reset_cmd_struct(cmd_struct);
+		st_cmd = init_st_cmd(env);
+		if (!input_loop(st_cmd))
+			break ; // free env, free st_cmd
+		if (is_full_of_whitespaces(st_cmd->st_txt->txt) == 0)
+			handle_input(st_cmd, env_cpy);
+		//free st_cmd
 	}
-	write_to_history(cmd_struct, env);
-	//free cmd_struct
+	write_to_history(st_cmd, env);
+	//free st_cmd
 	ft_free_ntab(env_cpy);
 	print_line();
 	if (reset_terminal_settings() == 0)
 		return (EXIT_FAILURE);
 	else
-	{
 		return (EXIT_SUCCESS);
-	}
 }

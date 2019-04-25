@@ -41,4 +41,12 @@ t_st_txt					*init_st_txt(char *txt);
 
 t_st_prompt					*init_st_prompt(char *prompt);
 
+/*
+**	st_cmd functions
+*/
+
+t_st_cmd					*get_st_cmd(t_st_cmd **new_struct);
+t_st_cmd					*init_st_cmd(const char **env);
+t_st_cmd					*append_st_cmd(t_st_cmd *st_cmd, const char *txt
+		const char *prompt);
 #endif

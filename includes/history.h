@@ -28,4 +28,13 @@ void		print_hist_lst(t_hist_lst *hist_lst);
 t_hist_lst	*get_end_lst(t_hist_lst *hist_lst);
 t_hist_lst	*get_begin_lst(t_hist_lst *hist_lst);
 
+/*
+**	Getting previous history and next history and dislpaying it on screen
+*/
+
+void		get_previous_history(t_st_cmd *st_cmd);
+void		get_next_history(t_st_cmd *st_cmd);
+
+
+
 #endif
