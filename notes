@@ -1,0 +1,16 @@
+everytime we press enter, new prompt node.
+node has : prompt_struct, start_pos, relative_pos, text struct, *window struct, *hist_lst, next and prev.
+
+prompt_struct : char * prompt and size_t size;
+txt struct : malloc_size, data_size, tracker;
+
+methods :
+	- get_nb_lines (current_pos - start_pos)
+	- go_back_to_start (go up get_nb_lines, and go to start of line ?)
+
+on signal:
+	go to the top; (while prev : go back_to_start)
+	rewrite everything; (while next: write_everything)
+
+scroll :
+	- update all pos;
