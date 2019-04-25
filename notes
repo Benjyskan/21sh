@@ -18,6 +18,8 @@ scroll :
 history : rewrite switch cmd_struct function
 
 Both functions need to update current_pos matrix !
+
+===
 write_everything -> writes everything, update positions
 write_newline -> writes char per char, with \n being print_line. Does not check for overflow.
 append_txt -> appends a string to txt, updating malloc, data_size and tracker

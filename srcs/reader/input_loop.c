@@ -65,7 +65,7 @@ int		input_loop(t_st_cmd *st_cmd)
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
 		else
-			write(imd_struct, buf);
+//			write(imd_struct, buf); need to rewrite write functions
 		reposition_cursor(cmd_struct);
 	}
 	if (ret > 0)
