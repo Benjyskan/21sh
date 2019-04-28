@@ -59,7 +59,8 @@ static char	**create_cap_array(void)
 			|| !(res[12] = ft_strdup(NO_HIGHLIGHT))
 			|| !(res[13] = ft_strdup(UNDERLINE))
 			|| !(res[14] = ft_strdup(NO_UNDERLINE))
-			|| !(res[15] = ft_strdup(SCROLL_DOWN)))
+			|| !(res[15] = ft_strdup(SCROLL_DOWN))
+			|| !(res[16] = ft_strdup(MOVE_UP)))
 	{
 		ft_free_ntab(res);
 		return (NULL);

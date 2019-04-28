@@ -33,7 +33,8 @@
 # define UNDERLINE "us"
 # define NO_UNDERLINE "ue"
 # define SCROLL_DOWN "sf"
-# define NUM_CAPS 16
+# define MOVE_UP "up"
+# define NUM_CAPS 17
 
 typedef struct	s_pos {
 	int	row;
