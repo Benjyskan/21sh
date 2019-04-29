@@ -53,7 +53,6 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 
 	token_head = NULL;
 	input = concatenate_txt(st_cmd);
-	ft_printf("FIRST STR: {%s}", input);
 	// need to append all st_cmd's txt
 	while ((lexer_ret = lexer(input, &token_head, env)) == LEX_CONT_READ)
 	{
@@ -62,7 +61,6 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 		st_cmd = append_st_cmd(st_cmd, "", "cont > ");
 	 	input_loop(st_cmd);
 		input = concatenate_txt(st_cmd);
-		ft_printf("NEW STR: {%s}", input);
 	}
 	st_cmd->hist_lst = get_end_lst(st_cmd->hist_lst);
 	insert_left(st_cmd->hist_lst, input, 1);

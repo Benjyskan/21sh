@@ -75,7 +75,6 @@ t_st_cmd	*reset_st_cmd(t_st_cmd *old_st_cmd)
 	init_relative_pos(st_cmd);
 	st_cmd->hist_lst = old_st_cmd->hist_lst;
 	//free old_st_cmd lst;
-	st_cmd->hist_lst = insert_right(st_cmd->hist_lst, "", 0);
 	st_cmd->next = NULL;
 	st_cmd->prev = NULL;
 	get_st_cmd(&st_cmd);

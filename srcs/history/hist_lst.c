@@ -43,7 +43,6 @@ t_hist_lst	*get_end_lst(t_hist_lst *hist_lst)
 	return (probe);
 }
 
-/* should be insert, not append*/
 t_hist_lst	*insert_right(t_hist_lst *hist_lst, char *line, char keep)
 {
 	t_hist_lst	*probe;
