@@ -19,11 +19,6 @@ void	get_tracker_pos(t_st_cmd *st_cmd)
 			st_cmd->relative_pos.col++;
 		i++;
 	}
-	execute_str(SAVE_CURSOR);
-	move_cursor(1, 1);
-	ft_printf("Total: %d", st_cmd->relative_pos.col);
-	ft_printf("res: %d", st_cmd->window.ws_col);
-	execute_str(RESTORE_CURSOR);
 }
 
 void	move_arrow_right(t_st_cmd *st_cmd)

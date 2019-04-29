@@ -27,7 +27,7 @@ static void	switch_st_cmd(t_st_cmd *st_cmd, char *newcmd)
 	init_relative_pos(st_cmd);
 	//free st_txt
 	st_cmd->st_txt = init_st_txt(trunc_newcmd);
-	write_line(st_cmd);
+	write_st_cmd(st_cmd);
 	st_cmd->st_txt->tracker = st_cmd->st_txt->data_size;;
 	get_tracker_pos(st_cmd);
 	ft_memdel((void*)&trunc_newcmd);

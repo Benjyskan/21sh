@@ -32,7 +32,7 @@ void	move_down(t_st_cmd *st_cmd)
 **	current line.
 */
 
-void	write_line(t_st_cmd *st_cmd)
+int		write_line(t_st_cmd *st_cmd)
 {
 	t_st_txt	*st_txt;
 	t_pos		tmp_pos;
@@ -62,9 +62,27 @@ void	write_line(t_st_cmd *st_cmd)
 		move_down(st_cmd);
 		tmp_pos.col = 1;
 		tmp_pos.row++;
+		return (i);
 	}
+	return (0);
 	//	write until \n
 	//	if end screen  -> evaluate if scroll
 	// if scroll : update_pos of all structs
 	// else, write everything, updating_pos of following
+}
+
+/*
+**	Function that writes every line in the st_cmd
+*/
+
+void		write_st_cmd(t_st_cmd *st_cmd)
+{
+	size_t	step;
+
+	while ((step = write_line(st_cmd)))
+	{
+		st_cmd->st_txt->tracker += step;
+		get_tracker_pos(st_cmd);
+		reposition_cursor(st_cmd);
+	}
 }
