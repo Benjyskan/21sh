@@ -39,7 +39,13 @@ void		delete_left(t_st_cmd *st_cmd)
 	execute_str(ERASE_ENDLINE); // need to erase more probably... ?
 	shift_chars_left(&st_txt->txt[st_txt->tracker], 1);
 	write_line(st_cmd); // should be write everything
+	get_tracker_pos(st_cmd);
 }
+
+/*
+**	Deletes the character located on the right side of the cursor. Equivalent to
+**	pressing delete on a regular shell.
+*/
 
 void		delete_right(t_st_cmd *st_cmd)
 {
