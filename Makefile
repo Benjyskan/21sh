@@ -65,7 +65,7 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						check_token_type.c
 	READER_FILES	:=	arrows.c check_commands.c clean_exit.c prompt.c \
 						input_loop.c cursor_position.c input_utils.c \
-						cmd_struct.c delete.c
+						delete.c
 	EXPANDS_FILES	:=	parse_expands.c parse_dollars.c parse_tildes.c \
 						parse_quotes.c 
 	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c switch_history.c

@@ -66,8 +66,6 @@ int		write_to_history(t_st_cmd *st_cmd, const char **env)
 		id = 0;
 		while (hist_lst)
 		{
-			ft_printf("%s", hist_lst->txt);
-			print_line();
 			if (hist_lst->keep)
 			{
 				i = 0;

@@ -55,6 +55,25 @@ t_st_cmd	*append_st_cmd(t_st_cmd *st_cmd, const char *txt, const char *prompt)
 	return (new);
 }
 
+t_st_cmd	*reset_st_cmd(t_st_cmd *old_st_cmd)
+{
+	t_st_cmd	*st_cmd;
+	
+	//free txt, free prompt;
+	st_cmd->st_txt = init_st_txt(NULL);
+	st_cmd->st_prompt = init_st_prompt(NULL);
+	retrieve_pos(&st_cmd->start_pos);
+	init_relative_pos(st_cmd);
+	st_cmd->hist_lst = old_st_cmd->hist_lst;
+	old_st_cmd = old_st_cmd->prev;
+	//free old_st_cmd lst;
+	st_cmd->hist_lst = insert_right(st_cmd->hist_lst, "", 0);
+	st_cmd->next = NULL;
+	st_cmd->prev = NULL;
+	get_st_cmd(&st_cmd);
+	return (st_cmd);
+}
+
 /*
 **	Function to initialize st_cmd
 */
@@ -67,7 +86,6 @@ t_st_cmd	*init_st_cmd(const char **env)
 		ERROR_MEM;
 	st_cmd->st_txt = init_st_txt(NULL);
 	st_cmd->st_prompt = init_st_prompt(NULL);
-	retrieve_pos(&st_cmd->start_pos);
 	update_window_struct(&st_cmd->window);
 	init_relative_pos(st_cmd);
 	st_cmd->hist_lst = get_history(env);

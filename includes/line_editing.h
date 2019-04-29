@@ -50,6 +50,7 @@ t_st_cmd					*get_st_cmd(t_st_cmd **new_struct);
 t_st_cmd					*init_st_cmd(const char **env);
 t_st_cmd					*append_st_cmd(t_st_cmd *st_cmd, const char *txt,
 		const char *prompt);
+t_st_cmd					*reset_st_cmd(t_st_cmd *old_st_cmd);
 void						update_window_struct(struct winsize *window);
 void						init_relative_pos(t_st_cmd *st_cmd);
 

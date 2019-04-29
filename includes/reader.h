@@ -63,7 +63,6 @@ void			clean_exit(int exitno);
 */
 
 t_st_cmd	*get_st_cmd(t_st_cmd **new_struct);
-void		reset_st_cmd(t_st_cmd *st_cmd);
 t_st_cmd	*init_st_cmd(const char **env);
 
 void			sigint_handler(int signo);

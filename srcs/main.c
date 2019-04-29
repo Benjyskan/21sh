@@ -29,18 +29,21 @@ int		main(int argc, char **argv, char **env)
 	signal_setup();
 	if (!(env_cpy = init_env((const char **)env)))
 		return (EXIT_FAILURE);
+	st_cmd = NULL;
+	st_cmd = init_st_cmd((const char **)env);
 	while (42)
 	{
-		st_cmd = init_st_cmd((const char **)env);
 		if (!input_loop(st_cmd))
 			break ; // free env, free st_cmd
 		if (is_full_of_whitespaces(st_cmd->st_txt->txt) == 0)
 			handle_input(st_cmd, env_cpy);
+		st_cmd = reset_st_cmd(st_cmd);
 		//free st_cmd
 	}
 	write_to_history(st_cmd, (const char **)env);
 	//free st_cmd
 	ft_free_ntab(env_cpy);
+	print_line();
 	if (reset_terminal_settings() == 0)
 		return (EXIT_FAILURE);
 	else
