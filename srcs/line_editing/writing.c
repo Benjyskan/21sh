@@ -15,13 +15,14 @@ void	go_back_to_start(t_st_cmd *st_cmd)
 }
 
 /*
-**	Function that prints a newline, scrolls down if need be and write the
+**	Function that scrolls down if need be and write the
 **	remainder of the line.
 */
 
 void	move_down(t_st_cmd *st_cmd)
 {
-	(void)st_cmd;
+	if (st_cmd->start_pos.row + st_cmd->relative_pos.row == st_cmd->window.ws_row)
+		update_pos(st_cmd);
 	return ;
 }
 

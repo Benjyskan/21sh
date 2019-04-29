@@ -4,7 +4,11 @@
 
 void		update_pos(t_st_cmd *st_cmd) // might be useless
 {
-	st_cmd->start_pos.row--;
+	while (st_cmd)
+	{
+		st_cmd->start_pos.row--;
+		st_cmd = st_cmd->prev;
+	}
 }
 
 /*
