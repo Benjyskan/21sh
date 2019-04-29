@@ -70,15 +70,13 @@ t_bool		execute_argv(char	**argv)
 		return (0);
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
-	int		i = -1;
-	print_line();
-	while (argv[++i])
+/*	while (argv[++i])
 	{
 		ft_dprintf(g_dev_tty, "line%d:{%s}", i, argv[i]);
 		print_line();
 	}
 	ft_dprintf(g_dev_tty, "--------------------- %s --------------------- ", argv[0]);
-	print_line();
+	print_line();*/
 	if (execvp(argv[0], (char * const*)argv)) //need to use execve;
 	{
 		ft_dprintf(2, "----- Failed to execute ! -----\n");

@@ -41,7 +41,6 @@ int		main(int argc, char **argv, char **env)
 	write_to_history(st_cmd, (const char **)env);
 	//free st_cmd
 	ft_free_ntab(env_cpy);
-	print_line();
 	if (reset_terminal_settings() == 0)
 		return (EXIT_FAILURE);
 	else

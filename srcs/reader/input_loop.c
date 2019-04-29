@@ -61,6 +61,7 @@ int		input_loop(t_st_cmd *st_cmd)
 		{
 			ft_strncpy(buf, "\n", 1);
 			append_txt(st_cmd, (const char*)buf);
+			print_line();
 			break ;
 		}
 		else if (check_for_quit(buf))
