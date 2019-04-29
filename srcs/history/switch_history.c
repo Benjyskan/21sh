@@ -11,7 +11,6 @@
 static void	switch_st_cmd(t_st_cmd *st_cmd, char *newcmd)
 {
 	size_t		len;
-	char		*tmp;
 	t_st_txt	*st_txt;
 
 	if ((len = ft_strlen(newcmd)) > 0)
@@ -38,8 +37,6 @@ static void	switch_st_cmd(t_st_cmd *st_cmd, char *newcmd)
 
 void	get_previous_history(t_st_cmd *st_cmd)
 {
-	char	*tmp;
-
 	if (!st_cmd->hist_lst || !st_cmd->hist_lst->prev)
 		ft_putstr_tty(BELL);
 	else if (st_cmd->hist_lst->prev)
@@ -60,8 +57,6 @@ void	get_previous_history(t_st_cmd *st_cmd)
 
 void	get_next_history(t_st_cmd *st_cmd)
 {
-	char	*tmp;
-
 	if (!st_cmd->hist_lst || !st_cmd->hist_lst->next)
 		ft_putstr_tty(BELL);
 	else

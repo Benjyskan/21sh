@@ -13,7 +13,7 @@ t_bool		parse_expands(t_token *token_head, int in, int out, char **env)
 {
 	redirect(in, STDIN_FILENO);
 	redirect(out, STDOUT_FILENO);
-	if (!(parse_tildes(token_head, env)))
+	if (!(parse_tildes(token_head, (const char **)env)))
 		return (0);
 	parse_dollars(token_head, env);
 	parse_quotes(token_head);

@@ -10,7 +10,7 @@
 # include "libft.h"
 # include "libterm.h"
 
-# define ERROR_MEM error_mem();
+# define ERROR_MEM clean_exit(1);
 # define OP_CHART_SIZE 22
 
 typedef unsigned char	t_bool;

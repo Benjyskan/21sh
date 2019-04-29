@@ -5,7 +5,7 @@
 #include "errno.h"
 #include "get_next_line.h"
 
-static int		open_history(char **env, int options)
+static int		open_history(const char **env, int options)
 {
 	int		fd;
 	char	*hist_file;
@@ -22,7 +22,7 @@ static int		open_history(char **env, int options)
 	return (fd);
 }
 
-t_hist_lst	*get_history(char **env)
+t_hist_lst	*get_history(const char **env)
 {
 	t_hist_lst	*hist_lst;
 	char		*line;
@@ -49,20 +49,20 @@ t_hist_lst	*get_history(char **env)
 	return (hist_lst);
 }
 
-int		write_to_history(t_cmd_struct *cmd_struct, char **env)
+int		write_to_history(t_st_cmd *st_cmd, const char **env)
 {
 	t_hist_lst	*hist_lst;
 	size_t		id;
 	size_t		i;
 	int			fd;
 
-	if (!(cmd_struct->hist_lst))
+	if (!(st_cmd->hist_lst))
 		return (0);
 	if ((fd = open_history(env, O_WRONLY | O_CREAT | O_TRUNC)) < 0)
 		return (0);
 	else
 	{
-		hist_lst = get_begin_lst(cmd_struct->hist_lst);
+		hist_lst = get_begin_lst(st_cmd->hist_lst);
 		id = 0;
 		while (hist_lst)
 		{

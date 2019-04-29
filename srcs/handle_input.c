@@ -44,25 +44,23 @@ t_hist_lst		*insert_left(t_hist_lst *hist_lst, char *line, char keep)
 	return (insert);
 } // should no be in handle_input !
 
-t_bool	handle_input(t_cmd_struct *cmd_struct, char **env)
+t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 {
 	t_ast			*ast_root;
 	t_token			*token_head;
 	int				lexer_ret;
 
 	token_head = NULL;
-	while ((lexer_ret = lexer(cmd_struct->txt, &token_head, env)) == LEX_CONT_READ)
+	// need to append all st_cmd's txt
+	while ((lexer_ret = lexer(st_cmd->st_txt->txt, &token_head, env)) == LEX_CONT_READ)
 	{
 		free_token_list(token_head);
-		ft_memdel((void*)&cmd_struct->prompt);
-		if (!(cmd_struct->prompt = ft_strdup("cont> ")))//define PROMPT_CONT ?
-			ERROR_MEM;
-		cmd_struct->append_txt = &cmd_struct->txt[cmd_struct->total_data_size];
-		cmd_struct->tracker = 0;
-	 	input_loop(cmd_struct);
+		//free st_prompt
+		st_cmd = append_st_cmd(st_cmd, "", "cont > ");
+	 	input_loop(st_cmd);
 	}
-	cmd_struct->hist_lst = get_end_lst(cmd_struct->hist_lst);
-	insert_left(cmd_struct->hist_lst, cmd_struct->txt, 1);
+	st_cmd->hist_lst = get_end_lst(st_cmd->hist_lst);
+	insert_left(st_cmd->hist_lst, st_cmd->st_txt->txt, 1);
 	if (lexer_ret == LEX_FAIL)
 	{
 		free_token_list(token_head);

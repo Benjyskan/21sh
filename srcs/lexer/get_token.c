@@ -4,7 +4,7 @@
 static t_token	*get_dquot_token(char **cmdline)
 {
 	t_token			*token;
-	t_cmd_struct	*cmd_struct;
+	t_st_cmd	*st_cmd;
 	size_t			i;
 
 	i = 1;
@@ -17,9 +17,9 @@ static t_token	*get_dquot_token(char **cmdline)
 				i++;
 			else if ((*cmdline)[i + 1] == '\n')
 			{
-				cmd_struct = get_cmd_struct(NULL);//make func ?
-				ft_bzero(&cmd_struct->append_txt[cmd_struct->current_data_size - 2], 2);
-				cmd_struct->total_data_size -= 2;
+				st_cmd = get_st_cmd(NULL);//make func ?
+				st_cmd->st_txt->data_size -= 2;
+				ft_bzero(&st_cmd->st_txt->txt[st_cmd->st_txt->data_size], 2);
 				ft_endl_tty("end with '\\', READ_MODE");
 				return (NULL);
 			}
@@ -74,13 +74,13 @@ static t_token	*get_regular_token(char **cmdline)
 static t_token	*get_monochar(char **cmdline)
 {
 	t_token			*token;
-	t_cmd_struct	*cmd_struct;
+	t_st_cmd		*st_cmd;
 
 	if (*(*cmdline + 1) == '\n')
 	{
-		cmd_struct = get_cmd_struct(NULL);//make func ?
-		ft_bzero(&cmd_struct->append_txt[cmd_struct->current_data_size - 2], 2);
-		cmd_struct->total_data_size -= 2;
+		st_cmd = get_st_cmd(NULL);//make func ?
+		st_cmd->st_txt->data_size -= 2;
+		ft_bzero(&st_cmd->st_txt[st_cmd->st_txt->data_size], 2);
 		return (NULL);
 	}
 	(*cmdline)++;

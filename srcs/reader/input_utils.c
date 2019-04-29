@@ -41,15 +41,17 @@ char	*ft_strdup_print(const char *s1)
 	return (res);
 }
 
-void	insert_str(t_cmd_struct *cmd_struct, const char *buf,
+void	insert_str(t_st_cmd *st_cmd, const char *buf,
 		size_t printable_len)
 {
-	char	*tmp;
+	char		*tmp;
+	t_st_txt	*st_txt;
 
-	if (!(tmp = ft_strdup_print(&cmd_struct->append_txt[cmd_struct->tracker])))
+	st_txt = st_cmd->st_txt;
+	if (!(tmp = ft_strdup_print(&st_txt->txt[st_txt->tracker])))
 		ERROR_MEM;
-	ft_strcpy(&cmd_struct->append_txt[cmd_struct->tracker + printable_len],
+	ft_strcpy(&st_txt->txt[st_txt->tracker + printable_len],
 			tmp);
-	ft_strncpy(&cmd_struct->append_txt[cmd_struct->tracker], buf, printable_len);
+	ft_strncpy(&st_txt->txt[st_txt->tracker], buf, printable_len);
 	free(tmp);
 }

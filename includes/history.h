@@ -14,8 +14,8 @@ typedef struct		s_hist_lst {
 	struct s_hist_lst *next;
 }					t_hist_lst;
 
-t_hist_lst	*get_history(char **env);
-int			write_to_history(t_cmd_struct *cmd_struct, char **env);
+t_hist_lst	*get_history(const char **env);
+int			write_to_history(t_st_cmd *st_cmd, const char **env);
 
 /*
 **	Utils for hist_lst structure : appending, creating, inserting etc...

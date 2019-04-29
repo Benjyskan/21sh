@@ -24,7 +24,7 @@ typedef unsigned char	t_bool;
 ** init_env.c
 */
 
-char				**init_env(char **env);
+char				**init_env(const char **env);
 
 /*
 ** errors.c
@@ -59,7 +59,7 @@ void				set_env_var(char *var_name, char *var_value, char ***env);
 ** handle_input.c
 */
 
-t_bool				handle_input(t_cmd_struct *cmd_struct, char **env);
+t_bool				handle_input(t_st_cmd *st_cmd, char **env);
 
 /*
 ** lexer.c

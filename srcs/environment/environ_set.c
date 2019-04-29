@@ -31,7 +31,7 @@ static void	add_env_var(char *var_name, char *var_value, char ***env)
 	int		env_len;
 	int		i;
 
-	env_len = ft_ntab_len(*env);
+	env_len = ft_ntab_len((const char **)*env);
 	if (!(new_env = (char**)malloc(sizeof(char**) * (env_len + 2))))
 		ERROR_MEM;
 	i = -1;

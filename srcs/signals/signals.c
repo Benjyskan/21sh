@@ -19,15 +19,18 @@ static void	sig_handler(int signo)
 
 void	sigint_handler(int signo)
 {
-	t_cmd_struct *cmd_struct;
+	t_st_cmd	*st_cmd;
 
 	(void)signo;
-	cmd_struct = get_cmd_struct(NULL); //only modifies local copy ?
-//	free_cmd(cmd_struct);
+	st_cmd = get_st_cmd(NULL); //only modifies local copy ?
 	print_line();
-	reset_cmd_struct(cmd_struct);
+	retrieve_pos(&st_cmd->start_pos);
+	st_cmd->relative_pos.col = 0;
+	st_cmd->relative_pos.row = 0;
+//	free(st_cmd->st_txt);
+	st_cmd->st_txt = init_st_txt(NULL);
 	//execute_str(CLEAR_BELOW); not clear below but go to end of str and clear below
-	print_prompt(cmd_struct);
+	print_prompt(st_cmd->st_prompt);
 }
 
 static void	sigcont_handler(int signo)

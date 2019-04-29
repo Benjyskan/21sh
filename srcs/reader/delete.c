@@ -1,3 +1,4 @@
+#include "reader.h"
 /*
 **	Moves every character in the string `shift_no' bytes to the left
 */
@@ -33,7 +34,19 @@ void		delete_left(t_st_cmd *st_cmd)
 	st_txt->tracker--;
 	st_txt->data_size -= 1;
 	reposition_cursor(st_cmd);
+	execute_str(ERASE_ENDLINE); // need to erase more probably... ?
+	shift_chars(&st_txt->txt[st_txt->tracker], 1);
+	write_line(st_cmd);
+}
+
+void		delete_right(t_st_cmd *st_cmd)
+{
+	t_st_txt	*st_txt;
+
+	st_txt = st_cmd->st_txt;
+	st_txt->data_size -= 1;
+	reposition_cursor(st_cmd);
 	execute_str(ERASE_ENDLINE);
 	shift_chars(&st_txt->txt[st_txt->tracker], 1);
-	ft_putstr_tty(&st_txt->txt[st_txt->tracker]); //shoud be special write function ?
+	write_line(st_cmd);
 }

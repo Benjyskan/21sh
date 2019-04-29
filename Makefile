@@ -3,7 +3,7 @@
 NAME	:=	21sh
 OPT		:=	
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra #-Werror
+CFLAGS	:=	-Wall -Wextra -Werror
 
 DEBUG_FLAG	:=	-g
 FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
@@ -64,12 +64,13 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 						redir_great.c redir_dgreat.c redir_less.c redir_dless.c \
 						check_token_type.c
 	READER_FILES	:=	arrows.c check_commands.c clean_exit.c prompt.c \
-						input_loop.c cursor_position.c input_utils.c cmd_struct.c
+						input_loop.c cursor_position.c input_utils.c \
+						cmd_struct.c delete.c
 	EXPANDS_FILES	:=	parse_expands.c parse_dollars.c parse_tildes.c \
 						parse_quotes.c 
 	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c switch_history.c
 	SIGNALS_FILES	:=	signals.c
-	L_E_FILES		:=	*.c #change
+	L_E_FILES		:=	st_cmd.c st_prompt.c st_txt.c writing.c
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
@@ -112,7 +113,7 @@ OBJS		:=	$(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 .PHONY: all fsa val rmh adh tag clean fclean re d norm test ask_libft \
 	
 
-all: ask_libs $(NAME) tags Makefile
+all: Makefile ask_libs $(NAME)
 
 ask_libs: ask_libft ask_libterm
 

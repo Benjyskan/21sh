@@ -97,6 +97,6 @@ char			*ft_itoa(int n);
 char			*ft_realloc(char *data, size_t current_data_size,
 		size_t *current_malloc_size, size_t append_size);
 void			ft_free_ntab(char **tabs);
-char			**ft_dup_ntab(char **tabs);
-int				ft_ntab_len(char **tabs);
+char			**ft_dup_ntab(const char **tabs);
+int				ft_ntab_len(const char **tabs);
 #endif

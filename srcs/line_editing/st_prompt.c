@@ -6,7 +6,7 @@
 **	parameter. If paramter is empty, duplicates the STD_PROMPT macro.
 */
 
-t_st_prompt	*init_st_prompt(char *prompt)
+t_st_prompt	*init_st_prompt(const char *prompt)
 {
 	t_st_prompt	*st_prompt;
 
@@ -19,6 +19,6 @@ t_st_prompt	*init_st_prompt(char *prompt)
 	}
 	else
 		st_prompt->prompt = ft_strdup(prompt);
-	st_prompt->prompt_size = ft_strlen(prompt);
+	st_prompt->size = ft_strlen(st_prompt->prompt);
 	return (st_prompt);
 }

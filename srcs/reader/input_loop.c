@@ -17,23 +17,22 @@ void	magic_print(char *buf)
 	execute_str(RESTORE_CURSOR);
 }
 
-void	write_buf(t_cmd_struct *cmd_struct, char *buf)
-{
-	size_t printable_len;
-	size_t diff_size;
+/*
+**	Appends some text at the end of the current st_txt
+*/
 
-	printable_len = ft_printable_len(buf);
-	diff_size = cmd_struct->append_txt - cmd_struct->txt;
-	cmd_struct->txt = ft_realloc(cmd_struct->txt,
-			cmd_struct->total_data_size,
-			&cmd_struct->total_malloc_size, printable_len + 1);
-	get_cmd_struct(&cmd_struct);
-	cmd_struct->append_txt = cmd_struct->txt + diff_size;
-	insert_str(cmd_struct, buf, printable_len);
-	ft_putstr_tty(&cmd_struct->append_txt[cmd_struct->tracker]);
-	cmd_struct->current_data_size += printable_len;
-	cmd_struct->total_data_size += printable_len;
-	cmd_struct->tracker += printable_len;
+void	append_txt(t_st_cmd *st_cmd, const char *buf)
+{
+	t_st_txt	*st_txt;
+	size_t		buf_len;
+
+	buf_len = ft_strlen(buf);
+	st_txt = st_cmd->st_txt;
+	st_txt->txt = ft_realloc(st_txt->txt, st_txt->data_size,
+			&st_txt->malloc_size, buf_len);
+	ft_strncat(&st_txt->txt[st_txt->data_size], buf, buf_len);
+	st_txt->data_size += buf_len;
+	write_line(st_cmd);
 }
 
 /*
@@ -47,17 +46,19 @@ int		input_loop(t_st_cmd *st_cmd)
 	int		ret;
 
 	ft_bzero(buf, BUF_SIZE + 1);
+	print_prompt(st_cmd->st_prompt);
+	retrieve_pos(&st_cmd->start_pos);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
 //		magic_print(buf);
 		buf[ret] = 0;
-		if (check_for_arrows(cmd_struct, buf) || check_for_signal(buf)
-			|| check_for_delete(cmd_struct, buf))
+		if (check_for_arrows(st_cmd, buf) || check_for_signal(buf)
+			|| check_for_delete(st_cmd, buf))
 			continue ;
 		else if (check_for_enter(buf))
 		{
 			ft_strncpy(buf, "\n", 1);
-			append_txt(buf);
+			append_txt(st_cmd, (const char*)buf);
 			break ;
 		}
 		else if (check_for_quit(buf))
@@ -65,8 +66,8 @@ int		input_loop(t_st_cmd *st_cmd)
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
 		else
-//			write(imd_struct, buf); need to rewrite write functions
-		reposition_cursor(cmd_struct);
+			append_txt(st_cmd, (const char*)buf);
+		reposition_cursor(st_cmd);
 	}
 	if (ret > 0)
 		return (1);

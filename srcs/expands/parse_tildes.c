@@ -13,12 +13,12 @@ static t_bool	is_valid_tilde(t_token *curr_token, t_token *prev_token)
 	return (0);
 }
 
-t_bool	replace_tilde(char **str, char **env)
+t_bool	replace_tilde(char **str, const char **env)
 {
 	char	*new_str;
 	char	*home_str;
 
-	if (!(home_str = get_envline_value("HOME", env)))
+	if (!(home_str = get_envline_value("HOME", (char **)env)))
 	{
 		ft_putendl("NO HOME VAR");//TODO
 		return (0);
@@ -32,7 +32,7 @@ t_bool	replace_tilde(char **str, char **env)
 	return (1);
 }
 
-t_bool	parse_tildes(t_token *token_head, char **env)
+t_bool	parse_tildes(t_token *token_head, const char **env)
 {
 	t_token *prev_token;
 	t_token *curr_token;

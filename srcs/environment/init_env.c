@@ -38,7 +38,7 @@ static char	**create_minienv(void)
 ** return a fresh minienv otherwise
 */
 
-char		**init_env(char **env)
+char		**init_env(const char **env)
 {
 	char	**new_env;
 

@@ -27,18 +27,18 @@ int		main(int argc, char **argv, char **env)
 	if (setup_terminal_settings() == -1)
 		return (EXIT_FAILURE);
 	signal_setup();
-	if (!(env_cpy = init_env(env)))
+	if (!(env_cpy = init_env((const char **)env)))
 		return (EXIT_FAILURE);
 	while (42)
 	{
-		st_cmd = init_st_cmd(env);
+		st_cmd = init_st_cmd((const char **)env);
 		if (!input_loop(st_cmd))
 			break ; // free env, free st_cmd
 		if (is_full_of_whitespaces(st_cmd->st_txt->txt) == 0)
 			handle_input(st_cmd, env_cpy);
 		//free st_cmd
 	}
-	write_to_history(st_cmd, env);
+	write_to_history(st_cmd, (const char **)env);
 	//free st_cmd
 	ft_free_ntab(env_cpy);
 	print_line();

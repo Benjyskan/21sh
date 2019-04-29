@@ -6,7 +6,7 @@
 **	parameter. If no parameter is passed, duplicates an empty string
 */
 
-t_st_txt	*init_st_txt(char *txt)
+t_st_txt	*init_st_txt(const char *txt)
 {
 	t_st_txt	*st_txt;
 
@@ -20,8 +20,7 @@ t_st_txt	*init_st_txt(char *txt)
 	else
 		if (!(st_txt->txt = ft_strdup(txt)))
 			ERROR_MEM;
-
-	st_txt->data_size = (size_t)ft_strlen(st_txt->txt);
+	st_txt->data_size = ft_strlen(st_txt->txt);
 	st_txt->malloc_size = st_txt->data_size + 1;
 	st_txt->tracker = st_txt->data_size;
 	return (st_txt);

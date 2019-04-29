@@ -13,7 +13,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-char	**ft_dup_ntab(char **tab)
+char	**ft_dup_ntab(const char **tab)
 {
 	char	**new_tab;
 	int		tab_len;

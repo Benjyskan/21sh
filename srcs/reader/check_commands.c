@@ -8,17 +8,17 @@
 int		check_for_arrows(t_st_cmd *st_cmd, const char *buf)
 {
 	if (ft_strncmp(buf, RIGHTARROW, ARROW_LEN + 1) == 0)
-		move_arrow_right(st_cmd->st_txt);
+		move_arrow_right(st_cmd);
 	else if (ft_strncmp(buf, LEFTARROW, ARROW_LEN + 1) == 0)
-		move_arrow_left(st_cmd->st_txt);
+		move_arrow_left(st_cmd);
 	else if (ft_strncmp(buf, UPARROW, ARROW_LEN + 1) == 0)
 		get_previous_history(st_cmd);
 	else if (ft_strncmp(buf, DOWNARROW, ARROW_LEN + 1) == 0)
 		get_next_history(st_cmd);
 	else if (ft_strncmp(buf, HOME, HOME_LEN + 1) == 0)
-		go_to_start(st_cmd->st_txt);
+		go_to_start(st_cmd);
 	else if (ft_strncmp(buf, END, END_LEN + 1) == 0)
-		go_to_end(st_cmd->st_txt);
+		go_to_end(st_cmd);
 	else
 		return (0);
 	reposition_cursor(st_cmd);
@@ -66,7 +66,7 @@ int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 {
 	if (ft_strncmp(buf, BACKSPACE, BACKSPACE_LEN + 1) == 0)
 	{
-		if (st_cmd->st_txt->tracker = 0)
+		if (st_cmd->st_txt->tracker == 0)
 			ft_putstr_tty(BELL);
 		else
 		{

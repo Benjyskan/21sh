@@ -5,11 +5,11 @@ read the file and fill the corresponding doubly history linked_list with txt and
 
 when pressing up arrow, get linked_list->prev
 if linked_list->prev == NULL -> BELL
-else, switch fill_cmd_struct with this line (function switch_cmd_struct)
+else, switch fill_st_cmd with this line (function switch_st_cmd)
 
 when pressing down arrow, same as up but with get linked_list->next
 
-each time we call handle_input, append the cmd_struct.
+each time we call handle_input, append the st_cmd.
 
 if  we get to HIST_SIZE + HIST_MAX, free the first HIST_MAX - HIST_SIZE nodes;
 on exit:
