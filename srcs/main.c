@@ -35,7 +35,7 @@ int		main(int argc, char **argv, char **env)
 	{
 		if (!input_loop(st_cmd))
 			break ; // free env, free st_cmd
-		if (is_full_of_whitespaces(st_cmd->st_txt->txt) == 0)
+		if (!is_full_of_whitespaces(st_cmd->st_txt->txt))
 			handle_input(st_cmd, env_cpy);
 		st_cmd = reset_st_cmd(st_cmd);
 		//free st_cmd

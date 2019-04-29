@@ -105,6 +105,8 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 		if (current_token->type != TK_EAT)
 			prev_token = current_token;
 	}
+	ft_printf("STR AFTER: {%s}", cmdline);
+	print_line();
 	if (is_logic_or_pipe(current_token)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{

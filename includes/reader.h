@@ -66,4 +66,5 @@ t_st_cmd	*get_st_cmd(t_st_cmd **new_struct);
 t_st_cmd	*init_st_cmd(const char **env);
 
 void			sigint_handler(int signo);
+char			*concatenate_txt(t_st_cmd *st_cmd);
 #endif

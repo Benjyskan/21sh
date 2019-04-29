@@ -46,6 +46,7 @@ t_st_cmd	*append_st_cmd(t_st_cmd *st_cmd, const char *txt, const char *prompt)
 		ERROR_MEM;
 	new->st_txt = init_st_txt((const char*)txt);
 	new->st_prompt = init_st_prompt(prompt);
+	new->window = st_cmd->window;
 	retrieve_pos(&new->start_pos);
 	init_relative_pos(new);
 	new->hist_lst = st_cmd->hist_lst;
@@ -55,17 +56,24 @@ t_st_cmd	*append_st_cmd(t_st_cmd *st_cmd, const char *txt, const char *prompt)
 	return (new);
 }
 
+/*
+**	Resets the st_cmd by creating a new one, and using the hist_lst form the
+**	previous one. Expects old_st_cmd to be the first of its list.
+*/
+
 t_st_cmd	*reset_st_cmd(t_st_cmd *old_st_cmd)
 {
 	t_st_cmd	*st_cmd;
 	
 	//free txt, free prompt;
+	if (!(st_cmd = (t_st_cmd*)malloc(sizeof(*st_cmd))))
+		ERROR_MEM;
 	st_cmd->st_txt = init_st_txt(NULL);
 	st_cmd->st_prompt = init_st_prompt(NULL);
 	retrieve_pos(&st_cmd->start_pos);
+	st_cmd->window = old_st_cmd->window;
 	init_relative_pos(st_cmd);
 	st_cmd->hist_lst = old_st_cmd->hist_lst;
-	old_st_cmd = old_st_cmd->prev;
 	//free old_st_cmd lst;
 	st_cmd->hist_lst = insert_right(st_cmd->hist_lst, "", 0);
 	st_cmd->next = NULL;
