@@ -24,20 +24,16 @@ void	magic_print(char *buf)
 void	append_txt(t_st_cmd *st_cmd, const char *buf)
 {
 	t_st_txt	*st_txt;
-	size_t		buf_len;
-	char		*tmp;
+	size_t		print_len;
 
-	buf_len = ft_strlen(buf);
 	st_txt = st_cmd->st_txt;
+	print_len = ft_printable_len(buf);
 	st_txt->txt = ft_realloc(st_txt->txt, st_txt->data_size,
-			&st_txt->malloc_size, buf_len);
-	if (!(tmp = ft_strdup(&st_txt->txt[st_txt->tracker])))
-		ERROR_MEM;
-	ft_strcpy(&st_txt->txt[st_txt->tracker + buf_len], tmp);
-	ft_strncpy(&st_txt->txt[st_txt->tracker], buf, buf_len);
-	st_txt->data_size += buf_len;
+			&st_txt->malloc_size, print_len);
+	insert_str(st_cmd, buf, print_len);
+	st_txt->data_size += print_len;
 	write_line(st_cmd);
-	st_txt->tracker += buf_len;
+	st_txt->tracker += print_len;
 	get_tracker_pos(st_cmd);
 }
 
