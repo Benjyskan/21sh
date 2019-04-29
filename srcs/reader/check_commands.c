@@ -77,7 +77,7 @@ int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 	}
 	else if (ft_strncmp(buf, DEL, DEL_LEN + 1) == 0)
 	{
-		if ((st_cmd->st_txt->tracker > st_cmd->st_txt->data_size - 1) == 0)
+		if (st_cmd->st_txt->tracker >= st_cmd->st_txt->data_size)
 			ft_putstr_tty(BELL);
 		else
 		{

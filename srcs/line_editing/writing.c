@@ -35,31 +35,33 @@ void	move_down(t_st_cmd *st_cmd)
 void	write_line(t_st_cmd *st_cmd)
 {
 	t_st_txt	*st_txt;
+	t_pos		tmp_pos;
 	size_t		i;
 
 	st_txt = st_cmd->st_txt;
 	i = 0;
+	tmp_pos = st_cmd->relative_pos;
 	while ((st_txt->tracker + i) < st_txt->data_size && st_txt->txt[st_txt->tracker + i] != '\n')
 	{
 		write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
 		i++;
-		if (st_cmd->relative_pos.col == st_cmd->window.ws_col)
+		if (tmp_pos.col == st_cmd->window.ws_col)
 		{
 			move_down(st_cmd); // TODO
-			st_cmd->relative_pos.col = 1;
-			st_cmd->relative_pos.row++;
+			tmp_pos.col = 1;
+			tmp_pos.row++;
 		}
 		else
-			st_cmd->relative_pos.col++;
-//		move_cursor(st_cmd->start_pos.col + st_cmd->relative_pos.col,
-//				st_cmd->start_pos.row + st_cmd->relative_pos.row); // reposiiton
+			tmp_pos.col++;
+//		move_cursor(st_cmd->start_pos.col + tmp_pos.col,
+//				st_cmd->start_pos.row + tmp_pos.row); // reposiiton
 	}
 	if (st_txt->txt[st_txt->tracker + i] == '\n')
 	{
 		i++;
 		move_down(st_cmd);
-		st_cmd->relative_pos.col = 1;
-		st_cmd->relative_pos.row++;
+		tmp_pos.col = 1;
+		tmp_pos.row++;
 	}
 	//	write until \n
 	//	if end screen  -> evaluate if scroll

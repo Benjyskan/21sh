@@ -39,7 +39,6 @@ void		delete_left(t_st_cmd *st_cmd)
 	execute_str(ERASE_ENDLINE); // need to erase more probably... ?
 	shift_chars_left(&st_txt->txt[st_txt->tracker], 1);
 	write_line(st_cmd); // should be write everything
-	get_tracker_pos(st_cmd);
 }
 
 /*
@@ -53,8 +52,9 @@ void		delete_right(t_st_cmd *st_cmd)
 
 	st_txt = st_cmd->st_txt;
 	st_txt->data_size -= 1;
-	reposition_cursor(st_cmd);
+	get_tracker_pos(st_cmd);
 	execute_str(ERASE_ENDLINE);
 	shift_chars_left(&st_txt->txt[st_txt->tracker], 1);
 	write_line(st_cmd);
+	get_tracker_pos(st_cmd);
 }
