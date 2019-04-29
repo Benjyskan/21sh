@@ -12,7 +12,7 @@ void	get_tracker_pos(t_st_cmd *st_cmd)
 		if (st_cmd->st_txt->txt[i] == '\n'
 			|| st_cmd->relative_pos.col == st_cmd->window.ws_col)
 		{
-			st_cmd->relative_pos.col = 0;
+			st_cmd->relative_pos.col = 1;
 			st_cmd->relative_pos.row++;
 		}
 		else

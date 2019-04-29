@@ -2,7 +2,7 @@
 #include "reader.h"
 #include "history.h"
 
-void		update_pos(t_st_cmd *st_cmd) // might be useless
+void		update_start_pos(t_st_cmd *st_cmd) // might be useless
 {
 	while (st_cmd)
 	{

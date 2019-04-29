@@ -47,7 +47,7 @@ t_st_cmd	*append_st_cmd(t_st_cmd *st_cmd, const char *txt, const char *prompt)
 	new->st_txt = init_st_txt((const char*)txt);
 	new->st_prompt = init_st_prompt(prompt);
 	retrieve_pos(&new->start_pos);
-	init_relative_pos(st_cmd);
+	init_relative_pos(new);
 	new->hist_lst = st_cmd->hist_lst;
 	st_cmd->next = new;
 	new->prev = st_cmd;

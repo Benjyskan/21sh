@@ -18,21 +18,27 @@ void	magic_print(char *buf)
 }
 
 /*
-**	Appends some text at the end of the current st_txt
+**	Inserts some text in the current st_cmd
 */
 
 void	append_txt(t_st_cmd *st_cmd, const char *buf)
 {
 	t_st_txt	*st_txt;
 	size_t		buf_len;
+	char		*tmp;
 
 	buf_len = ft_strlen(buf);
 	st_txt = st_cmd->st_txt;
 	st_txt->txt = ft_realloc(st_txt->txt, st_txt->data_size,
 			&st_txt->malloc_size, buf_len);
-	ft_strncat(&st_txt->txt[st_txt->data_size], buf, buf_len);
+	if (!(tmp = ft_strdup(&st_txt->txt[st_txt->tracker])))
+		ERROR_MEM;
+	ft_strcpy(&st_txt->txt[st_txt->tracker + buf_len], tmp);
+	ft_strncpy(&st_txt->txt[st_txt->tracker], buf, buf_len);
 	st_txt->data_size += buf_len;
 	write_line(st_cmd);
+	st_txt->tracker += buf_len;
+	get_tracker_pos(st_cmd);
 }
 
 /*

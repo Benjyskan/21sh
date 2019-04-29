@@ -22,7 +22,7 @@ void	go_back_to_start(t_st_cmd *st_cmd)
 void	move_down(t_st_cmd *st_cmd)
 {
 	if (st_cmd->start_pos.row + st_cmd->relative_pos.row == st_cmd->window.ws_row)
-		update_pos(st_cmd);
+		update_start_pos(st_cmd);
 	return ;
 }
 
@@ -35,16 +35,18 @@ void	move_down(t_st_cmd *st_cmd)
 void	write_line(t_st_cmd *st_cmd)
 {
 	t_st_txt	*st_txt;
+	size_t		i;
 
 	st_txt = st_cmd->st_txt;
-	while (st_txt->tracker < st_txt->data_size && st_txt->txt[st_txt->tracker] != '\n')
+	i = 0;
+	while ((st_txt->tracker + i) < st_txt->data_size && st_txt->txt[st_txt->tracker + i] != '\n')
 	{
-		write(g_dev_tty, &st_txt->txt[st_txt->tracker], 1);
-		st_txt->tracker++;
+		write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
+		i++;
 		if (st_cmd->relative_pos.col == st_cmd->window.ws_col)
 		{
 			move_down(st_cmd); // TODO
-			st_cmd->relative_pos.col = 0;
+			st_cmd->relative_pos.col = 1;
 			st_cmd->relative_pos.row++;
 		}
 		else
@@ -52,11 +54,11 @@ void	write_line(t_st_cmd *st_cmd)
 //		move_cursor(st_cmd->start_pos.col + st_cmd->relative_pos.col,
 //				st_cmd->start_pos.row + st_cmd->relative_pos.row); // reposiiton
 	}
-	if (st_txt->txt[st_txt->tracker] == '\n')
+	if (st_txt->txt[st_txt->tracker + i] == '\n')
 	{
-		st_txt->tracker++;
+		i++;
 		move_down(st_cmd);
-		st_cmd->relative_pos.col = 0;
+		st_cmd->relative_pos.col = 1;
 		st_cmd->relative_pos.row++;
 	}
 	//	write until \n
