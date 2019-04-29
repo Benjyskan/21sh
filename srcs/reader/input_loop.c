@@ -46,8 +46,8 @@ int		input_loop(t_st_cmd *st_cmd)
 	int		ret;
 
 	ft_bzero(buf, BUF_SIZE + 1);
-	print_prompt(st_cmd->st_prompt);
 	retrieve_pos(&st_cmd->start_pos);
+	print_prompt(st_cmd->st_prompt);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
 //		magic_print(buf);

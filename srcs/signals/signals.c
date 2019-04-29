@@ -23,13 +23,15 @@ void	sigint_handler(int signo)
 
 	(void)signo;
 	st_cmd = get_st_cmd(NULL); //only modifies local copy ?
+	go_to_end(st_cmd);
+	reposition_cursor(st_cmd);
 	print_line();
 	retrieve_pos(&st_cmd->start_pos);
-	st_cmd->relative_pos.col = 0;
-	st_cmd->relative_pos.row = 0;
+	init_relative_pos(st_cmd);
 //	free(st_cmd->st_txt);
 	st_cmd->st_txt = init_st_txt(NULL);
 	//execute_str(CLEAR_BELOW); not clear below but go to end of str and clear below
+	//
 	print_prompt(st_cmd->st_prompt);
 }
 

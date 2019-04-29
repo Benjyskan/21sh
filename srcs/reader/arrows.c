@@ -6,12 +6,11 @@ void	get_tracker_pos(t_st_cmd *st_cmd)
 	size_t i;
 
 	i = 0;
-	st_cmd->relative_pos.col = 0;
-	st_cmd->relative_pos.row = 0;
+	init_relative_pos(st_cmd);
 	while (i < st_cmd->st_txt->tracker)
 	{
 		if (st_cmd->st_txt->txt[i] == '\n'
-			|| ((st_cmd->st_prompt->size % st_cmd->window.ws_col) + st_cmd->relative_pos.col) == st_cmd->window.ws_col)
+			|| st_cmd->relative_pos.col == st_cmd->window.ws_col)
 		{
 			st_cmd->relative_pos.col = 0;
 			st_cmd->relative_pos.row++;
@@ -22,7 +21,7 @@ void	get_tracker_pos(t_st_cmd *st_cmd)
 	}
 	execute_str(SAVE_CURSOR);
 	move_cursor(1, 1);
-	ft_printf("Total: %d", st_cmd->st_prompt->size % st_cmd->window.ws_col + st_cmd->relative_pos.col);
+	ft_printf("Total: %d", st_cmd->relative_pos.col);
 	ft_printf("res: %d", st_cmd->window.ws_col);
 	execute_str(RESTORE_CURSOR);
 }
@@ -57,9 +56,7 @@ void	move_arrow_left(t_st_cmd *st_cmd)
 
 void	go_to_start(t_st_cmd *st_cmd)
 {
-	st_cmd->relative_pos.col = 0;
-	st_cmd->relative_pos.row = 0; // what happens when prompt bigger than cols
-	st_cmd->relative_pos.col += st_cmd->st_prompt->size % st_cmd->window.ws_col;
+	init_relative_pos(st_cmd);
 	st_cmd->st_txt->tracker = 0;
 }
 
