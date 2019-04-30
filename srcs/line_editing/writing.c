@@ -38,32 +38,25 @@ void	move_down(t_st_cmd *st_cmd)
 int		write_line(t_st_cmd *st_cmd)
 {
 	t_st_txt	*st_txt;
-	t_pos		tmp_pos;
+	t_pos		tmp_pos; //legacy ?
 	size_t		i;
 
 	st_txt = st_cmd->st_txt;
 	i = 0;
 	tmp_pos = st_cmd->relative_pos;
-	execute_str(SAVE_CURSOR);
-	move_cursor(1, 1);
-	ft_printf("col: %d, window: %d", tmp_pos.col, st_cmd->window.ws_col);
-	print_line();
-	execute_str(RESTORE_CURSOR);
 	while ((st_txt->tracker + i) < st_txt->data_size && st_txt->txt[st_txt->tracker + i] != '\n')
 	{
 		write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
 		i++;
-		if (tmp_pos.col == st_cmd->window.ws_col - 1)
+		get_pos(st_cmd, st_cmd->st_txt->data_size - 1);
+		if (st_cmd->relative_pos.col == st_cmd->window.ws_col - 1)
 		{
 			move_down(st_cmd); // TODO
-			tmp_pos.col = 1;
-			tmp_pos.row++;
+			get_pos(st_cmd, st_txt->tracker + i);
+			reposition_cursor(st_cmd);
 		}
-		else
-			tmp_pos.col++;
-//		move_cursor(st_cmd->start_pos.col + tmp_pos.col,
-//				st_cmd->start_pos.row + tmp_pos.row); // reposiiton
 	}
+	get_pos(st_cmd, st_cmd->st_txt->tracker);
 	if (st_txt->txt[st_txt->tracker + i] == '\n' && st_txt->txt[st_txt->tracker + i + 1])
 	{
 		i++;
@@ -91,7 +84,7 @@ void		write_st_cmd(t_st_cmd *st_cmd)
 	while ((step = write_line(st_cmd)))
 	{
 		st_cmd->st_txt->tracker += step;
-		get_tracker_pos(st_cmd);
+		get_pos(st_cmd, st_cmd->st_txt->tracker);
 		reposition_cursor(st_cmd);
 	}
 }

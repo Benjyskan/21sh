@@ -29,7 +29,7 @@ static void	switch_st_cmd(t_st_cmd *st_cmd, char *newcmd)
 	st_cmd->st_txt = init_st_txt(trunc_newcmd);
 	write_st_cmd(st_cmd);
 	st_cmd->st_txt->tracker = st_cmd->st_txt->data_size;;
-	get_tracker_pos(st_cmd);
+	get_pos(st_cmd, st_cmd->st_txt->tracker);
 	ft_memdel((void*)&trunc_newcmd);
 }
 

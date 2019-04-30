@@ -8,7 +8,7 @@ void		update_start_pos(t_st_cmd *st_cmd) // might be useless
 	while (st_cmd)
 	{
 		st_cmd->start_pos.row--;
-		st_cmd = st_cmd->prev;
+		st_cmd = st_cmd->next;
 	}
 }
 

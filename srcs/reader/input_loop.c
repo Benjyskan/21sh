@@ -36,7 +36,7 @@ void	insert_txt(t_st_cmd *st_cmd, const char *buf)
 	tmp = st_txt->tracker + print_len;
 	write_st_cmd(st_cmd);
 	st_txt->tracker = tmp;
-	get_tracker_pos(st_cmd);
+	get_pos(st_cmd, st_cmd->st_txt->tracker);
 }
 
 /*
