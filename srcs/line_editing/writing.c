@@ -1,9 +1,9 @@
 #include "line_editing.h"
 
 /*
-**	Function that moves the cursor to the start of the first st_cmd, without
-**	using start_pos (useful when window size changes)
-*/
+ **	Function that moves the cursor to the start of the first st_cmd, without
+ **	using start_pos (useful when window size changes)
+ */
 
 void	go_back_to_start(t_st_cmd *st_cmd)
 {
@@ -15,6 +15,32 @@ void	go_back_to_start(t_st_cmd *st_cmd)
 }
 
 /*
+**	Function that writes everything without needing checking for scroll
+*/
+
+void	write_no_scroll(t_st_cmd *st_cmd)
+{
+	size_t		i;
+	t_st_txt	*st_txt;
+
+	i = 0;
+	st_txt = st_cmd->st_txt;
+	while (st_cmd)
+	{
+		reposition_cursor(st_cmd);
+		while (i < st_txt->data_size)
+		{
+			if (st_txt->txt[i] == '\n')
+				;
+			else
+				write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
+			i++;
+		}
+		st_cmd = st_cmd->next;
+	}
+}
+
+/*
 **	Function that scrolls down if need be and write the
 **	remainder of the line.
 */
@@ -23,6 +49,7 @@ void	move_down(t_st_cmd *st_cmd)
 {
 	if (st_cmd->start_pos.row + st_cmd->relative_pos.row == st_cmd->window.ws_row)
 	{
+		move_cursor(st_cmd->window.ws_col, st_cmd->window.ws_row);
 		execute_str(SCROLL_DOWN);
 		update_start_pos(st_cmd);
 	}
@@ -30,10 +57,10 @@ void	move_down(t_st_cmd *st_cmd)
 }
 
 /*
-**	Function that writes the current line, starting at tracker. If a new line
-**	is printed, moves down and prints every line and st_cmd following the
-**	current line.
-*/
+ **	Function that writes the current line, starting at tracker. If a new line
+ **	is printed, moves down and prints every line and st_cmd following the
+ **	current line.
+ */
 
 int		write_line(t_st_cmd *st_cmd)
 {
@@ -73,9 +100,9 @@ int		write_line(t_st_cmd *st_cmd)
 }
 
 /*
-**	Function that writes every line in the st_cmd, starting form
-**	tracker
-*/
+ **	Function that writes every line in the st_cmd, starting form
+ **	tracker
+ */
 
 void		write_st_cmd(t_st_cmd *st_cmd)
 {
