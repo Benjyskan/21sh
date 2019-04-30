@@ -56,7 +56,7 @@ int		write_line(t_st_cmd *st_cmd)
 //		move_cursor(st_cmd->start_pos.col + tmp_pos.col,
 //				st_cmd->start_pos.row + tmp_pos.row); // reposiiton
 	}
-	if (st_txt->txt[st_txt->tracker + i] == '\n')
+	if (st_txt->txt[st_txt->tracker + i] == '\n' && st_txt->txt[st_txt->tracker + i + 1])
 	{
 		i++;
 		move_down(st_cmd);
@@ -72,7 +72,8 @@ int		write_line(t_st_cmd *st_cmd)
 }
 
 /*
-**	Function that writes every line in the st_cmd
+**	Function that writes every line in the st_cmd, starting form
+**	tracker
 */
 
 void		write_st_cmd(t_st_cmd *st_cmd)

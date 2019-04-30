@@ -30,7 +30,7 @@ char	*ft_strdup_print(const char *s1)
 	len = 0;
 	while (s1[i])
 	{
-		if (ft_isprint(s1[i]))
+		if (ft_isprint(s1[i]) || s1[i] == '\n')
 		{
 			res[len] = s1[i];
 			len++;

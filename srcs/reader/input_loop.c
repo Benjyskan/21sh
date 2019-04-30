@@ -21,10 +21,11 @@ void	magic_print(char *buf)
 **	Inserts some text in the current st_cmd
 */
 
-void	append_txt(t_st_cmd *st_cmd, const char *buf)
+void	insert_txt(t_st_cmd *st_cmd, const char *buf)
 {
 	t_st_txt	*st_txt;
 	size_t		print_len;
+	size_t		tmp;
 
 	st_txt = st_cmd->st_txt;
 	print_len = ft_printable_len(buf);
@@ -32,8 +33,9 @@ void	append_txt(t_st_cmd *st_cmd, const char *buf)
 			&st_txt->malloc_size, print_len);
 	insert_str(st_cmd, buf, print_len);
 	st_txt->data_size += print_len;
-	write_line(st_cmd);
-	st_txt->tracker += print_len;
+	tmp = st_txt->tracker + print_len;
+	write_st_cmd(st_cmd);
+	st_txt->tracker = tmp;
 	get_tracker_pos(st_cmd);
 }
 
@@ -52,7 +54,7 @@ int		input_loop(t_st_cmd *st_cmd)
 	print_prompt(st_cmd->st_prompt);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
-//		magic_print(buf);
+	//		magic_print(buf);
 		buf[ret] = 0;
 		if (check_for_arrows(st_cmd, buf) || check_for_signal(buf)
 			|| check_for_delete(st_cmd, buf))
@@ -60,7 +62,8 @@ int		input_loop(t_st_cmd *st_cmd)
 		else if (check_for_enter(buf))
 		{
 			ft_strncpy(buf, "\n", 1);
-			append_txt(st_cmd, (const char*)buf);
+			st_cmd->st_txt->tracker = st_cmd->st_txt->data_size;
+			insert_txt(st_cmd, (const char*)buf);
 			print_line();
 			break ;
 		}
@@ -69,7 +72,7 @@ int		input_loop(t_st_cmd *st_cmd)
 		else if (buf[0] < 0 || buf[0] == '\x1b') // checks for unicode and ANSI
 			continue ;
 		else
-			append_txt(st_cmd, (const char*)buf);
+			insert_txt(st_cmd, (const char*)buf);
 		reposition_cursor(st_cmd);
 	}
 	if (ret > 0)
