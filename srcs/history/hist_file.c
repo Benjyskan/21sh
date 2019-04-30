@@ -37,8 +37,6 @@ t_hist_lst	*get_history(const char **env)
 	hist_lst = NULL;
 	while ((get_next_line(fd, &line) > 0) && (ft_strlen(line) > 7))
 	{
-		ft_printf("---- NEWLINE: %s", &line[6]);
-		print_line();
 		append_with_newline = ft_strjoin(&line[6], "\n");
 		hist_lst = insert_right(hist_lst, append_with_newline, 1);
 		ft_memdel((void*)&append_with_newline);
