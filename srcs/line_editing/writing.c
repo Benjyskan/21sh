@@ -22,7 +22,10 @@ void	go_back_to_start(t_st_cmd *st_cmd)
 void	move_down(t_st_cmd *st_cmd)
 {
 	if (st_cmd->start_pos.row + st_cmd->relative_pos.row == st_cmd->window.ws_row)
+	{
+		execute_str(SCROLL_DOWN);
 		update_start_pos(st_cmd);
+	}
 	return ;
 }
 
@@ -41,11 +44,16 @@ int		write_line(t_st_cmd *st_cmd)
 	st_txt = st_cmd->st_txt;
 	i = 0;
 	tmp_pos = st_cmd->relative_pos;
+	execute_str(SAVE_CURSOR);
+	move_cursor(1, 1);
+	ft_printf("col: %d, window: %d", tmp_pos.col, st_cmd->window.ws_col);
+	print_line();
+	execute_str(RESTORE_CURSOR);
 	while ((st_txt->tracker + i) < st_txt->data_size && st_txt->txt[st_txt->tracker + i] != '\n')
 	{
 		write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
 		i++;
-		if (tmp_pos.col == st_cmd->window.ws_col)
+		if (tmp_pos.col == st_cmd->window.ws_col - 1)
 		{
 			move_down(st_cmd); // TODO
 			tmp_pos.col = 1;

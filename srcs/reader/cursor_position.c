@@ -4,6 +4,7 @@
 
 void		update_start_pos(t_st_cmd *st_cmd) // might be useless
 {
+	st_cmd = get_first_st_cmd(st_cmd);
 	while (st_cmd)
 	{
 		st_cmd->start_pos.row--;
