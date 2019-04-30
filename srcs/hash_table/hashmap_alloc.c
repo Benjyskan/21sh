@@ -23,6 +23,7 @@ t_hash_item	*create_new_item(const char *key, const char *value)
 		ft_memdel((void*)&new_item);
 		return (NULL);//ERROR_MEM;
 	}
+	new_item->count = 0;
 	new_item->next = NULL;
 	return (new_item);
 }
@@ -47,7 +48,7 @@ t_hashmap	*init_hashmap(size_t size)
 		return (NULL);//ERROR_MEM;
 	}
 	new_table->size = size;
-	new_table->count = 0;
+	//new_table->count = 0;
 	i = -1;
 	while (++i < (int)new_table->size)
 		new_table->items[i] = NULL;
@@ -67,16 +68,16 @@ t_hashmap	*resize_up_hashmap(t_hashmap *old_map)
 	size_t		new_size;
 	t_hashmap	*new_map;
 
-	ft_printf("********************************\n");
-	print_hashmap(old_map);
+	//ft_printf("********************************\n");
+	//print_hashmap(old_map);
 	new_size = (size_t)find_next_prime(old_map->size);
 	if (!(new_map = init_hashmap(new_size)))
 		return (NULL);//ERROR_MEM;
 	cpy_hashmap(old_map, &new_map);
 	delete_hashmap(old_map);
 	ft_printf("RESISING UP END\n");
-	print_hashmap(new_map);
-	ft_printf("********************************\n");
+	//print_hashmap(new_map);
+	//ft_printf("********************************\n");
 	return (new_map);
 }
 
@@ -110,10 +111,10 @@ void		cpy_hashmap(t_hashmap *old_map, t_hashmap **new_map)
 	i = -1;
 	while ((++i < old_map->size) && (item_probe = old_map->items[i]))
 	{
-		ft_printf("cpy trigger on: %d\t", i);
+		//ft_printf("cpy trigger on: %d\t", i);
 		while (item_probe)
 		{
-			ft_printf("in cpy_hashmap: %d\t{%s}\n", i, item_probe->key);
+			//ft_printf("in cpy_hashmap: %d\t{%s}\n", i, item_probe->key);
 			prev_probe = item_probe;
 			item_probe = item_probe->next;
 			add_to_hashmap(prev_probe->key, prev_probe->value, new_map);

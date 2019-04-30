@@ -13,21 +13,33 @@ typedef struct	s_hash_item
 {
 	char				*key;
 	char				*value;
+	size_t				count;
 	struct s_hash_item	*next;
 }				t_hash_item;
 
 typedef struct	s_hashmap
 {
 	size_t		size;
-	size_t		count;
 	t_hash_item	**items;
 
 }				t_hashmap;
 
+/*
+** t_hashopt
+** give check_hashmap() intructions for modifying the count
+*/
+
+typedef enum	e_hashopt
+{
+	HASH_CHECK,
+	HASH_EXEC,
+	HASH_RESET
+}				t_hashopt;
+
 void			delete_hashmap(t_hashmap *hashmap);
 t_bool			add_to_hashmap(char *key, char *value, t_hashmap **hashmap);
 unsigned int	hashfun(const char *input);
-const char		*check_hashmap(const char *key, t_hashmap *hashmap);
+const char		*check_hashmap(const char *key, t_hashmap *hashmap, t_hashopt opt);
 //unsigned int	get_hashmap_index(const char *key, t_hashmap *hashmap);
 void			print_hashmap(t_hashmap *hashmap);
 
@@ -46,6 +58,8 @@ void			cpy_hashmap(t_hashmap *old_map, t_hashmap **new_map);
 static void		delete_hashmap_item(t_hash_item *item);
 void			delete_hashmap(t_hashmap *hashmap);
 void			replace_item(t_hash_item *item, const char *value);
+t_bool			pop_hashmap_item(const char *key, t_hashmap *hashmap);
+t_bool			reset_hashmap(t_hashmap **hashmap);
 
 /*
 ** prime.c
