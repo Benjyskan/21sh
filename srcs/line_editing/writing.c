@@ -40,6 +40,10 @@ void	write_no_scroll(t_st_cmd *st_cmd)
 	}
 }
 
+void	go_to_newline(st_cmd)
+{
+}
+
 /*
 **	Function that scrolls down if need be and write the
 **	remainder of the line.
@@ -47,7 +51,9 @@ void	write_no_scroll(t_st_cmd *st_cmd)
 
 void	move_down(t_st_cmd *st_cmd)
 {
-	if (st_cmd->start_pos.row + st_cmd->relative_pos.row == st_cmd->window.ws_row)
+/*	ft_printf("S: %d, R: %d, W: %d", st_cmd->start_pos.row, st_cmd->relative_pos.row, st_cmd->window.ws_row);
+	sleep(3);*/
+	if (st_cmd->start_pos.row + st_cmd->relative_pos.row >= st_cmd->window.ws_row)
 	{
 		move_cursor(st_cmd->window.ws_col, st_cmd->window.ws_row);
 		execute_str(SCROLL_DOWN);
@@ -76,11 +82,13 @@ int		write_line(t_st_cmd *st_cmd)
 		write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
 		i++;
 		get_pos(st_cmd, st_cmd->st_txt->data_size - 1);
-		if (st_cmd->relative_pos.col == st_cmd->window.ws_col - 1)
+		if ((st_cmd->start_pos.row + st_cmd->relative_pos.row) > st_cmd->window.ws_row
+				|| st_cmd->relative_pos.col == st_cmd->window.ws_col - 1)
 		{
 			move_down(st_cmd); // TODO
 			get_pos(st_cmd, st_txt->tracker + i);
 			reposition_cursor(st_cmd);
+			execute_str(CLEAR_BELOW);
 		}
 	}
 	get_pos(st_cmd, st_cmd->st_txt->tracker);
@@ -92,6 +100,7 @@ int		write_line(t_st_cmd *st_cmd)
 		tmp_pos.row++;
 		return (i);
 	}
+	execute_str(ERASE_ENDLINE);
 	return (0);
 	//	write until \n
 	//	if end screen  -> evaluate if scroll

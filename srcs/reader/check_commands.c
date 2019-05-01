@@ -21,7 +21,6 @@ int		check_for_arrows(t_st_cmd *st_cmd, const char *buf)
 		go_to_end(st_cmd);
 	else
 		return (0);
-	reposition_cursor(st_cmd);
 	return (1);
 }
 
@@ -69,10 +68,7 @@ int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 		if (st_cmd->st_txt->tracker == 0)
 			ft_putstr_tty(BELL);
 		else
-		{
 			delete_left(st_cmd);
-			reposition_cursor(st_cmd);
-		}
 		return (1);
 	}
 	else if (ft_strncmp(buf, DEL, DEL_LEN + 1) == 0)
@@ -80,10 +76,7 @@ int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 		if (st_cmd->st_txt->tracker >= st_cmd->st_txt->data_size)
 			ft_putstr_tty(BELL);
 		else
-		{
 			delete_right(st_cmd);
-			reposition_cursor(st_cmd);
-		}
 		return (1);
 	}
 	else

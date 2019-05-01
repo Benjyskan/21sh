@@ -58,7 +58,7 @@ int		input_loop(t_st_cmd *st_cmd)
 		buf[ret] = 0;
 		if (check_for_arrows(st_cmd, buf) || check_for_signal(buf)
 			|| check_for_delete(st_cmd, buf))
-			continue ;
+			;
 		else if (check_for_enter(buf))
 		{
 			ft_strncpy(buf, "\n", 1);
