@@ -7,41 +7,43 @@
 
 void	go_back_to_start(t_st_cmd *st_cmd)
 {
-	update_window_struct(&st_cmd->window);
+	int		row;
+
+	while (st_cmd)
+	{
+		get_pos(st_cmd, st_cmd->st_txt->data_size);
+		row = st_cmd->relative_pos.row;
+		get_pos(st_cmd, st_cmd->st_txt->tracker);
+		while (row)
+		{
+			execute_str(MOVE_UP);
+			row--;
+		}
+		execute_str(BEGIN_LINE);
+		st_cmd = st_cmd->prev;
+	}
 	// get number of lines associated with txt (counting \n)
 	// move up this number of lines
 	// do this with previous st_cmds.
 	// go to first column
 }
 
-/*
-**	Function that writes everything without needing checking for scroll
-*/
-
-void	write_no_scroll(t_st_cmd *st_cmd)
+void	write_from_start(t_st_cmd *st_cmd)
 {
-	size_t		i;
-	t_st_txt	*st_txt;
+	size_t tmp;
 
-	i = 0;
-	st_txt = st_cmd->st_txt;
 	while (st_cmd)
 	{
-		reposition_cursor(st_cmd);
-		while (i < st_txt->data_size)
-		{
-			if (st_txt->txt[i] == '\n')
-				;
-			else
-				write(g_dev_tty, &st_txt->txt[st_txt->tracker + i], 1);
-			i++;
-		}
+		execute_str(CLEAR_BELOW);
+		retrieve_pos(&st_cmd->start_pos);
+		tmp = st_cmd->st_txt->tracker;
+		st_cmd->st_txt->tracker = 0;
+		init_relative_pos(st_cmd);
+		print_prompt(st_cmd->st_prompt);
+		write_st_cmd(st_cmd);
+		st_cmd->st_txt->tracker = tmp;
 		st_cmd = st_cmd->next;
 	}
-}
-
-void	go_to_newline(st_cmd)
-{
 }
 
 /*

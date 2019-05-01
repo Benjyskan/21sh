@@ -57,14 +57,16 @@ static void	sigcont_handler(int signo)
 
 static void	sigwinch_handler(int signo)
 {
-	//t_print_info	*info;
-	//t_arg_list		*lst;
+	t_st_cmd	*st_cmd;
 
-	signal(SIGWINCH, SIG_DFL);
-	//info = info_addr(NULL);
-	//lst = lst_addr(NULL);
-	//get_print_info(lst, info);
-	//print_list(lst, info);
+//	signal(SIGWINCH, SIG_IGN);
+	st_cmd = get_st_cmd(NULL);
+	update_window_struct(&st_cmd->window);
+	go_back_to_start(st_cmd);
+	st_cmd = get_first_st_cmd(st_cmd);
+	write_from_start(st_cmd);
+	get_pos(st_cmd, st_cmd->st_txt->tracker);
+	reposition_cursor(st_cmd);
 	(void)signo;
 	signal(SIGWINCH, sigwinch_handler);
 }
