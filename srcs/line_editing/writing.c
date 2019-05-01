@@ -1,6 +1,23 @@
 #include "line_editing.h"
 
 /*
+**	Function that scrolls down if need be and write the
+**	remainder of the line.
+*/
+
+int		move_down(t_st_cmd *st_cmd)
+{
+	if (st_cmd->start_pos.row + st_cmd->relative_pos.row >= st_cmd->window.ws_row)
+	{
+		move_cursor(st_cmd->window.ws_col, st_cmd->window.ws_row);
+		execute_str(SCROLL_DOWN);
+		update_start_pos(st_cmd);
+		return (1);
+	}
+	return (0);
+}
+
+/*
  **	Function that moves the cursor to the start of the first st_cmd, without
  **	using start_pos (useful when window size changes)
  */
@@ -22,10 +39,6 @@ void	go_back_to_start(t_st_cmd *st_cmd)
 		execute_str(BEGIN_LINE);
 		st_cmd = st_cmd->prev;
 	}
-	// get number of lines associated with txt (counting \n)
-	// move up this number of lines
-	// do this with previous st_cmds.
-	// go to first column
 }
 
 void	write_from_start(t_st_cmd *st_cmd)
@@ -42,26 +55,13 @@ void	write_from_start(t_st_cmd *st_cmd)
 		print_prompt(st_cmd->st_prompt);
 		write_st_cmd(st_cmd);
 		st_cmd->st_txt->tracker = tmp;
-		st_cmd = st_cmd->next;
+		if ((st_cmd = st_cmd->next))
+		{
+			get_pos(st_cmd, st_cmd->st_txt->data_size);
+			move_down(st_cmd);
+			print_line();
+		}
 	}
-}
-
-/*
-**	Function that scrolls down if need be and write the
-**	remainder of the line.
-*/
-
-void	move_down(t_st_cmd *st_cmd)
-{
-/*	ft_printf("S: %d, R: %d, W: %d", st_cmd->start_pos.row, st_cmd->relative_pos.row, st_cmd->window.ws_row);
-	sleep(3);*/
-	if (st_cmd->start_pos.row + st_cmd->relative_pos.row >= st_cmd->window.ws_row)
-	{
-		move_cursor(st_cmd->window.ws_col, st_cmd->window.ws_row);
-		execute_str(SCROLL_DOWN);
-		update_start_pos(st_cmd);
-	}
-	return ;
 }
 
 /*
