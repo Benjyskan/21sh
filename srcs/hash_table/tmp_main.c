@@ -1,6 +1,6 @@
 #include "hashmap.h"
 
-int		main(void)
+int		main(int argc, char **argv, char **env)
 {
 	t_hashmap	*hashmap;
 
@@ -29,6 +29,10 @@ int		main(void)
 	add_to_hashmap("17", "/bin/bonjour",&hashmap);
 	add_to_hashmap("18", "/bin/bonjour",&hashmap);
 	add_to_hashmap("19", "/bin/bonjour",&hashmap);
+	add_to_hashmap("20", "/bin/bonjour",&hashmap);
+	add_to_hashmap("21", "/bin/bonjour",&hashmap);
+	add_to_hashmap("22", "/bin/bonjour",&hashmap);
+	add_to_hashmap("ls", "/bin/ls",&hashmap);
 	printf("################################\n");
 	print_hashmap(hashmap);
 	printf("################################\n");
@@ -43,11 +47,36 @@ int		main(void)
 	add_to_hashmap("19", "NEWNEW", &hashmap);
 	print_hashmap(hashmap);
 	ft_printf("_________post_resize_down___\n");
-	hashmap = resize_down_hashmap(hashmap);
-	hashmap = resize_down_hashmap(hashmap);
-	ft_printf("____kajhdfgkjshdfgkjh_______\n");
+	//hashmap = resize_down_hashmap(hashmap);
+	//hashmap = resize_down_hashmap(hashmap);
+	//hashmap = resize_down_hashmap(hashmap);
+	ft_printf("_________HERE_______________\n");
 	print_hashmap(hashmap);
+	//pop_hashmap_item("7", hashmap);
+	pop_hashmap_item("20", hashmap);
+	pop_hashmap_item("16", hashmap);
+	//pop_hashmap_item("3", hashmap);
+	print_hashmap(hashmap);
+	//
+	const char	*path;
+	if ((path = check_hashmap("ls", hashmap, HASH_EXEC)))
+		printf("exec ls @ %s\n", path);
+	else
+		printf("ls not found in hashmap\n");
+	print_hashmap(hashmap);
+	//
+	hash_builtin(hashmap, argc, argv, env);
+	//
 
+
+	delete_hashmap(hashmap);
+	return (0);
+	printf("check for '14': {%s}\n", check_hashmap("14", hashmap, HASH_CHECK));
+	reset_hashmap(&hashmap);
+	printf("check for '14': {%s}\n", check_hashmap("14", hashmap, HASH_CHECK));
+	add_to_hashmap("ls", "/bin/ls",&hashmap);
+	add_to_hashmap("ls", "/bin/lsa",&hashmap);
+	print_hashmap(hashmap);
 
 
 

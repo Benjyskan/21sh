@@ -55,7 +55,7 @@ void			cpy_hashmap(t_hashmap *old_map, t_hashmap **new_map);
 /*
 ** hashmap_delete.c
 */
-static void		delete_hashmap_item(t_hash_item *item);
+//static void		delete_hashmap_item(t_hash_item *item);
 void			delete_hashmap(t_hashmap *hashmap);
 void			replace_item(t_hash_item *item, const char *value);
 t_bool			pop_hashmap_item(const char *key, t_hashmap *hashmap);
@@ -66,4 +66,9 @@ t_bool			reset_hashmap(t_hashmap **hashmap);
 */
 unsigned int	find_next_prime(unsigned int nb);
 unsigned int	find_prev_prime(unsigned int nb);
+
+/*
+** hash_main.c
+*/
+int				hash_builtin(t_hashmap *hashmap, int argc, char **argv, char **env);
 #endif
