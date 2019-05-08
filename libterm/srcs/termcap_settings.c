@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/05/08 18:05:46 by pscott           ###   ########.fr       */
+/*   Updated: 2019/05/08 19:05:50 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	set_non_canonical_mode(struct termios *tattr)
 	tattr->c_cflag |= CS8;
 	tattr->c_cc[VMIN] = 1;
 	tattr->c_cc[VTIME] = 0;
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, tattr) == -1)
+	if (tcsetattr(g_tty, TCSAFLUSH, tattr) == -1)
 		return (err_setattr());
 	return (1);
 }
@@ -100,9 +100,11 @@ int			setup_terminal_settings(void)
 	int				res;
 	struct termios	tattr;
 
-	if (isatty(STDIN_FILENO) == 0)
+	if ((g_tty = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0)
 		return (err_not_terminal() - 1);
-	if ((tcgetattr(STDIN_FILENO, &g_saved_attr) == -1))
+	if (isatty(g_tty) == 0)
+		return (err_not_terminal() - 1);
+	if ((tcgetattr(g_tty, &g_saved_attr) == -1))
 		return (err_getattr() - 1);
 	if ((termtype = getenv("TERM")) == NULL)
 		return (err_no_env() - 1);
@@ -110,14 +112,12 @@ int			setup_terminal_settings(void)
 		return (err_noentry() - 1);
 	else if (res == -1)
 		return (err_no_database() - 1);
-	if ((tcgetattr(STDIN_FILENO, &tattr) == -1))
+	if ((tcgetattr(g_tty, &tattr) == -1))
 		return (err_getattr() - 1);
 	if (check_caps() == 0)
 		return (err_caps() - 1);
 	if (set_non_canonical_mode(&tattr) == 0)
 		return (0);
-	if ((g_tty = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0)
-		return (err_not_terminal() - 1);
 /*	dup2(STDIN_FILENO, new_fd); // protect
 	close(new_fd);*/
 	return (1);

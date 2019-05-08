@@ -26,6 +26,15 @@ static t_token *get_next_simple_command(t_token *begin)
 **	the last command is never needed.
 */
 
+static void	Close(int fd)
+{
+	if (close(fd) < 0)
+	{
+		ft_dprintf(2, "FAILED TO CLOSE :%d", fd);
+		print_line();
+	}
+}
+
 static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 {
 	int i; // num_simple_commands - 1 can decrement
@@ -48,14 +57,15 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 			ft_dprintf(2, "fork error\n");//TODO dprintf //exit ?
 		else if (pid == 0)
 		{
-			close(fd[0]);//check return value
+			Close(fd[0]);//check return value
 			parse_expands(begin, in, fd[1], env);
 			clean_exit(1);
 		}
 		else if (pid > 0)
 		{
-			close(fd[1]); //protect
-			//close(in); // check if it's a proper way of doing things
+			Close(fd[1]); //protect
+			if (in != STDIN_FILENO)
+				Close(in); // check if it's a proper way of doing things
 			in = fd[0];
 			i++;
 			begin = get_next_simple_command(begin);
@@ -75,6 +85,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 	}
 	else
 	{
+		close(fd[0]);
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
 		{
 			if (WIFSIGNALED(status))
@@ -84,6 +95,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 			}
 		}
 		signal_setup();
+		Close(g_tty); // for fd leaks
 		if (setup_terminal_settings() == 0)
 			clean_exit(1); // ? 
 		return (WEXITSTATUS(status));
