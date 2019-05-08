@@ -74,8 +74,8 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 		{
 			if (WIFSIGNALED(status))
 			{
-				ft_printf("process terminated, received signal : %d", WTERMSIG(status));
-				print_line();
+				//ft_printf("process terminated, received signal : %d", WTERMSIG(status));
+//				print_line();
 			}
 		}
 		if (setup_terminal_settings() == 0)

@@ -70,12 +70,13 @@ t_bool		execute_argv(char	**argv)
 		return (0);
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
+	signal(SIGINT, SIG_DFL);
 /*	while (argv[++i])
 	{
-		ft_dprintf(g_dev_tty, "line%d:{%s}", i, argv[i]);
+		ft_dprintf(STDIN_FILENO, "line%d:{%s}", i, argv[i]);
 		print_line();
 	}
-	ft_dprintf(g_dev_tty, "--------------------- %s --------------------- ", argv[0]);
+	ft_dprintf(STDIN_FILENO, "--------------------- %s --------------------- ", argv[0]);
 	print_line();*/
 	if (execvp(argv[0], (char * const*)argv)) //need to use execve;
 	{

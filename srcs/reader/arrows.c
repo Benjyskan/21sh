@@ -34,7 +34,7 @@ void	move_arrow_right(t_st_cmd *st_cmd)
 		get_pos(st_cmd, st_cmd->st_txt->tracker);
 	}
 	else
-		ft_putstr_tty(BELL);
+		ft_putstr(BELL);
 }
 
 void	move_arrow_left(t_st_cmd *st_cmd)
@@ -48,7 +48,7 @@ void	move_arrow_left(t_st_cmd *st_cmd)
 		get_pos(st_cmd, st_cmd->st_txt->tracker);
 	}
 	else
-		ft_putstr_tty(BELL);
+		ft_putstr(BELL);
 }
 
 void	go_to_start(t_st_cmd *st_cmd)

@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/30 12:29:53 by pscott           ###   ########.fr       */
+/*   Updated: 2019/05/08 14:03:15 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int			reset_terminal_settings(void)
 {
-	if (isatty(STDIN) == 0)
+	if (isatty(STDIN_FILENO) == 0)
 		return (1);
 	execute_str(VISIBLE);
-	if ((tcsetattr(STDIN, TCSANOW, &g_saved_attr) == -1))
+	if ((tcsetattr(STDIN_FILENO, TCSANOW, &g_saved_attr) == -1))
 		return (err_resetattr());
 	return (1);
 }
@@ -32,7 +32,7 @@ static int	set_non_canonical_mode(struct termios *tattr)
 	tattr->c_cflag |= CS8;
 	tattr->c_cc[VMIN] = 1;
 	tattr->c_cc[VTIME] = 0;
-	if (tcsetattr(STDIN, TCSAFLUSH, tattr) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, tattr) == -1)
 		return (err_setattr());
 	return (1);
 }
@@ -97,11 +97,12 @@ int			setup_terminal_settings(void)
 	char			term_buffer[2048];
 	char			*termtype;
 	int				res;
+	int				new_fd;
 	struct termios	tattr;
 
-	if (isatty(STDIN) == 0)
+	if (isatty(STDIN_FILENO) == 0)
 		return (err_not_terminal() - 1);
-	if ((tcgetattr(STDIN, &g_saved_attr) == -1))
+	if ((tcgetattr(STDIN_FILENO, &g_saved_attr) == -1))
 		return (err_getattr() - 1);
 	if ((termtype = getenv("TERM")) == NULL)
 		return (err_no_env() - 1);
@@ -109,13 +110,15 @@ int			setup_terminal_settings(void)
 		return (err_noentry() - 1);
 	else if (res == -1)
 		return (err_no_database() - 1);
-	if ((tcgetattr(STDIN, &tattr) == -1))
+	if ((tcgetattr(STDIN_FILENO, &tattr) == -1))
 		return (err_getattr() - 1);
 	if (check_caps() == 0)
 		return (err_caps() - 1);
 	if (set_non_canonical_mode(&tattr) == 0)
 		return (0);
-	if ((g_dev_tty = open("/dev/tty", O_WRONLY)) < 1)
+	if ((new_fd = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0)
 		return (err_not_terminal() - 1);
+	dup2(STDIN_FILENO, new_fd); // protect
+	close(new_fd);
 	return (1);
 }

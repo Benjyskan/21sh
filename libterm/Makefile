@@ -41,7 +41,6 @@ VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 
 # Srcs file names ##############################################################
 SRC_FILES	:=	cursor.c execute_cap.c print_line.c termcap_settings.c \
-				ft_putchar_tty.c
 	#srcs subfiles names
 	ERRORS_FILES	:=	error_attr.c error_caps.c error_getenv.c \
 						error_getstr.c error_isatty.c error_tgetent.c \

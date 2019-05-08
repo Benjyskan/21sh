@@ -29,11 +29,9 @@ void	sigint_handler(int signo)
 	st_cmd->st_txt = init_st_txt(NULL);
 	st_cmd->st_prompt = init_st_prompt(NULL);
 	//free (st_cmd->st_prompt);
-//	free(st_cmd->st_txt);
-	retrieve_pos(&st_cmd->start_pos);
+	//free(st_cmd->st_txt);
 	init_relative_pos(st_cmd);
 	//execute_str(CLEAR_BELOW); not clear below but go to end of str and clear below
-	//
 	print_prompt(st_cmd->st_prompt);
 }
 

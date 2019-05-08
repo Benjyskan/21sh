@@ -6,7 +6,8 @@ void	free_token_list(t_token *token_head)
 {
 	t_token	*probe;
 
-///	ft_endl_tty("freeing token list !!!!!!!");
+///	ft_printf("freeing token list !!!!!!!");
+// 	print_line();
 	probe = token_head;
 	while (probe)
 	{
@@ -17,7 +18,6 @@ void	free_token_list(t_token *token_head)
 		ft_memdel((void*)&token_head);
 		token_head = probe;
 	}
-	//ft_putendl("end of free_token_list");
 }
 
 static void	free_ast_node(t_ast *node)

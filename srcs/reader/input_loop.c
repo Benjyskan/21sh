@@ -54,7 +54,7 @@ int		input_loop(t_st_cmd *st_cmd)
 	print_prompt(st_cmd->st_prompt);
 	while ((ret = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
 	{
-	//		magic_print(buf);
+		magic_print(buf);
 		buf[ret] = 0;
 		if (check_for_arrows(st_cmd, buf) || check_for_signal(buf)
 			|| check_for_delete(st_cmd, buf))

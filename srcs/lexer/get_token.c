@@ -20,7 +20,8 @@ static t_token	*get_dquot_token(char **cmdline)
 				st_cmd = get_st_cmd(NULL);//make func ?
 				st_cmd->st_txt->data_size -= 2;
 				ft_bzero(&st_cmd->st_txt->txt[st_cmd->st_txt->data_size], 2);
-				ft_endl_tty("end with '\\', READ_MODE");
+				ft_printf("end with '\\', READ_MODE");
+				print_line();
 				return (NULL);
 			}
 		}
@@ -28,7 +29,7 @@ static t_token	*get_dquot_token(char **cmdline)
 	}
 	if ((*cmdline)[i] == 0)
 	{
-//		ft_endl_tty("Unmatched \". READ_MODE PLZ");
+//		ft_printf("Unmatched \". READ_MODE PLZ");
 		return (NULL);
 	}
 	if (!(token = create_token(*cmdline, ++i, TK_DQ_STR)))
@@ -47,7 +48,7 @@ static t_token	*get_squot_token(char **cmdline)
 		i++;
 	if ((*cmdline)[i] == 0)
 	{
-		//ft_endl_tty("Unmatched '. READ_MODE PLZ");
+		//ft_printf("Unmatched '. READ_MODE PLZ");
 		//(*cmdline)[i] = '\n';// this don't change anything ??
 		return (NULL);
 	}

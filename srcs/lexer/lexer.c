@@ -50,7 +50,7 @@ static t_bool	add_token_to_list(t_token *current_token, t_token *prev_token
 	if (prev_token && prev_token->type == TK_HEREDOC
 			&& current_token->type != TK_EAT)
 	{
-		dprintf(g_dev_tty, "HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
+		printf("HEREDOC, enter READ_MODE, with EOF: {%s}\n", current_token->content);
 		//system("read -p \"press ENTER to continue\"");
 	}
 	if (!(*token_head))
@@ -108,7 +108,8 @@ int		lexer(char *cmdline, t_token **token_head, char **env)
 	if (is_logic_or_pipe(current_token)
 			|| (is_logic_or_pipe(prev_token) && !current_token->type))
 	{
-		ft_endl_tty("tmp, tklst end with '&&', '||' or '|': READ_MODE");
+		ft_printf("tmp, tklst end with '&&', '||' or '|': READ_MODE");
+		print_line();
 		return (LEX_CONT_READ);
 	}
 	else if (prev_token && is_redir_token(prev_token)

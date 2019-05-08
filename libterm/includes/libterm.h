@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/04/19 14:11:41 by pscott           ###   ########.fr       */
+/*   Updated: 2019/05/08 13:47:45 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@
 */
 
 struct termios	g_saved_attr;
-int				g_dev_tty;
 
 /*
 ** Settings-related functions
@@ -96,9 +95,6 @@ int				execute_str(char *cap);
 */
 
 int				print_line(void);
-int				ft_putchar_tty(int c);
-int				ft_putstr_tty(char *c);
-void			ft_endl_tty(char *str);
 void			term_putstr_endline(char *str, int fd);
 
 /*

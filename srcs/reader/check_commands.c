@@ -42,8 +42,8 @@ int		check_for_signal(const char *buf)
 	}
 	else if (ft_strncmp(buf, CTRL_C, CTRL_C_LEN) == 0)
 	{
-		ioctl(g_dev_tty, TIOCSTI, CTRL_C);
-		sigint_handler(2);
+		//ioctl(STDIN_FILENO, TIOCSTI, CTRL_C);
+		sigint_handler(SIGINT);
 		return (1);
 	}
 	return (0);
@@ -66,7 +66,7 @@ int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 	if (ft_strncmp(buf, BACKSPACE, BACKSPACE_LEN + 1) == 0)
 	{
 		if (st_cmd->st_txt->tracker == 0)
-			ft_putstr_tty(BELL);
+			ft_putstr(BELL);
 		else
 			delete_left(st_cmd);
 		return (1);
@@ -74,7 +74,7 @@ int		check_for_delete(t_st_cmd *st_cmd, char *buf)
 	else if (ft_strncmp(buf, DEL, DEL_LEN + 1) == 0)
 	{
 		if (st_cmd->st_txt->tracker >= st_cmd->st_txt->data_size)
-			ft_putstr_tty(BELL);
+			ft_putstr(BELL);
 		else
 			delete_right(st_cmd);
 		return (1);

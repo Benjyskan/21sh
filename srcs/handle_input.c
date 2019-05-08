@@ -68,17 +68,19 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 	if (lexer_ret == LEX_FAIL)
 	{
 		free_token_list(token_head);
-		ft_endl_tty("\x1B[31m""### Lexer FAILED""\x1B[0m");
+		ft_printf("\x1B[31m""### Lexer FAILED""\x1B[0m");
+		print_line();
 		return (0);
 	}
 /*	else
-		ft_endl_tty("\x1B[32m""### lexer SUCCESS""\x1B[0m");*/
+		ft_printf("\x1B[32m""### lexer SUCCESS""\x1B[0m");*/
 	if (!(ast_root = create_ast(token_head)))
 	{
-		ft_endl_tty("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
+		ft_printf("\x1B[31m""### Parser FAILED""\x1B[0m""\n");
+		print_line();
 		return (0);
 	}
-//	ft_endl_tty("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
+//	ft_printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	exec_ast(ast_root, env);
 	free_ast(ast_root);
 	return (1);

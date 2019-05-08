@@ -3,5 +3,5 @@
 
 void	print_prompt(t_st_prompt *st_prompt)
 {
-	ft_putstr_tty(st_prompt->prompt);
+	ft_putstr(st_prompt->prompt);
 }
