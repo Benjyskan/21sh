@@ -71,9 +71,10 @@ t_bool		execute_argv(char	**argv)
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
 	reset_dfl();
-/*	while (argv[++i])
+/*	int i = -1;
+	while (argv[++i])
 	{
-		ft_dprintf(STDIN_FILENO, "line%d:{%s}", i, argv[i]);
+		ft_dprintf(2, "line%d:{%s}", i, argv[i]);
 		print_line();
 	}
 	ft_dprintf(STDIN_FILENO, "--------------------- %s --------------------- ", argv[0]);

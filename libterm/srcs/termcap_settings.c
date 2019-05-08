@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/05/08 14:55:10 by pscott           ###   ########.fr       */
+/*   Updated: 2019/05/08 18:05:46 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int			reset_terminal_settings(void)
 {
-	if (isatty(STDIN_FILENO) == 0)
+	if (isatty(g_tty) == 0)
 		return (1);
 	execute_str(VISIBLE);
-	if ((tcsetattr(STDIN_FILENO, TCSANOW, &g_saved_attr) == -1))
+	if ((tcsetattr(g_tty, TCSANOW, &g_saved_attr) == -1))
 		return (err_resetattr());
+	close(g_tty);
 	return (1);
 }
 
@@ -97,7 +98,6 @@ int			setup_terminal_settings(void)
 	char			term_buffer[2048];
 	char			*termtype;
 	int				res;
-	int				new_fd;
 	struct termios	tattr;
 
 	if (isatty(STDIN_FILENO) == 0)
@@ -116,9 +116,9 @@ int			setup_terminal_settings(void)
 		return (err_caps() - 1);
 	if (set_non_canonical_mode(&tattr) == 0)
 		return (0);
-	if ((new_fd = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0)
+	if ((g_tty = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0)
 		return (err_not_terminal() - 1);
-	dup2(STDIN_FILENO, new_fd); // protect
-	close(new_fd);
+/*	dup2(STDIN_FILENO, new_fd); // protect
+	close(new_fd);*/
 	return (1);
 }
