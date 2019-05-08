@@ -78,6 +78,7 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 //				print_line();
 			}
 		}
+		signal_setup();
 		if (setup_terminal_settings() == 0)
 			clean_exit(1); // ? 
 		return (WEXITSTATUS(status));

@@ -7,7 +7,7 @@ CFLAGS	:=	-Wall -Wextra -Werror
 
 DEBUG_FLAG	:=	-g
 FSA_FLAGS	:=	$(DEBUG_FLAG) -fsanitize=address
-VAL_FLAGS	:=	--leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=yes \
+VAL_FLAGS	:=	--track-origins=yes --show-leak-kinds=all --track-fds=yes \
 				--show-reachable=no
 
 # Libraries ####################################################################

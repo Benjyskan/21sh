@@ -70,7 +70,8 @@ t_bool		execute_argv(char	**argv)
 		return (0);
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
-	signal(SIGINT, SIG_DFL);
+	ft_printf("salut\nca va\n");
+	reset_dfl();
 /*	while (argv[++i])
 	{
 		ft_dprintf(STDIN_FILENO, "line%d:{%s}", i, argv[i]);

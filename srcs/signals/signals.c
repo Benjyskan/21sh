@@ -88,6 +88,35 @@ void		sigtstp_handler(int signo)
 ** INT signal does NOT exit the program.
 */
 
+void		reset_dfl(void)
+{
+	signal(SIGWINCH, SIG_DFL);
+	signal(SIGCONT, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGHUP, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGILL, SIG_DFL);
+	signal(SIGTRAP, SIG_DFL);
+	signal(SIGABRT, SIG_DFL);
+	signal(SIGEMT, SIG_DFL);
+	signal(SIGFPE, SIG_DFL);
+	signal(SIGBUS, SIG_DFL);
+	signal(SIGSEGV, SIG_DFL);
+	signal(SIGSYS, SIG_DFL);
+	signal(SIGPIPE, SIG_DFL);
+	signal(SIGALRM, SIG_DFL);
+	signal(SIGTERM, SIG_DFL);
+	signal(SIGTTOU, SIG_DFL);
+	signal(SIGTTIN, SIG_DFL);
+	signal(SIGXCPU, SIG_DFL);
+	signal(SIGXFSZ, SIG_DFL);
+	signal(SIGVTALRM, SIG_DFL);
+	signal(SIGPROF, SIG_DFL);
+/*	signal(SIGUSR1, SIG_DFL);
+	signal(SIGUSR2, SIG_DFL);*/
+}
+
 void		signal_setup(void)
 {
 	signal(SIGWINCH, sigwinch_handler);
@@ -113,6 +142,6 @@ void		signal_setup(void)
 	signal(SIGXFSZ, sig_handler);
 	signal(SIGVTALRM, sig_handler);
 	signal(SIGPROF, sig_handler);
-	signal(SIGUSR1, sig_handler);
-	signal(SIGUSR2, sig_handler);
+/*	signal(SIGUSR1, sig_handler);
+	signal(SIGUSR2, sig_handler);*/
 }
