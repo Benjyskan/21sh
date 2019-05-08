@@ -12,13 +12,14 @@ t_bool		redir_less(t_token *redir, t_token *prev)
 	next = redir->next;
 	while (next->type == TK_EAT)
 		next = next->next;
+	redir->type = TK_EAT;
+	next->type = TK_EAT;
 	if ((new_fd = open(next->content, O_RDONLY)) < 0)
 	{
-		dprintf(2, "error opening file\n");
+		ft_dprintf(2, "psh: %s: No such file or directory", next->content);
+		print_line();
 		return (0);
 	}
 	redirect(new_fd, old_fd);
-	redir->type = TK_EAT;
-	next->type = TK_EAT;
 	return (1);
 }

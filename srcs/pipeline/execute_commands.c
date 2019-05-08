@@ -70,7 +70,6 @@ t_bool		execute_argv(char	**argv)
 		return (0);
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
-	ft_printf("salut\nca va\n");
 	reset_dfl();
 /*	while (argv[++i])
 	{

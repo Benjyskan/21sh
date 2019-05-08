@@ -49,7 +49,8 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 		else if (pid == 0)
 		{
 			close(fd[0]);//check return value
-			return (parse_expands(begin, in, fd[1], env));
+			parse_expands(begin, in, fd[1], env);
+			clean_exit(1);
 		}
 		else if (pid > 0)
 		{
@@ -67,15 +68,19 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 		return (0);
 	}
 	else if (pid == 0)
-		return (parse_expands(begin, in, STDOUT_FILENO, env));
+	{
+		parse_expands(begin, in, STDOUT_FILENO, env);
+		clean_exit(1);
+		return (0);
+	}
 	else
 	{
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
 		{
 			if (WIFSIGNALED(status))
 			{
-				//ft_printf("process terminated, received signal : %d", WTERMSIG(status));
-//				print_line();
+			//	ft_printf("process terminated, received signal : %d", WTERMSIG(status));
+			//	print_line();
 			}
 		}
 		signal_setup();

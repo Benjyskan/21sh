@@ -57,7 +57,7 @@ t_bool	apply_redirections(t_token *redir, t_token *prev) //static ?//use redir_t
 	else if (ft_strncmp(redir->content, ">>", 3) == 0)
 		redir_dgreat(redir, prev);
 	else if (ft_strncmp(redir->content, "<", 2) == 0)
-		redir_less(redir, prev);
+		return (redir_less(redir, prev));
 	else if (ft_strncmp(redir->content, "<<", 3) == 0) //TODO
 		redir_dless(redir, prev);
 	else
