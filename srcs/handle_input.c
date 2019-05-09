@@ -49,6 +49,7 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 	t_ast			*ast_root;
 	t_token			*token_head;
 	int				lexer_ret;
+	int				ret;
 	char			*input;
 
 	token_head = NULL;
@@ -59,8 +60,12 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 		free_token_list(token_head);
 		//free st_prompt
 		st_cmd = append_st_cmd(st_cmd, "", "cont > ");
-	 	if (input_loop(st_cmd) < 1)
+	 	if ((ret = input_loop(st_cmd)) < 1)
+		{
+			if (ret == 0)
+				print_line();
 			return (0); // free stuff ?
+		}
 		input = concatenate_txt(st_cmd);
 	}
 	st_cmd->hist_lst = get_end_lst(st_cmd->hist_lst);
