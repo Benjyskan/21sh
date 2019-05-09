@@ -20,13 +20,7 @@ static t_token *get_next_simple_command(t_token *begin)
 	}
 }
 
-/*
-**	Manages all pipes and fds, while handing the simple command to parse_redir
-**	for redirection parsing and execution. Note that i < n - 1, because piping \
-**	the last command is never needed.
-*/
-
-static void	Close(int fd)
+static void	Close(int fd) //remove me pls
 {
 	if (close(fd) < 0)
 	{
@@ -34,6 +28,12 @@ static void	Close(int fd)
 		print_line();
 	}
 }
+
+/*
+**	Manages all pipes and fds, while handing the simple command to parse_redir
+**	for redirection parsing and execution. Note that i < n - 1, because piping \
+**	the last command is never needed.
+*/
 
 static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 {
@@ -86,12 +86,14 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 	else
 	{
 		close(fd[0]);
+		reset_ign();
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
 		{
 			if (WIFSIGNALED(status))
 			{
-			//	ft_printf("process terminated, received signal : %d", WTERMSIG(status));
-			//	print_line();
+				if (WTERMSIG(status) != SIGINT)
+					ft_printf("process terminated, received signal : %d", WTERMSIG(status));
+				print_line();
 			}
 		}
 		signal_setup();

@@ -70,7 +70,7 @@ t_bool		execute_argv(char	**argv)
 		return (0);
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
-	reset_dfl();
+//	reset_dfl();
 /*	int i = -1;
 	while (argv[++i])
 	{

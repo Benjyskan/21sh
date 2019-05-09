@@ -48,6 +48,7 @@ void			reposition_cursor(t_st_cmd *st_cmd);
 void			print_prompt(t_st_prompt *st_prompt);
 void			signal_setup(void);
 void			reset_dfl(void);
+void			reset_ign(void);
 
 /*
 **	Input string manipulation

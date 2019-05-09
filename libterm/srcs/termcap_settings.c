@@ -6,7 +6,7 @@
 /*   By: pscott <pscott@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 14:54:40 by pscott            #+#    #+#             */
-/*   Updated: 2019/05/08 19:05:50 by pscott           ###   ########.fr       */
+/*   Updated: 2019/05/09 16:31:51 by pscott           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	set_non_canonical_mode(struct termios *tattr)
 	tattr->c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR
 			| ICRNL | IXON);
 	tattr->c_oflag &= ~OPOST;
-	tattr->c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+	tattr->c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG);
 	tattr->c_cflag &= ~(CSIZE | PARENB);
 	tattr->c_cflag |= CS8;
 	tattr->c_cc[VMIN] = 1;
@@ -100,7 +100,7 @@ int			setup_terminal_settings(void)
 	int				res;
 	struct termios	tattr;
 
-	if ((g_tty = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0)
+	if ((g_tty = open(ttyname(STDIN_FILENO), O_WRONLY)) < 0) // need non interactive
 		return (err_not_terminal() - 1);
 	if (isatty(g_tty) == 0)
 		return (err_not_terminal() - 1);
