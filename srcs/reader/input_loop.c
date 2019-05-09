@@ -42,6 +42,7 @@ void	insert_txt(t_st_cmd *st_cmd, const char *buf)
 /*
 **	Assumes we are at the beginning of a line, with a freshly initalized st_cmd.
 **	Reads stdin, breaks when \n is entered, returning the filled st_cmd.
+**	Returns 0 on quit, return -1 on ctrl + c
 */
 
 int		input_loop(t_st_cmd *st_cmd)
@@ -56,8 +57,9 @@ int		input_loop(t_st_cmd *st_cmd)
 	{
 		magic_print(buf);
 		buf[ret] = 0;
-		if (check_for_arrows(st_cmd, buf) || check_for_signal(buf)
-			|| check_for_delete(st_cmd, buf))
+		if (check_for_signal(buf))
+			return (-1);
+		else if (check_for_arrows(st_cmd, buf) || check_for_delete(st_cmd, buf))
 			;
 		else if (check_for_enter(buf))
 		{

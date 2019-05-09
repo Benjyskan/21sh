@@ -59,7 +59,8 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 		free_token_list(token_head);
 		//free st_prompt
 		st_cmd = append_st_cmd(st_cmd, "", "cont > ");
-	 	input_loop(st_cmd);
+	 	if (input_loop(st_cmd) < 1)
+			return (0); // free stuff ?
 		input = concatenate_txt(st_cmd);
 	}
 	st_cmd->hist_lst = get_end_lst(st_cmd->hist_lst);

@@ -47,6 +47,7 @@ t_st_prompt					*init_st_prompt(const char *prompt);
 */
 
 t_st_cmd					*get_first_st_cmd(t_st_cmd *st_cmd);
+t_st_cmd					*get_last_st_cmd(t_st_cmd *st_cmd);
 t_st_cmd					*get_st_cmd(t_st_cmd **new_struct);
 t_st_cmd					*init_st_cmd(const char **env);
 t_st_cmd					*append_st_cmd(t_st_cmd *st_cmd, const char *txt,

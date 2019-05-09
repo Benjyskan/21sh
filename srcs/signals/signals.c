@@ -26,13 +26,13 @@ void	sigint_handler(int signo)
 	go_to_end(st_cmd);
 	reposition_cursor(st_cmd);
 	print_line();
-	st_cmd->st_txt = init_st_txt(NULL);
+/*	st_cmd->st_txt = init_st_txt(NULL);
 	st_cmd->st_prompt = init_st_prompt(NULL);
 	//free (st_cmd->st_prompt);
 	//free(st_cmd->st_txt);
 	init_relative_pos(st_cmd);
 	//execute_str(CLEAR_BELOW); not clear below but go to end of str and clear below
-	print_prompt(st_cmd->st_prompt);
+	print_prompt(st_cmd->st_prompt);*/
 }
 
 static void	sigcont_handler(int signo)

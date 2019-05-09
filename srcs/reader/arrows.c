@@ -61,6 +61,7 @@ void	go_to_end(t_st_cmd *st_cmd)
 {
 	t_st_txt	*st_txt;
 
+	st_cmd = get_last_st_cmd(st_cmd);
 	st_txt = st_cmd->st_txt;
 	st_txt->tracker = st_txt->data_size;
 	get_pos(st_cmd, st_cmd->st_txt->tracker);

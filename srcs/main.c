@@ -21,6 +21,7 @@ int		main(int argc, char **argv, char **env)
 {
 	char			**env_cpy;
 	t_st_cmd		*st_cmd;
+	int				ret;
 
 	(void)argc;
 	(void)argv;
@@ -33,9 +34,9 @@ int		main(int argc, char **argv, char **env)
 	st_cmd = init_st_cmd((const char **)env);
 	while (42)
 	{
-		if (!input_loop(st_cmd))
+		if ((ret = input_loop(st_cmd)) == 0)
 			break ; // free env, free st_cmd
-		if (!is_full_of_whitespaces(st_cmd->st_txt->txt))
+		else if (ret > 0 && !is_full_of_whitespaces(st_cmd->st_txt->txt))
 			handle_input(st_cmd, env_cpy);
 		st_cmd = reset_st_cmd(st_cmd);
 		//free st_cmd

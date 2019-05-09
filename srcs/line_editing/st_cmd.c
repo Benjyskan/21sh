@@ -26,6 +26,14 @@ t_st_cmd	*get_first_st_cmd(t_st_cmd *st_cmd)
 	return (st_cmd);
 }
 
+t_st_cmd	*get_last_st_cmd(t_st_cmd *st_cmd)
+{
+	if (st_cmd)
+		while (st_cmd->next)
+			st_cmd = st_cmd->next;
+	return (st_cmd);
+}
+
 /*
 **	Updates the window struct passed as a parameter by calling the ioctl
 **	function. Exits if it fails.
