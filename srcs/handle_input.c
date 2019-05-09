@@ -44,6 +44,23 @@ t_hist_lst		*insert_left(t_hist_lst *hist_lst, char *line, char keep)
 	return (insert);
 } // should no be in handle_input !
 
+void	adjust_history(t_st_cmd *st_cmd, char *line)
+{
+	t_hist_lst	*to_insert;
+
+	if (st_cmd->hist_lst->prev)
+		to_insert = st_cmd->hist_lst->prev;
+	else
+		to_insert = st_cmd->hist_lst;
+	if (to_insert->keep)
+		insert_right(to_insert, line, 0);
+	else
+	{
+		ft_memdel((void*)&to_insert->txt);
+		to_insert->cpy = ft_strdup(line);
+	}
+}
+
 t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 {
 	t_ast			*ast_root;
@@ -59,6 +76,7 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 	{
 		free_token_list(token_head);
 		//free st_prompt
+		adjust_history(st_cmd, input);
 		st_cmd = append_st_cmd(st_cmd, "", "cont > ");
 	 	if ((ret = input_loop(st_cmd)) < 1)
 		{
