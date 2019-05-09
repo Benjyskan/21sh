@@ -3,7 +3,6 @@
 
 # include "reader.h"
 # define HIST_FILE "~/.21sh_history"
-# define HIST_MAX 600
 # define HIST_SIZE 500
 
 typedef struct		s_hist_lst {

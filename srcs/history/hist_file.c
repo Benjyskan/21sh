@@ -22,6 +22,23 @@ static int		open_history(const char **env, int options)
 	return (fd);
 }
 
+t_hist_lst	*get_hist_size_start(t_hist_lst *hist_lst)
+{
+	t_hist_lst		*res;
+	unsigned int	i;
+
+	res = get_end_lst(hist_lst);
+	if (!res)
+		return (res);
+	i = 0;
+	while (i < HIST_SIZE && res->prev)
+	{
+		res = res->prev;
+		i++;
+	}
+	return (res);
+}
+
 t_hist_lst	*get_history(const char **env)
 {
 	t_hist_lst	*hist_lst;
@@ -60,7 +77,7 @@ int		write_to_history(t_st_cmd *st_cmd, const char **env)
 		return (0);
 	else
 	{
-		hist_lst = get_begin_lst(st_cmd->hist_lst);
+		hist_lst = get_hist_size_start(st_cmd->hist_lst);
 		id = 0;
 		while (hist_lst)
 		{
