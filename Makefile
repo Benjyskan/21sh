@@ -62,7 +62,7 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 	PIPELINE_FILES	:=	parse_pipeline.c parse_redirections.c \
 						execute_commands.c \
 						redir_great.c redir_dgreat.c redir_less.c redir_dless.c \
-						check_token_type.c
+						check_token_type.c redir_fd_great.c
 	READER_FILES	:=	arrows.c check_commands.c clean_exit.c prompt.c \
 						input_loop.c cursor_position.c input_utils.c \
 						delete.c txt_cat.c
