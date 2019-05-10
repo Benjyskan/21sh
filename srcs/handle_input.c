@@ -104,7 +104,7 @@ t_bool	handle_input(t_st_cmd *st_cmd, char **env)
 		print_line();
 		return (0);
 	}
-//	ft_printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
+	//DEBUG_PARSER && ft_printf("\x1B[32m""### Parser SUCCESS""\x1B[0m""\n");
 	exec_ast(ast_root, env);
 	free_ast(ast_root);
 	return (1);

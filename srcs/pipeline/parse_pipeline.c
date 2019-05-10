@@ -85,7 +85,8 @@ static int	fork_pipes(int num_simple_commands, t_token *begin, char **env)
 	}
 	else
 	{
-		close(fd[0]);
+		if (num_simple_commands -1 != 0)
+			close(fd[0]);
 		reset_ign();
 		while ((wpid = wait(&status)) > 0) //not sure if it's proper
 		{
