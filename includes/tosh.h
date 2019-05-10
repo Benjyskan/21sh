@@ -27,14 +27,6 @@ typedef unsigned char	t_bool;
 char				**init_env(const char **env);
 
 /*
-** errors.c
-*/
-
-void				error_mem(void);
-void				syntax_error_near(t_token *token);
-//void				error_mem(char *func_name);
-
-/*
 ** shlvl.c
 */
 

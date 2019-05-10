@@ -25,7 +25,7 @@ LIBS			:= $(LIBFT_A) $(LIBTERM_A)
 INCL_DIR	:=	includes libft/includes libterm/includes
 INCL_CMD	:=	$(addprefix -I,$(INCL_DIR))
 
-INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h line_editing.h
+INCL_FILES	:=	tosh.h lexer.h ast.h reader.h history.h get_next_line.h line_editing.h builtins.h errors.h
 
 INCLS		:=	$(addprefix includes/,$(INCL_FILES))
 
@@ -42,10 +42,11 @@ SRC_DIR	:=	srcs
 	HISTORY_DIR			:=	history
 	SIGNALS_DIR			:=	signals
 	L_E_DIR				:=	line_editing
+	BUILTINS_DIR		:=	builtins
 	#list of all srcs subdirectories
 	SRC_SUBDIRS	:=	$(ENV_DIR) $(ERRORS_DIR) $(LEXER_DIR) $(PARSER_DIR) \
 					$(PIPELINE_DIR) $(READER_DIR) $(HISTORY_DIR) $(EXPANDS_DIR) \
-				   	$(SIGNALS_DIR) $(L_E_DIR)
+				   	$(SIGNALS_DIR) $(L_E_DIR) $(BUILTINS_DIR)
 
 
 #VPATH specifies a list of directories that 'make' should search
@@ -55,7 +56,7 @@ VPATH	:=	$(SRC_DIR) $(addprefix $(SRC_DIR)/,$(SRC_SUBDIRS))
 SRC_FILES	:=	handle_input.c free.c main.c \
 	#srcs subfiles names
 	ENV_FILES		:=	environ_set.c environ_utils.c init_env.c shlvl.c
-	ERRORS_FILES	:=	errors.c
+	ERRORS_FILES	:=	errors.c print_errors.c error_exit.c
 	LEXER_FILES		:=	lexer.c lexer_tools.c lexer_op_chart.c get_token.c\
 						lexer_debug.c
 	PARSER_FILES	:=	token_parser.c token_parser_utils.c
@@ -71,11 +72,13 @@ SRC_FILES	:=	handle_input.c free.c main.c \
 	HISTORY_FILES	:=	hist_file.c get_next_line.c hist_lst.c switch_history.c
 	SIGNALS_FILES	:=	signals.c
 	L_E_FILES		:=	st_cmd.c st_prompt.c st_txt.c writing.c
+	BUILTINS_FILES	:=	cmd_cd.c builtins_cmd.c
+
 
 #list of all .c files
 C_FILES	:=	$(SRC_FILES) $(ENV_FILES) $(ERRORS_FILES) $(LEXER_FILES)\
 			$(PARSER_FILES) $(PIPELINE_FILES) $(READER_FILES) $(HISTORY_FILES) \
-			$(EXPANDS_FILES) $(SIGNALS_FILES) $(L_E_FILES)
+			$(EXPANDS_FILES) $(SIGNALS_FILES) $(L_E_FILES) $(BUILTINS_FILES)
 
 
 # Complete path of each .c files ###############################################
@@ -90,6 +93,7 @@ EXPANDS_PATH		:=	$(addprefix $(EXPANDS_DIR)/,$(EXPANDS_FILES))
 HISTORY_PATH		:=	$(addprefix $(HISTORY_DIR)/,$(HISTORY_FILES))
 SIGNALS_PATH		:=	$(addprefix $(SIGNALS_DIR)/,$(SIGNALS_FILES))
 L_E_PATH			:=	$(addprefix $(L_E_DIR)/,$(L_E_FILES))
+BUILTINS_PATH		:=	$(addprefix $(BUILTINS_DIR)/,$(BUILTINS_FILES))
 
 #list of all "path/*.c"
 SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
@@ -102,6 +106,7 @@ SRCS	:=	$(addprefix $(SRC_DIR)/,$(ENV_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(HISTORY_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(SIGNALS_PATH)) \
 			$(addprefix $(SRC_DIR)/,$(L_E_PATH)) \
+			$(addprefix $(SRC_DIR)/,$(BUILTINS_PATH)) \
 			$(SRC_PATH)
 
 #Object ########################################################################

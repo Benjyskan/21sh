@@ -5,6 +5,8 @@
 #include "lexer.h"
 #include <fcntl.h>
 
+char **g_env;
+
 typedef struct		s_ast
 {
 	t_token			*token;

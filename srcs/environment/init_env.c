@@ -26,6 +26,7 @@ static char	**create_minienv(void)
 	set_env_var("SHLVL", "1", &env);
 	if (!(cwd = getcwd(NULL, 0)))//getcwd can fail in other way than ERROR_MEM
 		ERROR_MEM;
+	set_env_var("SHLVL", "1", &env);
 	set_env_var("PWD", cwd, &env);
 	env[init_lines - 0] = NULL;
 	ft_memdel((void*)&cwd);

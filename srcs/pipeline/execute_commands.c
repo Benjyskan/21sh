@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "builtins.h"
 #include "ast.h"
 
 static char	*ft_strjoin_free(char *s1, char *s2)
@@ -66,20 +67,16 @@ static char	**create_argv(t_token *token_head, unsigned int argv_len)
 
 t_bool		execute_argv(char	**argv)
 {
+	int	ret;
+
 	if (!argv)
 		return (0);
 	if (reset_terminal_settings() == 0)
 		clean_exit(1); // ?
 //	reset_dfl();
-/*	int i = -1;
-	while (argv[++i])
-	{
-		ft_dprintf(2, "line%d:{%s}", i, argv[i]);
-		print_line();
-	}
-	ft_dprintf(STDIN_FILENO, "--------------------- %s --------------------- ", argv[0]);
-	print_line();*/
-	if (execvp(argv[0], (char * const*)argv)) //need to use execve;
+	if ((ret = check_builtins(argv)))
+		return (exec_builtins(argv, ret));
+	else if (execve(argv[0], (char * const*)argv, (char* const*)g_env))
 	{
 		ft_dprintf(2, "----- Failed to execute ! -----\n");
 		clean_exit(1);
