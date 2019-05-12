@@ -11,7 +11,7 @@ static t_bool	is_prime(unsigned int nb)
 	if ((nb % 2 == 0) || (nb % 3 == 0))
 		return (FALSE);
 	i = 5;
-	while (i * i < nb)
+	while (i * i < (int)nb)
 	{
 		if ((nb % i == 0) || (nb % (i + 2) == 0))
 			return (FALSE);

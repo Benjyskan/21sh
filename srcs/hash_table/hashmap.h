@@ -41,7 +41,12 @@ t_bool			add_to_hashmap(char *key, char *value, t_hashmap **hashmap);
 unsigned int	hashfun(const char *input);
 const char		*check_hashmap(const char *key, t_hashmap *hashmap, t_hashopt opt);
 //unsigned int	get_hashmap_index(const char *key, t_hashmap *hashmap);
+/*
+** hashmap_print.c
+*/
 void			print_hashmap(t_hashmap *hashmap);
+void			print_hashmap_l(t_hashmap *hashmap);
+void			print_usage(void);
 
 /*
 ** hashmap_alloc.c
@@ -70,5 +75,5 @@ unsigned int	find_prev_prime(unsigned int nb);
 /*
 ** hash_main.c
 */
-int				hash_builtin(t_hashmap *hashmap, int argc, char **argv, char **env);
+int				hash_builtin(t_hashmap **hashmap, int argc, char **argv, char **env);
 #endif

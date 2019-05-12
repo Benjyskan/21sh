@@ -83,7 +83,8 @@ static t_bool			get_hash_opt(char *arg, t_hash_args *hash_args)
 		{
 			ft_dprintf(2, "-%c: invalid option\n", arg[i]);
 			//print_usage();
-			printf("hash [-lr] [-p pathname] [-d] [name ...]\n");//no 't'
+			print_usage();
+			//dprintf(2, "hash [-lr] [-p pathname] [-d] [name ...]\n");//no 't'
 			return (0);
 		}
 	}
@@ -95,26 +96,33 @@ static t_hash_args	*get_hash_args(int argc, char **argv)
 	t_hash_args	*hash_args;
 	int			i;
 
+	printf("(get_hash_args)ICICICICICICIC\n");
 	hash_args = init_hash_args();
 	i = 0;
 	while (++i < argc)
 	{
-		if (hash_args->state == GET_NAME)
+		if (argv[i][0] != '-' && hash_args->state == GET_OPT)
 		{
-			printf("getting name: {%s}\n", argv[i]);
+			hash_args->state = GET_NAME;
+			//if (!hash_args->name_index)
+			//	hash_args->name_index = i;
+		}
+		if (hash_args->state == GET_NAME && !hash_args->name_index)
+		{
+			printf("(get_hash_args)getting name: {%s}\n", argv[i]);
 			hash_args->name_index = i;
 			hash_args->state = GET_DONE;
-			printf("with name_index: {%d}\n", hash_args->name_index);
+			printf("(get_hash_args)with name_index: {%d}\n", hash_args->name_index);
 		}
 		else if (hash_args->state == GET_PATH)
 		{
 			hash_args->path = argv[i];
-			printf("getting path: {%s}\n", hash_args->path);
+			printf("(get_hash_args)getting path: {%s}\n", hash_args->path);
 			hash_args->state = GET_NAME;
 		}
 		else if (argv[i][0] == '-' && hash_args->state == GET_OPT)
 		{
-			printf("argv[%d]: {%s}\n", i, argv[i]);
+			printf("(get_hash_args)argv[%d]: {%s}\n", i, argv[i]);
 			if (!get_hash_opt(argv[i], hash_args))
 			{
 				ft_memdel((void*)&hash_args);
@@ -123,38 +131,71 @@ static t_hash_args	*get_hash_args(int argc, char **argv)
 		}
 		//printf("hash_args->state: %d\n", hash_args->state);
 	}
+	if (hash_args->state == GET_PATH)
+	{
+		print_usage();
+		ft_memdel((void*)&hash_args);
+		return (NULL);
+	}
 	return (hash_args);
 }
 
-int		hash_builtin(t_hashmap *hashmap, int argc, char **argv, char **env)
+static void	hash_builtin_print(t_hashmap *hashmap, t_hash_args *hash_args)
+{
+	if (hash_args->opt & O_L)
+		print_hashmap_l(hashmap);//TODO:, hash_args);
+	else
+		print_hashmap(hashmap);
+}
+
+//L only matter when printing
+//make 'hash -l ls' same as 'hash -t ls'
+//p>d (if name)
+int			hash_builtin(t_hashmap **hashmap, int argc, char **argv, char **env)
 {
 	t_hash_args	*hash_args;
 
+	(void)env;
 	printf("___HASH_BUILTIN___\n");
 	//hash [-lr] [-p pathname] [-dt] [name ...]
 	if (argc == 1)
 	{
-		print_hashmap(hashmap);
+		print_hashmap(*hashmap);
 		return (0);
 	}
 	if (!(hash_args = get_hash_args(argc, argv)))
 		return (1);
 	//
 	printf("END:\nopt={");
+	printf("RDL: ");
 	print_bits(hash_args->opt);
-	printf("}\npath: {%s}\n", hash_args->path);
+	printf("}\npath: {%s}\nname_index: %d\n", hash_args->path,
+			hash_args->name_index);
 	//
 	printf("___EXEC___\n");
-	if (hash_args->opt & O_R)
-		reset_hashmap(&hashmap);
-	if (hash_args->opt & O_D && name_index)//	d > l (if NAME)
-		//pop each args from name_index
-	if (!name_index)
+	if (hash_args->opt & O_R)//priority
+		reset_hashmap(hashmap);
+	if (hash_args->path && hash_args->name_index)
 	{
-		if (hash_args->opt & O_L)
-			print_hashmap_l(hashmap);//, hash_args);
-		else if (hash_args->opt & O_D)
-			print_hashmap(hashmap);
-	}//else (if name_index)
+		//add each args with that path
+	}
+	else if (hash_args->opt & O_D && hash_args->name_index)//	p>d(if NAME)
+	{
+		printf("pop args starting at %d\n", hash_args->name_index);
+		//pop each args from name_index
+	}
+	if (!hash_args->name_index)
+	{
+		hash_builtin_print(*hashmap, hash_args);
+		//if (hash_args->opt & O_L)
+		//	print_hashmap_l(*hashmap);//TODO:, hash_args) to print each args (different from bash)
+		//else if (hash_args->opt & O_D)
+		//	print_hashmap(*hashmap);
+	}
+	else //(if hash_args->name_index)
+	{
+		//if L
+		//or D
+	}
 	return (1);
 }

@@ -109,7 +109,7 @@ void		cpy_hashmap(t_hashmap *old_map, t_hashmap **new_map)
 	t_hash_item	*prev_probe;
 
 	i = -1;
-	while ((++i < old_map->size) && (item_probe = old_map->items[i]))
+	while ((++i < (int)old_map->size) && (item_probe = old_map->items[i]))
 	{
 		//ft_printf("cpy trigger on: %d\t", i);
 		while (item_probe)
