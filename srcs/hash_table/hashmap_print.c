@@ -41,6 +41,21 @@ void	print_hashmap(t_hashmap *hashmap)//REAL
 	}
 }
 
+void	print_hashmap_l_args(t_hashmap *hashmap, t_hash_args *hash_args, int argc, char **argv)
+{
+	int			i;
+	const char	*value;
+
+	i = hash_args->name_index - 1;
+	while (++i < argc)
+	{
+		if ((value = check_hashmap(argv[i], hashmap, HASH_CHECK)))
+			ft_printf("hash -p %s %s\n", value, argv[i]);
+		else
+			dprintf(2, "hash: %s wasn't found\n", argv[i]);
+	}
+}
+
 void	print_hashmap_l(t_hashmap *hashmap)
 //void	print_hashmap_l(t_hashmap *hashmap, t_hash_args *hash_args, int argc,
 //		char ** argv);

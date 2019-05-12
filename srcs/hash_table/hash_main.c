@@ -12,15 +12,6 @@ static void	print_bits(unsigned char c)//debug
 		printf("0");
 }
 
-typedef struct	s_hash_args
-{
-	unsigned char	opt;
-	char			*path;
-	//char			**name;//useless
-	unsigned int	name_index;
-	unsigned char	state;
-}				t_hash_args;
-
 typedef enum	e_hash_opt
 {
 	//O_P = 0b1,
@@ -140,10 +131,52 @@ static t_hash_args	*get_hash_args(int argc, char **argv)
 	return (hash_args);
 }
 
-static void	hash_builtin_print(t_hashmap *hashmap, t_hash_args *hash_args)
+static void	add_each_name(t_hashmap **hashmap, t_hash_args *hash_args, int argc, char **argv)
 {
+	int		i;
+	char	*value;
+
+	i = hash_args->name_index - 1;
+	while (++i < argc)
+	{
+		//value = search in path;
+		add_to_hashmap(argv[i], value, hashmap);
+	}
+}
+
+static void	add_each_name_with_path(t_hashmap **hashmap, t_hash_args *hash_args, int argc, char **argv)
+{
+	int		i;
+
+	i = hash_args->name_index - 1;
+	while (++i < argc)
+	{
+		add_to_hashmap(argv[i], hash_args->path, hashmap);
+	}
+}
+
+static void	pop_each_name(t_hashmap **hashmap, t_hash_args *hash_args, int argc, char **argv)
+{
+	int	i;
+
+	i = hash_args->name_index - 1;
+	while (++i < argc)
+	{
+		pop_hashmap_item(argv[i], *hashmap);//make pop() take **hashmap ??
+	}
+}
+
+static void	hash_builtin_print(t_hashmap *hashmap, t_hash_args *hash_args, int argc, char **argv)//TODO change so L print only args(starting @ name_index)
+{
+	int	i;
+
 	if (hash_args->opt & O_L)
-		print_hashmap_l(hashmap);//TODO:, hash_args);
+	{
+		if (!hash_args->name_index)
+			print_hashmap_l(hashmap);//TODO:, hash_args);
+		else
+			print_hashmap_l_args(hashmap, hash_args, argc, argv);
+	}
 	else
 		print_hashmap(hashmap);
 }
@@ -155,9 +188,10 @@ int			hash_builtin(t_hashmap **hashmap, int argc, char **argv, char **env)
 {
 	t_hash_args	*hash_args;
 
-	(void)env;
 	printf("___HASH_BUILTIN___\n");
 	//hash [-lr] [-p pathname] [-dt] [name ...]
+	//
+	(void)env;
 	if (argc == 1)
 	{
 		print_hashmap(*hashmap);
@@ -175,9 +209,33 @@ int			hash_builtin(t_hashmap **hashmap, int argc, char **argv, char **env)
 	printf("___EXEC___\n");
 	if (hash_args->opt & O_R)//priority
 		reset_hashmap(hashmap);
+	if (hash_args->path)
+	{
+		if (hash_args->name_index)
+			add_each_name_with_path(hashmap, hash_args, argc, argv);
+		else
+			hash_builtin_print(*hashmap, hash_args, argc, argv);//print//mv down
+	}
+	else if (hash_args->opt & O_D)
+	{
+		if (hash_args->name_index)
+			pop_each_name(hashmap, hash_args, argc, argv);
+		else
+			hash_builtin_print(*hashmap, hash_args, argc, argv);//print//mv down
+	}
+	else if (!hash_args->opt && hash_args->name_index)//test !opt
+	{
+		add_each_name(hashmap, hash_args, argc, argv);
+	}
+	else
+		hash_builtin_print(*hashmap, hash_args, argc, argv);//print
+	return (1);
+
+	//old////////////////
+	/*
 	if (hash_args->path && hash_args->name_index)
 	{
-		//add each args with that path
+		//add each args with that path//seems good
 	}
 	else if (hash_args->opt & O_D && hash_args->name_index)//	p>d(if NAME)
 	{
@@ -198,4 +256,5 @@ int			hash_builtin(t_hashmap **hashmap, int argc, char **argv, char **env)
 		//or D
 	}
 	return (1);
+	*/
 }

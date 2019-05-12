@@ -24,6 +24,15 @@ typedef struct	s_hashmap
 
 }				t_hashmap;
 
+typedef struct	s_hash_args
+{
+	unsigned char	opt;
+	char			*path;
+	//char			**name;//useless
+	unsigned int	name_index;
+	unsigned char	state;
+}				t_hash_args;
+
 /*
 ** t_hashopt
 ** give check_hashmap() intructions for modifying the count
@@ -47,6 +56,7 @@ const char		*check_hashmap(const char *key, t_hashmap *hashmap, t_hashopt opt);
 void			print_hashmap(t_hashmap *hashmap);
 void			print_hashmap_l(t_hashmap *hashmap);
 void			print_usage(void);
+void			print_hashmap_l_args(t_hashmap *hashmap, t_hash_args *hash_args, int argc, char **argv);
 
 /*
 ** hashmap_alloc.c
